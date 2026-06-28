@@ -1,0 +1,18 @@
+export {
+  ArticleTemplate,
+  AuthenticationTemplate,
+  ContentPageTemplate,
+  DealerProfileTemplate,
+  HomepageTemplate,
+  SearchResultsTemplate,
+  StaticPageTemplate,
+  VehicleDetailsTemplate,
+  type ArticleTemplateProps,
+  type AuthenticationTemplateProps,
+  type ContentPageTemplateProps,
+  type DealerProfileTemplateProps,
+  type HomepageTemplateProps,
+  type SearchResultsTemplateProps,
+  type StaticPageTemplateProps,
+  type VehicleDetailsTemplateProps,
+} from "./public-templates";

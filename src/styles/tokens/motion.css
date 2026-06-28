@@ -1,0 +1,130 @@
+/**
+ * SURF FOR CARS — Motion System
+ * Smooth, confident transitions. Never flashy.
+ */
+
+:root {
+  /* Durations */
+  --duration-instant: 0ms;
+  --duration-fast: 120ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  --duration-slower: 450ms;
+  --duration-page: 350ms;
+
+  /* Easing */
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.2, 0.64, 1);
+
+  /* Contextual motion */
+  --motion-hover: var(--duration-fast) var(--ease-out);
+  --motion-button: var(--duration-normal) var(--ease-premium);
+  --motion-card: var(--duration-normal) var(--ease-premium);
+  --motion-modal: var(--duration-slow) var(--ease-premium);
+  --motion-drawer: var(--duration-slow) var(--ease-premium);
+  --motion-nav: var(--duration-normal) var(--ease-in-out);
+  --motion-page: var(--duration-page) var(--ease-premium);
+  --motion-loading: 1.2s var(--ease-linear) infinite;
+
+  /* Composite transitions */
+  --transition-colors: color var(--motion-button),
+    background-color var(--motion-button),
+    border-color var(--motion-button);
+  --transition-opacity: opacity var(--motion-hover);
+  --transition-transform: transform var(--motion-card);
+  --transition-shadow: box-shadow var(--motion-card);
+  --transition-all: all var(--motion-button);
+}
+
+/* Motion utility classes */
+.motion-hover {
+  transition: background-color var(--motion-hover),
+    border-color var(--motion-hover),
+    color var(--motion-hover),
+    opacity var(--motion-hover),
+    transform var(--motion-hover),
+    box-shadow var(--motion-hover);
+}
+
+.motion-button {
+  transition: background-color var(--motion-button),
+    border-color var(--motion-button),
+    color var(--motion-button),
+    box-shadow var(--motion-button),
+    transform var(--motion-button);
+}
+
+.motion-card {
+  transition: transform var(--motion-card),
+    box-shadow var(--motion-card),
+    border-color var(--motion-card);
+}
+
+.motion-modal {
+  transition: opacity var(--motion-modal),
+    transform var(--motion-modal);
+}
+
+.motion-drawer {
+  transition: transform var(--motion-drawer);
+}
+
+.motion-nav {
+  transition: color var(--motion-nav),
+    background-color var(--motion-nav),
+    border-color var(--motion-nav);
+}
+
+.motion-page {
+  transition: opacity var(--motion-page),
+    transform var(--motion-page);
+}
+
+@keyframes sfc-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes sfc-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes sfc-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes sfc-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes sfc-slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-spin-sfc {
+  animation: sfc-spin var(--motion-loading);
+}
+
+.animate-pulse-sfc {
+  animation: sfc-pulse 2s var(--ease-in-out) infinite;
+}
+
+.animate-shimmer-sfc {
+  animation: sfc-shimmer 2s var(--ease-linear) infinite;
+  background-size: 200% 100%;
+}
+
+.animate-fade-in-sfc {
+  animation: sfc-fade-in var(--motion-modal) var(--ease-out) forwards;
+}
+
+.animate-slide-up-sfc {
+  animation: sfc-slide-up var(--motion-modal) var(--ease-premium) forwards;
+}

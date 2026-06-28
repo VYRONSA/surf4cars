@@ -1,0 +1,24 @@
+/**
+ * SURF FOR CARS — Shadow System
+ * Premium depth — subtle, never heavy.
+ */
+
+:root {
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.28), 0 1px 2px -1px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.28), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.28), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.28), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+
+  /* Semantic */
+  --shadow-small: var(--shadow-sm);
+  --shadow-medium: var(--shadow-md);
+  --shadow-large: var(--shadow-lg);
+  --shadow-floating: 0 12px 40px -8px rgba(0, 0, 0, 0.36);
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.24);
+  --shadow-hover: 0 8px 24px -4px rgba(0, 0, 0, 0.32);
+  --shadow-focus: 0 0 0 3px var(--color-focus-ring);
+  --shadow-glow-brand: 0 0 24px rgba(0, 102, 255, 0.2);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.12);
+}

@@ -1,0 +1,4 @@
+﻿/**
+ * @module features/media
+ */
+export {};

@@ -1,0 +1,58 @@
+/**
+ * SURF FOR CARS — Component Standards
+ * Reusable sizing, padding, and interaction tokens for UI primitives.
+ */
+
+:root {
+  /* Button */
+  --button-height-sm: 2rem;
+  --button-height-md: 2.5rem;
+  --button-height-lg: 3rem;
+  --button-padding-x-sm: var(--space-3);
+  --button-padding-x-md: var(--space-4);
+  --button-padding-x-lg: var(--space-6);
+  --button-radius: var(--radius-lg);
+  --button-font-size-sm: var(--text-sm);
+  --button-font-size-md: var(--text-sm);
+  --button-font-size-lg: var(--text-base);
+  --button-font-weight: var(--font-weight-medium);
+
+  /* Input */
+  --input-height-sm: 2rem;
+  --input-height-md: 2.5rem;
+  --input-height-lg: 3rem;
+  --input-padding-x: var(--space-3);
+  --input-radius: var(--radius-lg);
+  --input-border-width: 1px;
+  --input-font-size: var(--text-sm);
+  --input-bg: var(--color-surface-raised);
+  --input-border: var(--color-border-default);
+  --input-text: var(--color-text-primary);
+  --input-placeholder: var(--color-text-tertiary);
+
+  /* Card */
+  --card-radius: var(--radius-xl);
+  --card-padding-sm: var(--space-4);
+  --card-padding-md: var(--space-6);
+  --card-padding-lg: var(--space-8);
+  --card-bg: var(--color-surface-raised);
+  --card-border: var(--color-border-default);
+  --card-shadow: var(--shadow-sm);
+
+  /* Modal */
+  --modal-radius: var(--radius-2xl);
+  --modal-padding: var(--space-6);
+  --modal-max-width-sm: 24rem;
+  --modal-max-width-md: 32rem;
+  --modal-max-width-lg: 48rem;
+  --modal-max-width-xl: 64rem;
+  --modal-overlay-bg: rgba(0, 0, 0, 0.64);
+  --modal-shadow: var(--shadow-2xl);
+
+  /* Glassmorphism */
+  --glass-bg: var(--color-surface-glass);
+  --glass-border: 1px solid var(--color-surface-glass-border);
+  --glass-blur: 16px;
+  --glass-blur-heavy: 24px;
+  --glass-shadow: var(--shadow-glass);
+}

@@ -1,0 +1,4 @@
+﻿/**
+ * @module features/notifications
+ */
+export {};

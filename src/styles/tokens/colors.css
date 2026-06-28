@@ -1,0 +1,159 @@
+/**
+ * SURF FOR CARS — Colour System
+ * Automotive-inspired palette. Elegant, restrained, premium.
+ */
+
+:root {
+  /* ── Primary ── */
+  --color-primary: #0066ff;
+  --color-primary-hover: #0052cc;
+  --color-primary-active: #004099;
+  --color-primary-muted: rgba(0, 102, 255, 0.12);
+  --color-primary-foreground: #ffffff;
+
+  /* ── Secondary ── */
+  --color-secondary: #6366f1;
+  --color-secondary-hover: #4f46e5;
+  --color-secondary-active: #4338ca;
+  --color-secondary-muted: rgba(99, 102, 241, 0.12);
+  --color-secondary-foreground: #ffffff;
+
+  /* ── Accent (automotive gold) ── */
+  --color-accent: #c8a96e;
+  --color-accent-hover: #b8993d;
+  --color-accent-active: #9a7d2e;
+  --color-accent-muted: rgba(200, 169, 110, 0.12);
+  --color-accent-foreground: #09090b;
+
+  /* ── Neutral ── */
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f4f4f5;
+  --color-neutral-200: #e4e4e7;
+  --color-neutral-300: #d4d4d8;
+  --color-neutral-400: #a1a1aa;
+  --color-neutral-500: #71717a;
+  --color-neutral-600: #52525b;
+  --color-neutral-700: #3f3f46;
+  --color-neutral-800: #27272a;
+  --color-neutral-900: #18181b;
+  --color-neutral-950: #09090b;
+
+  /* ── Status ── */
+  --color-success: #10b981;
+  --color-success-hover: #059669;
+  --color-success-muted: rgba(16, 185, 129, 0.12);
+  --color-success-foreground: #ffffff;
+
+  --color-warning: #f59e0b;
+  --color-warning-hover: #d97706;
+  --color-warning-muted: rgba(245, 158, 11, 0.12);
+  --color-warning-foreground: #09090b;
+
+  --color-danger: #ef4444;
+  --color-danger-hover: #dc2626;
+  --color-danger-muted: rgba(239, 68, 68, 0.12);
+  --color-danger-foreground: #ffffff;
+
+  --color-info: #3b82f6;
+  --color-info-hover: #2563eb;
+  --color-info-muted: rgba(59, 130, 246, 0.12);
+  --color-info-foreground: #ffffff;
+
+  /* ── Background & Surface ── */
+  --color-background: #09090b;
+  --color-surface: #111113;
+  --color-surface-raised: #18181b;
+  --color-surface-sunken: #050506;
+  --color-surface-overlay: #1c1c1f;
+
+  /* ── Glass ── */
+  --color-glass: rgba(17, 17, 19, 0.72);
+  --color-glass-strong: rgba(17, 17, 19, 0.88);
+  --color-glass-subtle: rgba(17, 17, 19, 0.48);
+  --color-glass-border: rgba(255, 255, 255, 0.08);
+
+  /* ── Border ── */
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.16);
+  --color-border-subtle: rgba(255, 255, 255, 0.04);
+
+  /* ── Text ── */
+  --color-foreground: #fafafa;
+  --color-muted: #71717a;
+  --color-muted-foreground: #a1a1aa;
+
+  /* ── Interactive states ── */
+  --color-hover: rgba(255, 255, 255, 0.04);
+  --color-active: rgba(255, 255, 255, 0.08);
+  --color-disabled: rgba(255, 255, 255, 0.32);
+  --color-disabled-bg: rgba(255, 255, 255, 0.04);
+  --color-focus: #0066ff;
+  --color-focus-ring: rgba(0, 102, 255, 0.4);
+
+  /* ── Chart colours (refined, non-rainbow) ── */
+  --color-chart-1: #0066ff;
+  --color-chart-2: #6366f1;
+  --color-chart-3: #c8a96e;
+  --color-chart-4: #10b981;
+  --color-chart-5: #71717a;
+  --color-chart-6: #3b82f6;
+
+  /* Legacy aliases */
+  --background: var(--color-background);
+  --foreground: var(--color-foreground);
+  --color-brand-primary: var(--color-primary);
+  --color-brand-primary-hover: var(--color-primary-hover);
+  --color-brand-primary-active: var(--color-primary-active);
+  --color-brand-secondary: var(--color-secondary);
+  --color-brand-accent: var(--color-accent);
+  --color-surface-base: var(--color-background);
+  --color-surface-glass: var(--color-glass);
+  --color-surface-glass-border: var(--color-glass-border);
+  --color-text-primary: var(--color-foreground);
+  --color-text-secondary: var(--color-muted-foreground);
+  --color-text-tertiary: var(--color-muted);
+  --color-border-default: var(--color-border);
+  --color-border-focus: var(--color-focus);
+  --color-ring-focus: var(--color-focus-ring);
+  --color-success-500: var(--color-success);
+  --color-warning-500: var(--color-warning);
+  --color-danger-500: var(--color-danger);
+  --color-info-500: var(--color-info);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-background: #ffffff;
+    --color-surface: #fafafa;
+    --color-surface-raised: #f4f4f5;
+    --color-surface-sunken: #f4f4f5;
+    --color-surface-overlay: #ffffff;
+
+    --color-glass: rgba(255, 255, 255, 0.72);
+    --color-glass-strong: rgba(255, 255, 255, 0.92);
+    --color-glass-subtle: rgba(255, 255, 255, 0.48);
+    --color-glass-border: rgba(0, 0, 0, 0.06);
+
+    --color-border: rgba(0, 0, 0, 0.08);
+    --color-border-strong: rgba(0, 0, 0, 0.16);
+    --color-border-subtle: rgba(0, 0, 0, 0.04);
+
+    --color-foreground: #09090b;
+    --color-muted: #71717a;
+    --color-muted-foreground: #52525b;
+
+    --color-hover: rgba(0, 0, 0, 0.04);
+    --color-active: rgba(0, 0, 0, 0.08);
+    --color-disabled: rgba(0, 0, 0, 0.32);
+    --color-disabled-bg: rgba(0, 0, 0, 0.04);
+
+    --color-primary-muted: rgba(0, 102, 255, 0.08);
+    --color-secondary-muted: rgba(99, 102, 241, 0.08);
+    --color-accent-muted: rgba(200, 169, 110, 0.08);
+    --color-success-muted: rgba(16, 185, 129, 0.08);
+    --color-warning-muted: rgba(245, 158, 11, 0.08);
+    --color-danger-muted: rgba(239, 68, 68, 0.08);
+    --color-info-muted: rgba(59, 130, 246, 0.08);
+  }
+}

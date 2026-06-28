@@ -1,0 +1,16 @@
+export {
+  Table,
+  TableBody,
+  TableBulkActions,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TablePagination,
+  TableRow,
+  TableToolbar,
+  type TableBulkActionsProps,
+  type TablePaginationProps,
+  type TableToolbarProps,
+} from "./table";
