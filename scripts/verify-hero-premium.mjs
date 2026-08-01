@@ -45,7 +45,7 @@ const contrast = (l1, l2) => (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.0
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1536, height: 1000 } });
 page.setDefaultNavigationTimeout(90_000);
-await page.goto(BASE, { waitUntil: "networkidle" });
+await page.goto(BASE, { waitUntil: "domcontentloaded" });
 await page.waitForTimeout(2500);
 
 try {
@@ -102,7 +102,7 @@ try {
     );
   }
 
-  await page.reload({ waitUntil: "networkidle" });
+  await page.reload({ waitUntil: "domcontentloaded" });
   await page.waitForTimeout(2000);
 
   /* ── The visual grid ────────────────────────────────────────────────────────────────────── */
@@ -123,10 +123,10 @@ try {
   const spread = Math.max(...values) - Math.min(...values);
   check("every hero element shares one left edge", spread <= 1.5, `spread ${spread.toFixed(2)}px across ${values.length} elements — ${JSON.stringify(lefts)}`);
 
-  const headerLeft = await page.evaluate(
-    () => document.querySelector("header a[aria-label*='SURF4CARS']")?.getBoundingClientRect().left ?? null,
+  const brandLeft = await page.evaluate(
+    () => document.querySelector("section .surf-marque")?.getBoundingClientRect().left ?? null,
   );
-  check("the marque sits on the same edge as the hero copy", Math.abs(headerLeft - lefts.headline) <= 1.5, `marque ${headerLeft?.toFixed(1)} vs copy ${lefts.headline?.toFixed(1)}`);
+  check("the marque sits on the same edge as the hero copy", Math.abs(brandLeft - lefts.headline) <= 1.5, `marque ${brandLeft?.toFixed(1)} vs copy ${lefts.headline?.toFixed(1)}`);
 
   /* ── Navigation destinations ────────────────────────────────────────────────────────────── */
   heading("Navigation — every item has a destination");
@@ -195,10 +195,66 @@ try {
   const reduced = await browser.newContext({ reducedMotion: "reduce", viewport: { width: 1280, height: 900 } });
   const rPage = await reduced.newPage();
   rPage.setDefaultNavigationTimeout(90_000);
-  await rPage.goto(BASE, { waitUntil: "networkidle" });
+  await rPage.goto(BASE, { waitUntil: "domcontentloaded" });
   await rPage.waitForTimeout(1500);
   check("page renders under prefers-reduced-motion", await rPage.locator("#hero-heading").isVisible());
   await reduced.close();
+
+  /* ── The brand's share of the frame ─────────────────────────────────────────────────────── */
+  heading("Brand dominance");
+  {
+    const geometry = await page.evaluate(() => {
+      /* The display lockup lives in the hero, not the masthead — the masthead's own mark is the
+         small one, hidden at opacity 0 until the page scrolls. Measuring the header's copy reported
+         a 26px "wordmark" and failed a brand that is 493px wide on screen. */
+      const link = document.querySelector("section .surf-marque");
+      const nav = document.querySelector("header nav a");
+      const headline = document.querySelector("#hero-heading");
+      const rect = (el) => (el ? el.getBoundingClientRect() : null);
+      const brand = rect(link);
+      const navItem = rect(nav);
+      const head = rect(headline);
+      const brandFont = link ? parseFloat(getComputedStyle(link.querySelector(".surf-marque__word")).fontSize) : 0;
+      /* Measure the mark itself, not its full-width wrapper — the wrapper reported 1320px. */
+      const headerMark = document.querySelector("header a[aria-label*='SURF4CARS']");
+      const headerMarkOpacity = headerMark ? Number(getComputedStyle(headerMark).opacity) : 1;
+      const navFont = nav ? parseFloat(getComputedStyle(nav).fontSize) : 0;
+      return {
+        brandWidth: brand?.width ?? 0,
+        brandHeight: brand?.height ?? 0,
+        brandTop: brand?.top ?? 0,
+        brandLeft: brand?.left ?? 0,
+        navFont,
+        brandFont,
+        headlineLeft: head?.left ?? 0,
+        headerMarkOpacity,
+        viewport: window.innerWidth,
+      };
+    });
+
+    /* The brief's test is that the eye lands on the marque before the navigation. Type size is the
+       blunt instrument that decides that, so it is the one asserted. */
+    check("the wordmark is far larger than a nav label", geometry.brandFont >= geometry.navFont * 3, `${Math.round(geometry.brandFont)}px vs ${Math.round(geometry.navFont)}px`);
+    check("the brand occupies the top-left quadrant", geometry.brandWidth >= geometry.viewport * 0.28, `${Math.round(geometry.brandWidth)}px of ${geometry.viewport}px`);
+    check("the brand shares the hero's left edge", Math.abs(geometry.brandLeft - geometry.headlineLeft) <= 1.5, `${geometry.brandLeft.toFixed(1)} vs ${geometry.headlineLeft.toFixed(1)}`);
+    check("the brand sits at the top of the frame", geometry.brandTop < 60, `top ${Math.round(geometry.brandTop)}px`);
+    /* The brand must never appear twice. The masthead's mark is transparent until the hero's own
+       lockup has scrolled away. */
+    check("the masthead mark is hidden while the hero shows the brand", geometry.headerMarkOpacity === 0, `opacity ${geometry.headerMarkOpacity}`);
+
+    /* The collapse on scroll must not move the page — this hero has held CLS at 0.000 for five
+       programmes and an animating header height is the classic way to lose it. */
+    const shift = await page.evaluate(async () => {
+      const before = document.querySelector("#hero-heading").getBoundingClientRect().top + window.scrollY;
+      window.scrollTo(0, 400);
+      await new Promise((r) => setTimeout(r, 700));
+      const after = document.querySelector("#hero-heading").getBoundingClientRect().top + window.scrollY;
+      window.scrollTo(0, 0);
+      return Math.abs(after - before);
+    });
+    check("collapsing the brand on scroll moves nothing", shift < 1, `${shift.toFixed(2)}px`);
+    await page.waitForTimeout(600);
+  }
 
   /* ── The marque ─────────────────────────────────────────────────────────────────────────── */
   heading("Marque");

@@ -53,9 +53,18 @@ page.on("pageerror", (e) => consoleErrors.push(String(e).slice(0, 120)));
 page.setDefaultNavigationTimeout(90_000);
 page.setDefaultTimeout(30_000);
 
+/*
+  `domcontentloaded` plus a wait for the thing being asserted on, not `networkidle`.
+  ================================================================================
+  `networkidle` waits for a 500ms gap in *all* network activity, which on a dev server with image
+  optimisation and HMR polling can simply never arrive — one run hung for the full 90s on a page
+  that had rendered correctly seconds earlier. Waiting for the specific element is both faster and
+  a truer statement of what the test needs.
+*/
 async function goHome() {
-  await page.goto(BASE, { waitUntil: "networkidle" });
-  await page.waitForTimeout(600);
+  await page.goto(BASE, { waitUntil: "domcontentloaded" });
+  await page.locator("#hero-make").waitFor({ timeout: 30_000 });
+  await page.waitForTimeout(400);
 }
 
 /*
@@ -234,24 +243,24 @@ try {
   await page.getByRole("button", { name: "Clear all" }).click();
   await page.waitForTimeout(400);
   check("Clear all empties the row", !(await recentChips.isVisible()));
-  await page.reload({ waitUntil: "networkidle" });
+  await page.reload({ waitUntil: "domcontentloaded" });
   await page.waitForTimeout(800);
   check("cleared state survives a reload", !(await page.locator("text=Recent searches:").isVisible()));
 
   /* ── Search page: filters, sorting, pagination ──────────────────────────────────────────── */
   heading("Search page — sorting");
-  await page.goto(`${BASE}/search?sort=price-asc`, { waitUntil: "networkidle" });
+  await page.goto(`${BASE}/search?sort=price-asc`, { waitUntil: "domcontentloaded" });
   const asc = pricesFrom(await resultTitles());
-  await page.goto(`${BASE}/search?sort=price-desc`, { waitUntil: "networkidle" });
+  await page.goto(`${BASE}/search?sort=price-desc`, { waitUntil: "domcontentloaded" });
   const desc = pricesFrom(await resultTitles());
   check("price ascending is actually ascending", asc.length > 1 && asc[0] <= asc[asc.length - 1], asc.length ? `R${asc[0]} → R${asc[asc.length - 1]}` : "no prices");
   check("price descending is actually descending", desc.length > 1 && desc[0] >= desc[desc.length - 1], desc.length ? `R${desc[0]} → R${desc[desc.length - 1]}` : "no prices");
   check("the two orders genuinely differ", asc.length > 1 && desc.length > 1 && asc[0] !== desc[0]);
 
   heading("Search page — pagination");
-  await page.goto(`${BASE}/search`, { waitUntil: "networkidle" });
+  await page.goto(`${BASE}/search`, { waitUntil: "domcontentloaded" });
   const pageOne = await resultTitles();
-  await page.goto(`${BASE}/search?page=2`, { waitUntil: "networkidle" });
+  await page.goto(`${BASE}/search?page=2`, { waitUntil: "domcontentloaded" });
   const pageTwo = await resultTitles();
   check("page one returns results", pageOne.length > 0, `${pageOne.length} cards`);
   check("page two returns results", pageTwo.length > 0, `${pageTwo.length} cards`);
@@ -259,7 +268,7 @@ try {
 
   /* ── Empty and invalid ──────────────────────────────────────────────────────────────────── */
   heading("Search page — empty and invalid input");
-  await page.goto(`${BASE}/search?make=Lamborghini&model=Countach&priceMax=100000`, { waitUntil: "networkidle" });
+  await page.goto(`${BASE}/search?make=Lamborghini&model=Countach&priceMax=100000`, { waitUntil: "domcontentloaded" });
   const emptyCards = await (await resultCards()).count();
   const emptyText = (await page.locator("main").innerText()).replace(/\s+/g, " ");
   check("an impossible filter returns no cards", emptyCards === 0, `${emptyCards} cards`);
@@ -318,7 +327,7 @@ try {
   const mobile = await context.newPage();
   mobile.setDefaultNavigationTimeout(90_000);
   await mobile.setViewportSize({ width: 390, height: 844 });
-  await mobile.goto(BASE, { waitUntil: "networkidle" });
+  await mobile.goto(BASE, { waitUntil: "domcontentloaded" });
   await mobile.waitForTimeout(1200);
   check("no horizontal overflow", !(await mobile.evaluate(() => document.body.scrollWidth > window.innerWidth)));
   const heroBox = await mobile.locator("#hero-make").boundingBox();
@@ -328,6 +337,53 @@ try {
   await mobile.waitForURL(/\/search/, { timeout: 60_000 });
   check("mobile search returns results", (await (await resultCards(mobile)).count()) > 0);
   await mobile.close();
+
+  /* ── URL state, history and refresh ─────────────────────────────────────────────────────── */
+  heading("URL state, history and refresh");
+  {
+    /*
+      A search that cannot be linked, refreshed or reversed is not a search, it is a session.
+      =====================================================================================
+      These four behaviours are what make a result page shareable and what make the back button mean
+      what a visitor expects. They are also the ones a redesign silently breaks, because the page
+      still looks right — it just forgets.
+    */
+    const deep = `${BASE}/search?make=${encodeURIComponent(firstMake)}&bodyType=SUV&sort=price-asc`;
+    await page.goto(deep, { waitUntil: "domcontentloaded" });
+    let titles = await resultTitles();
+    check("a deep-linked URL returns the right vehicles", titles.length > 0 && titles.every((t) => t.toLowerCase().includes(firstMake.toLowerCase())), `${titles.length} cards, all ${firstMake}`);
+
+    const beforeReload = titles.join("|");
+    await page.reload({ waitUntil: "domcontentloaded" });
+    const afterReload = (await resultTitles()).join("|");
+    check("refresh preserves the search", beforeReload === afterReload && afterReload.length > 0, "same results after reload");
+    check("refresh preserves the URL", page.url().includes("make=") && page.url().includes("sort=price-asc"), page.url().replace(BASE, ""));
+
+    /* Navigate away, then back — the results must return, not the homepage's empty state. */
+    await page.goto(`${BASE}/search?make=${encodeURIComponent(firstMake)}&priceMax=30000000`, { waitUntil: "domcontentloaded" });
+    const second = (await resultTitles()).join("|");
+    await page.goBack({ waitUntil: "domcontentloaded" });
+    const backTitles = (await resultTitles()).join("|");
+    check("browser Back returns the previous search", backTitles === beforeReload && backTitles.length > 0, page.url().replace(BASE, ""));
+
+    await page.goForward({ waitUntil: "domcontentloaded" });
+    /* Wait for the URL the forward entry actually is, then let the grid settle. Comparing straight
+       after `goForward` read the previous page's cards while React was still swapping them and
+       failed an assertion whose own detail line showed the correct URL. */
+    await page.waitForURL(/priceMax=30000000/, { timeout: 30_000 }).catch(() => {});
+    await page.waitForTimeout(1200);
+    const forwardTitles = (await resultTitles()).join("|");
+    check("browser Forward returns the later search", forwardTitles === second && forwardTitles.length > 0, page.url().replace(BASE, ""));
+
+    /* From the hero, then back to the homepage: the hero must still be usable. */
+    await goHome();
+    await page.selectOption("#hero-make", firstMake);
+    await page.locator('form button[type="submit"]').first().click();
+    await page.waitForURL(/\/search/, { timeout: 60_000 });
+    await page.goBack({ waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(1200);
+    check("Back from results reaches a working homepage hero", (await page.locator("#hero-make").count()) === 1 && (await page.locator('#hero-make option').count()) > 2, page.url().replace(BASE, "") || "/");
+  }
 
   /* ── Console ────────────────────────────────────────────────────────────────────────────── */
   heading("Console");

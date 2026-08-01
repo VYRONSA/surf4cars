@@ -1,9 +1,10 @@
+import { SurfMarque } from "@/components/brand";
 import { HomeHeroSearch } from "@/features/marketplace/homepage/components/home-hero-search";
 import type { SearchFacets } from "@/features/marketplace/homepage/server/homepage-facets";
 import { Icon } from "@/components/ui/icons";
 import { HeroImageBackground } from "@/components/ui/media";
 import { PREMIUM_IMAGE_SIZES, PREMIUM_IMAGES } from "@/config/images";
-import { BadgeCheck, Car, Shield } from "@/components/ui/icons/registry";
+import { BadgeCheck, Car, MapPin, Shield } from "@/components/ui/icons/registry";
 
 /**
  * Homepage hero, built to the PCP-031 reference composition.
@@ -48,7 +49,7 @@ export function HomeHeroV2({ vehicleCount, facets }: HomeHeroV2Props) {
     <section
       /* Pulled up under the floating masthead so the photograph starts at the top edge of the
          viewport. The header floats on the image rather than sitting above it. */
-      className="relative isolate -mt-[4.5rem] flex min-h-[calc(94svh+4.5rem)] flex-col justify-end overflow-hidden lg:-mt-[5rem] lg:min-h-[calc(94svh+5rem)]"
+      className="relative isolate -mt-[4.5rem] flex min-h-[calc(100svh+4.5rem)] flex-col justify-between overflow-hidden lg:-mt-[5rem] lg:min-h-[calc(100svh+5rem)]"
       aria-labelledby="hero-heading"
     >
       <HeroImageBackground
@@ -75,8 +76,13 @@ export function HomeHeroV2({ vehicleCount, facets }: HomeHeroV2Props) {
         sub-headline — both failing, both invisible to `audit-design-contrast.mjs`, which reads token
         pairings and cannot see a photograph.
 
-        The mask now carries to 84% and the wash is a little deeper across the copy column. Nothing
-        right of 82% of the frame is touched, so the car and the mountain are unchanged.
+        The mask carries to 84% and the wash is deeper across the copy column. Retuned again in
+        PCP-032A: the taller hero and the extra breathing room moved the sub-headline down into the
+        city-lights band, which is the brightest part of the frame, and it fell to 3.75:1.
+
+        Nothing right of 82% of the frame is touched at any point, so the mountain, the road and the
+        car are exactly as photographed — which is the constraint that makes deepening the left side
+        acceptable rather than a general dimming.
 
         Re-measure with `scripts/verify-hero-premium.mjs` after any change here. It samples the
         rendered pixels behind each line, which is the only way this is knowable.
@@ -87,15 +93,39 @@ export function HomeHeroV2({ vehicleCount, facets }: HomeHeroV2Props) {
       />
       <div
         aria-hidden
-        className="absolute inset-0 bg-[linear-gradient(to_right,rgba(var(--color-scrim-rgb),0.95)_0%,rgba(var(--color-scrim-rgb),0.93)_32%,rgba(var(--color-scrim-rgb),0.82)_46%,rgba(var(--color-scrim-rgb),0.30)_64%,transparent_82%)] [mask-image:linear-gradient(to_top,black_0%,black_66%,rgba(0,0,0,0.62)_84%,transparent_97%)]"
+        className="absolute inset-0 bg-[linear-gradient(to_right,rgba(var(--color-scrim-rgb),0.96)_0%,rgba(var(--color-scrim-rgb),0.945)_38%,rgba(var(--color-scrim-rgb),0.84)_50%,rgba(var(--color-scrim-rgb),0.32)_66%,transparent_82%)] [mask-image:linear-gradient(to_top,black_0%,black_66%,rgba(0,0,0,0.62)_84%,transparent_97%)]"
       />
       {/* A short top scrim so the floating navigation keeps its contrast against open sky. */}
       <div
         aria-hidden
-        className="absolute inset-x-0 top-0 h-40 bg-[linear-gradient(to_bottom,rgba(var(--color-scrim-rgb),0.78)_0%,rgba(var(--color-scrim-rgb),0.34)_46%,transparent_100%)]"
+        className="absolute inset-x-0 top-0 h-64 bg-[linear-gradient(to_bottom,rgba(var(--color-scrim-rgb),0.72)_0%,rgba(var(--color-scrim-rgb),0.42)_38%,rgba(var(--color-scrim-rgb),0.16)_70%,transparent_100%)]"
       />
 
-      <div className="relative mx-auto w-full max-w-[var(--container-2xl)] px-6 pb-12 pt-28 sm:px-8 sm:pb-16 sm:pt-32 lg:px-10 lg:pb-20">
+      {/*
+        The lockup, pinned to the top of the frame.
+        ==========================================
+        The section is `justify-between`, so the brand holds the top-left corner and the statement
+        holds the bottom-left. That is the concept's composition, and it is the arrangement of a
+        title card rather than of a page with a logo above it.
+
+        It shares a horizontal band with the navigation and never collides with it: the mark is under
+        500px wide and the navigation begins past 900px at every viewport the display size is used at.
+
+        Sitting in normal flow is what lets it simply scroll away rather than collapse into the bar.
+        Two earlier attempts grew and shrank the masthead instead, and both cost the 0.000 CLS this
+        hero has held through five programmes — resizing an element on scroll moves what is inside it.
+
+        `aria-hidden`: the accessible name for the brand is on the masthead link, which is a real
+        navigation landmark. Announcing "SURF4CARS" twice on arrival helps nobody.
+      */}
+      <div
+        aria-hidden
+        className="pointer-events-none relative mx-auto w-full max-w-[var(--container-2xl)] px-6 pt-5 sm:px-8 sm:pt-6 lg:px-10 lg:pt-7"
+      >
+        <SurfMarque size="display" />
+      </div>
+
+      <div className="relative mx-auto w-full max-w-[var(--container-2xl)] px-6 pb-12 sm:px-8 sm:pb-16 lg:px-10 lg:pb-20">
         {/*
           The eyebrow, and the claim that is not in it.
           ============================================
@@ -108,7 +138,7 @@ export function HomeHeroV2({ vehicleCount, facets }: HomeHeroV2Props) {
           registered dealership rather than by an anonymous seller, which is the actual substance
           behind the word "trusted" and is verifiable from the data model.
         */}
-        <p className="inline-flex items-center gap-2.5 rounded-[var(--radius-pill)] border border-white/12 bg-black/25 px-4 py-2 backdrop-blur-sm">
+        <p className="inline-flex items-center gap-2.5 rounded-[var(--radius-pill)] border border-white/12 bg-black/25 px-4 py-2.5 backdrop-blur-sm">
           <Icon icon={Shield} aria-hidden className="size-4 text-[var(--color-primary)]" />
           <span className="text-[length:var(--text-caption)] font-medium uppercase tracking-[0.16em] text-white/85">
             South Africa&rsquo;s dealership marketplace
@@ -131,7 +161,7 @@ export function HomeHeroV2({ vehicleCount, facets }: HomeHeroV2Props) {
           /* Sized in `clamp` at the small end rather than jumping at a breakpoint. At the display-md
              token a 390px screen wrapped the statement onto four lines and pushed the search panel —
              the thing the hero exists to present — entirely below the fold. */
-          className="mt-5 max-w-[19ch] text-[clamp(2.1rem,8.4vw,3.25rem)] font-bold uppercase leading-[0.94] tracking-[-0.015em] text-white sm:mt-7 sm:text-[length:var(--text-display-lg)] lg:text-[length:var(--text-display-xl)]"
+          className="mt-8 max-w-[19ch] text-[clamp(2.1rem,8.4vw,3.25rem)] font-bold uppercase leading-[0.94] tracking-[-0.015em] text-white sm:mt-10 sm:text-[length:var(--text-display-lg)] lg:text-[length:var(--text-display-xl)]"
         >
           Find <span className="text-[var(--color-primary)]">the</span> one.
           <br />
@@ -140,7 +170,7 @@ export function HomeHeroV2({ vehicleCount, facets }: HomeHeroV2Props) {
 
         {/* A hairline rule under the statement — the editorial device that separates a title from its
             standfirst in print, and the cheapest way to make a hero read as composed. */}
-        <div aria-hidden className="mt-5 h-[3px] w-24 rounded-full bg-[var(--color-primary)] sm:mt-7" />
+        <div aria-hidden className="mt-7 h-[3px] w-24 rounded-full bg-[var(--color-primary)] sm:mt-9" />
 
         {/*
           "Every verified dealer" was the previous line here, and it had to go.
@@ -163,7 +193,7 @@ export function HomeHeroV2({ vehicleCount, facets }: HomeHeroV2Props) {
           two lines above it. Pulling the measure in moves the tail of the sentence back over the
           darkened column instead, and a shorter line is the better line anyway.
         */}
-        <p className="mt-5 max-w-md text-[length:var(--text-body-md)] leading-relaxed text-[#dedede] sm:mt-7 sm:text-[length:var(--text-body-lg)]">
+        <p className="mt-7 max-w-md text-[length:var(--text-body-md)] leading-relaxed text-[#dedede] sm:mt-9 sm:text-[length:var(--text-body-lg)]">
           Every car listed by a registered dealership.
           <br />
           Photographed, specified and priced by the people who sell it.
@@ -184,7 +214,7 @@ export function HomeHeroV2({ vehicleCount, facets }: HomeHeroV2Props) {
           Each card renders only when its number is real. A hero with two cards on a quiet day is
           better than a hero with a zero dressed up as a feature.
         */}
-        <div className="mt-6 flex flex-wrap gap-2.5 sm:mt-9 sm:gap-3">
+        <div className="mt-8 flex flex-wrap gap-3 sm:mt-11 sm:gap-3.5">
           {count > 0 && (
             <HeroStat icon={Car} value={formattedCount} label={count === 1 ? "Vehicle" : "Vehicles"} />
           )}
@@ -197,7 +227,7 @@ export function HomeHeroV2({ vehicleCount, facets }: HomeHeroV2Props) {
           )}
           {facets.provinces.length > 0 && (
             <HeroStat
-              icon={Shield}
+              icon={MapPin}
               value={String(facets.provinces.length)}
               label={facets.provinces.length === 1 ? "Province" : "Provinces"}
             />
@@ -207,7 +237,7 @@ export function HomeHeroV2({ vehicleCount, facets }: HomeHeroV2Props) {
         {/* Full content width, not `max-w-6xl`. Six selects and a button share one row, and at the
             narrower measure the option text clipped mid-word — "Any locatior", "Choose a m". A
             control that cannot show its own label is a control a visitor does not trust. */}
-        <div className="mt-7 sm:mt-10 lg:mt-12">
+        <div className="mt-9 sm:mt-12 lg:mt-14">
           <HomeHeroSearch facets={facets} vehicleCount={count} />
         </div>
       </div>
@@ -225,7 +255,7 @@ function HeroStat({
   readonly label: string;
 }) {
   return (
-    <div className="flex items-center gap-3 rounded-[var(--radius-xl)] border border-white/10 bg-black/25 px-5 py-3.5 backdrop-blur-sm">
+    <div className="flex items-center gap-3.5 rounded-[var(--radius-xl)] border border-white/10 bg-black/25 px-6 py-4 backdrop-blur-sm">
       <Icon icon={icon} aria-hidden className="size-5 shrink-0 text-[var(--color-primary)]" />
       <span className="flex flex-col leading-tight">
         <span className="text-[length:var(--text-body-md)] font-semibold text-white">{value}</span>

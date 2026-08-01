@@ -88,6 +88,8 @@ export function PublicHeader({ className }: PublicHeaderProps) {
   */
   const isHomepage = pathname === "/";
 
+
+
   const handleScroll = useCallback(() => {
     setScrolled(window.scrollY > 8);
   }, []);
@@ -135,7 +137,10 @@ export function PublicHeader({ className }: PublicHeaderProps) {
         {/* Padding matched to the hero's content column — `px-6 sm:px-8 lg:px-10`. It was `px-5 lg:px-8`,
               which put the marque 8px left of the headline it sits above: close enough to look like a
               mistake rather than a decision, and the brief asks for one visual grid. */}
-          <div className="mx-auto flex h-[4.5rem] max-w-[var(--container-2xl)] items-center gap-6 px-6 sm:px-8 lg:h-[5rem] lg:px-10">
+          {/* `relative` so the display brand can be positioned against the *content column* rather than
+              against the viewport. Absolutely positioning it on the header put it at 40px while the
+              hero copy sat at 108px — an 68px misalignment that reads as a mistake at this scale. */}
+          <div className="relative mx-auto flex h-[4.5rem] max-w-[var(--container-2xl)] items-center gap-6 px-6 sm:px-8 lg:h-[5rem] lg:px-10">
           {/*
             The brand, top left, on every page including the homepage.
             =========================================================
@@ -150,12 +155,42 @@ export function PublicHeader({ className }: PublicHeaderProps) {
           <Link
             href="/"
             aria-label="SURF4CARS — home"
-            className="motion-nav inline-flex shrink-0 rounded-[var(--radius-md)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
+            className={cn(
+              "motion-nav inline-flex shrink-0 rounded-[var(--radius-md)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]",
+              /*
+                One size, always. Opacity, never geometry.
+                =========================================
+                Two earlier attempts grew the masthead to hold a display-scale brand and then
+                collapsed it on scroll. Both registered layout shift — CLS went from 0.000 to 0.011,
+                and this hero has held 0.000 through five programmes. Resizing an element on scroll
+                moves whatever is inside it, and CLS counts that whether or not anything else moves.
+
+                So the big lockup lives in the hero, in normal flow, and scrolls away like any other
+                content. This mark is the masthead's own, at masthead size, invisible while the hero
+                is showing its version and faded in afterwards. Opacity is compositor-only: it costs
+                no layout, and the brand is never shown twice or absent.
+              */
+              isHomepage && !scrolled && "pointer-events-none opacity-0",
+            )}
+            aria-hidden={isHomepage && !scrolled ? true : undefined}
+            tabIndex={isHomepage && !scrolled ? -1 : undefined}
           >
             <SurfMarque size="header" />
           </Link>
 
-          <nav className="ml-auto hidden items-center gap-8 lg:flex" aria-label="Primary">
+          {/*
+            Navigation, stepped back.
+            ========================
+            The brief is explicit that the eye must land on the marque before it lands on "Home", and
+            at equal weight it did not — three medium-weight labels at body size read as loudly as a
+            brand does. They are now a size down, lighter, and tracked out slightly, which is how a
+            luxury masthead treats secondary navigation: present, findable, and quiet.
+
+            `items-center` on the tall bar would centre these against a 190px lockup and leave them
+            floating in the middle of the frame, so while the brand is at display scale the nav pins
+            to the top row instead.
+          */}
+          <nav className="ml-auto hidden items-center gap-7 lg:flex" aria-label="Primary">
             {NAV_LINKS.map((item) => {
               const active = pathname === item.href;
               return (
@@ -164,10 +199,10 @@ export function PublicHeader({ className }: PublicHeaderProps) {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "text-[length:var(--text-body-sm)] font-medium motion-nav",
+                    "text-[length:var(--text-caption)] font-normal tracking-[0.02em] motion-nav",
                     active
                       ? "text-[var(--color-foreground)]"
-                      : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]",
+                      : "text-[var(--color-muted)] hover:text-[var(--color-foreground)]",
                   )}
                 >
                   {item.label}
@@ -179,7 +214,7 @@ export function PublicHeader({ className }: PublicHeaderProps) {
                 looks like body copy is missed by everyone who is not already looking for it. */}
             <Link
               href="/auth/sign-in"
-              className="motion-button inline-flex h-11 items-center gap-2 rounded-[var(--radius-pill)] border border-[var(--color-border-interactive)] px-5 text-[length:var(--text-body-sm)] font-medium text-[var(--color-foreground)] hover:border-[var(--color-border-strong)] hover:bg-[var(--color-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
+              className="motion-button inline-flex h-10 items-center gap-2 rounded-[var(--radius-pill)] border border-[var(--color-border-interactive)] px-4 text-[length:var(--text-caption)] font-medium text-[var(--color-foreground)] hover:border-[var(--color-border-strong)] hover:bg-[var(--color-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
             >
               <Icon icon={User} aria-hidden className="size-4" />
               Sign in
@@ -188,7 +223,7 @@ export function PublicHeader({ className }: PublicHeaderProps) {
             {/* The one filled button on the page, and it goes somewhere. */}
             <Link
               href="/auth/sign-up/dealer"
-              className="motion-button inline-flex h-11 items-center gap-2 rounded-[var(--radius-pill)] bg-[var(--color-primary)] px-5 text-[length:var(--text-body-sm)] font-medium text-white hover:bg-[var(--color-primary-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
+              className="motion-button inline-flex h-10 items-center gap-2 rounded-[var(--radius-pill)] bg-[var(--color-primary)] px-4 text-[length:var(--text-caption)] font-medium text-white hover:bg-[var(--color-primary-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
             >
               <Icon icon={Car} aria-hidden className="size-4" />
               List your stock
