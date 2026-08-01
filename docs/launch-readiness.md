@@ -7,21 +7,34 @@ marked Ready on the strength of an assertion — the evidence column names how i
 
 ## The verdict
 
-**No — I would not launch to the South African public tomorrow.**
+**PCP-028 verdict: No.** Three blockers.
+**PCP-029 verdict: still No — but one blocker remains, and it is not an engineering one.**
 
-Three things prevent it. Only three. Everything else on this page is Ready or is a known gap that
-does not stop a launch.
-
-| # | Blocker | Why it stops launch |
+| # | Blocker | PCP-029 status |
 |---|---|---|
-| 1 | **No terms, privacy policy or contact page** | The platform collects names, emails and phone numbers through the enquiry form and creates accounts. Operating that without a published privacy policy is not a polish issue. |
-| 2 | **Enquiries are written to a local JSON file, not the database** | `dealer-enquiry.service.ts` calls `updatePlatformStore()`, which writes `db/local/platform-store.json` on the server's filesystem. A `leads` table exists in Supabase with 300 seeded rows; the enquiry path never moved onto it. On a serverless host that filesystem is read-only or ephemeral, so a real enquiry is lost — while the buyer is shown "Enquiry sent to the dealer." Nothing notifies the dealership either way. |
-| 3 | **The photography is reference imagery** | 18 of 19 frames reviewed against the standard failed. This is a brand risk rather than a technical one, but launching a marketplace whose premise is photography, with photography borrowed from Wikipedia, is a decision rather than an oversight. |
+| 1 | No terms, privacy policy or contact page | **Closed.** Four pages written against what the code does, linked in the footer. Unresolved items render as visible "Founder review required" notes — company registration, POPIA Information Officer, retention period, attorney review. |
+| 2 | Enquiries written to a local JSON file | **Closed.** Persisted to Supabase with a human-readable reference and source page. Verified end to end through the real form: reference shown matches the row, timeline written. No path returns success without a committed row. |
+| 3 | The photography is reference imagery | **Open.** 18 of 19 frames reviewed against the standard failed. Zero frames qualify for the hero tier. |
 
-Blockers 1 and 2 are days of work. Blocker 3 is a photographer.
+**Would I allow SURF4CARS to go live today? No.** One reason, and it is not code:
 
-**The condition under which I would launch:** those three closed. Nothing else on this list is worth
-delaying for.
+> The marketplace works. A buyer can find a car, read an honest listing, send an enquiry that is
+> genuinely recorded, and get a reference for it. The dealership can register and publish. The
+> Founder can curate the homepage without a developer. None of that is in doubt any more.
+>
+> What stops it is that **nobody is told an enquiry arrived.** The lead is durable and visible in
+> the dealer portal, but no email or SMS goes out. A dealership that does not log in does not know a
+> buyer is waiting, and the buyer has been told they will be contacted. That is a promise the
+> platform cannot keep on day one, and it is the difference between a marketplace and a database.
+
+**The conditions under which I would launch:**
+
+1. **Enquiry notification.** Email to the dealership on every new lead. The row, the reference and
+   the timeline are all in place; this is a sender, not a rebuild.
+2. **The founder-review items on the legal pages resolved** — company registration details and a
+   named Information Officer. Both are facts the founder holds, not work.
+3. Photography commissioned, or a conscious decision to launch without it. This is a brand risk
+   rather than a functional one, and it is legitimately the founder's call.
 
 ---
 

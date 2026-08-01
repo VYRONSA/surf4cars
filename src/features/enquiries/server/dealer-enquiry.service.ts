@@ -4,6 +4,10 @@ import {
   type LocalLeadRecord,
   type LocalLeadTimelineRecord,
 } from "@/lib/local-persistence/platform-store";
+import {
+  listEnquiriesForDealership,
+  type StoredEnquiry,
+} from "@/features/enquiries/server/enquiry-persistence";
 import { getVehicleEngine } from "@/services/vehicle-engine";
 import { isMarketplaceVisible } from "@/services/vehicle-engine/vehicle-projection.service";
 
@@ -416,12 +420,50 @@ export async function createDealerEnquiry(input: CreateDealerEnquiryInput): Prom
   return { enquiry: normalizeLead(nextLead), duplicate: false };
 }
 
+/**
+ * A stored enquiry, in the shape the dealer portal already renders.
+ *
+ * Fields the `leads` table does not carry — assignment, follow-up, resolution — come back null
+ * rather than invented. They are dealer-workflow columns that nothing writes yet, and returning a
+ * plausible value for them would be the fabrication this platform keeps removing.
+ */
+function fromStored(stored: StoredEnquiry): DealerEnquiryRecord {
+  return {
+    id: stored.id,
+    dealershipId: stored.dealershipId,
+    vehicleId: stored.vehicleId,
+    buyerId: stored.buyerId,
+    buyerName: stored.buyerName,
+    buyerEmail: stored.buyerEmail,
+    buyerPhone: stored.buyerPhone,
+    message: stored.message,
+    fingerprint: "",
+    enquiryType: stored.enquiryType as EnquiryType,
+    status: stored.status as EnquiryStatus,
+    assignedToUserId: null,
+    assignedToName: null,
+    assignedAt: null,
+    respondedAt: null,
+    respondedBy: null,
+    followUpAt: null,
+    closedAt: null,
+    resolution: null,
+    lastUpdatedAt: stored.lastUpdatedAt,
+    createdAt: stored.createdAt,
+    timeline: [],
+  };
+}
+
+/**
+ * Reads from Supabase, where enquiries are now written.
+ *
+ * This read the local JSON store while `persistEnquiry` wrote to the database — so for a window, a
+ * dealership could not see a single new enquiry. The lead was durable and the lead centre was
+ * looking in the wrong place, which is invisible from either side.
+ */
 export async function listDealerEnquiries(query: DealerEnquiryListQuery): Promise<readonly DealerEnquiryRecord[]> {
-  const store = await readPlatformStore();
-  const leads = store.leads
-    .filter((lead) => lead.dealershipId === query.dealershipId)
-    .map(normalizeLead)
-    .sort((a, b) => Date.parse(b.lastUpdatedAt) - Date.parse(a.lastUpdatedAt));
+  const stored = await listEnquiriesForDealership(query.dealershipId, query.status);
+  const leads = stored.map(fromStored);
 
   if (!query.status) {
     return leads;
@@ -446,12 +488,12 @@ export async function listAllDealerEnquiries(): Promise<readonly DealerEnquiryRe
 }
 
 export async function getDealerEnquiry(dealershipId: string, enquiryId: string): Promise<DealerEnquiryRecord> {
-  const store = await readPlatformStore();
-  const lead = store.leads.find((item) => item.id === enquiryId && item.dealershipId === dealershipId);
+  const stored = await listEnquiriesForDealership(dealershipId);
+  const lead = stored.find((item) => item.id === enquiryId);
   if (!lead) {
     throw new Error("Enquiry not found.");
   }
-  return normalizeLead(lead);
+  return fromStored(lead);
 }
 
 function buildActionTransition(current: DealerEnquiryRecord, action: DealerEnquiryAction): {

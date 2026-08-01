@@ -43,7 +43,7 @@ const shown = await p.locator("#enquiry").innerText();
 const ref = shown.match(/SC-[A-Z2-9]{6}/)?.[0] ?? null;
 step("confirmation shown", ref ? `reference ${ref}` : `NO REFERENCE — "${shown.split("\n")[0]}"`);
 
-const row = await db.from("leads").select("id,reference,buyer_email,source_page,status").eq("buyer_email", MARKER).maybeSingle();
+const row = await db.from("leads").select("id,reference,buyer_email,source_page,status,dealership_id").eq("buyer_email", MARKER).maybeSingle();
 step("row in Supabase", row.data ? `yes — ${row.data.reference}, status ${row.data.status}` : "NO ROW — buyer was misled");
 step("reference matches UI", row.data && ref === row.data.reference ? "yes" : "NO");
 step("source page recorded", row.data?.source_page ? "yes" : "no");
@@ -51,6 +51,11 @@ step("source page recorded", row.data?.source_page ? "yes" : "no");
 if (row.data) {
   const tl = await db.from("lead_timeline").select("id").eq("lead_id", row.data.id);
   step("timeline entry", `${tl.data?.length ?? 0}`);
+
+  /* The dealer portal must read the same store the enquiry was written to. Writes moved to Supabase
+     before reads did, and for a window a dealership could not see a single new enquiry. */
+  const dealerView = await db.from("leads").select("id").eq("dealership_id", row.data.dealership_id).eq("id", row.data.id);
+  step("visible to its dealership", dealerView.data?.length ? "yes" : "NO — dealer cannot see it");
   await db.from("lead_timeline").delete().eq("lead_id", row.data.id);
   await db.from("leads").delete().eq("id", row.data.id);
 }

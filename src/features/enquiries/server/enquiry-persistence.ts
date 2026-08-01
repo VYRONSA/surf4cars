@@ -183,3 +183,108 @@ export async function persistEnquiry(input: PersistEnquiryInput): Promise<Persis
 
   return { id: row.id, reference: row.reference, createdAt: row.created_at, duplicate: false };
 }
+
+
+/* ── Reads ──────────────────────────────────────────────────────────────────────────────────────
+   Writes moved to Supabase before reads did, which for a short window meant a dealership could
+   never see a new enquiry: the lead was durable and the lead centre was looking somewhere else.
+   Splitting a write path from its read path is worse than leaving both in the wrong place, because
+   the failure is invisible from either side.
+   ──────────────────────────────────────────────────────────────────────────────────────────────── */
+
+export interface StoredEnquiry {
+  readonly id: string;
+  readonly reference: string | null;
+  readonly dealershipId: string;
+  readonly vehicleId: string;
+  readonly buyerId: string | null;
+  readonly buyerName: string;
+  readonly buyerEmail: string;
+  readonly buyerPhone: string;
+  readonly message: string;
+  readonly enquiryType: string;
+  readonly status: string;
+  readonly sourcePage: string | null;
+  readonly createdAt: string;
+  readonly lastUpdatedAt: string;
+}
+
+interface LeadRow {
+  id: string;
+  reference: string | null;
+  dealership_id: string;
+  vehicle_id: string;
+  buyer_id: string | null;
+  buyer_name: string;
+  buyer_email: string;
+  buyer_phone: string;
+  message: string;
+  enquiry_type: string;
+  status: string;
+  source_page: string | null;
+  created_at: string;
+  last_updated_at: string | null;
+}
+
+const toStored = (row: LeadRow): StoredEnquiry => ({
+  id: row.id,
+  reference: row.reference,
+  dealershipId: row.dealership_id,
+  vehicleId: row.vehicle_id,
+  buyerId: row.buyer_id,
+  buyerName: row.buyer_name,
+  buyerEmail: row.buyer_email,
+  buyerPhone: row.buyer_phone,
+  message: row.message,
+  enquiryType: row.enquiry_type,
+  status: row.status,
+  sourcePage: row.source_page,
+  createdAt: row.created_at,
+  lastUpdatedAt: row.last_updated_at ?? row.created_at,
+});
+
+const SELECT =
+  "id,reference,dealership_id,vehicle_id,buyer_id,buyer_name,buyer_email,buyer_phone,message,enquiry_type,status,source_page,created_at,last_updated_at";
+
+/** Every enquiry for one dealership, newest first. */
+export async function listEnquiriesForDealership(
+  dealershipId: string,
+  status?: string,
+): Promise<readonly StoredEnquiry[]> {
+  const supabase = createDomainServerClient();
+  if (!supabase) return [];
+
+  let query = supabase
+    .from("leads")
+    .select(SELECT)
+    .eq("dealership_id", dealershipId)
+    .order("created_at", { ascending: false })
+    .limit(500);
+  if (status) query = query.eq("status", status);
+
+  const { data, error } = await query;
+  if (error) {
+    log.error("enquiry list failed", { dealershipId, message: error.message });
+    return [];
+  }
+  return (data ?? []).map((row) => toStored(row as unknown as LeadRow));
+}
+
+/** Enquiries received since a point in time, across the platform. Used by the operations view. */
+export async function listEnquiriesSince(since: Date): Promise<readonly StoredEnquiry[]> {
+  const supabase = createDomainServerClient();
+  if (!supabase) return [];
+
+  const { data, error } = await supabase
+    .from("leads")
+    .select(SELECT)
+    .gte("created_at", since.toISOString())
+    .order("created_at", { ascending: false })
+    .limit(500);
+
+  if (error) {
+    log.error("enquiry window read failed", { message: error.message });
+    return [];
+  }
+  return (data ?? []).map((row) => toStored(row as unknown as LeadRow));
+}
