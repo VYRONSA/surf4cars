@@ -6,6 +6,8 @@ import { toShowcaseVehicleListing } from "@/services/vehicle-engine/vehicle-proj
 import type { ShowcaseVehicleListing } from "@/features/search/config/search-showcase-listings";
 import { createLogger } from "@/lib/observability/logger";
 
+import { buildSearchFacets, EMPTY_FACETS, type SearchFacets } from "./homepage-facets";
+
 const log = createLogger("homepage-stock");
 
 export interface HomepageStock {
@@ -25,6 +27,13 @@ export interface HomepageStock {
   readonly countsByBodyType: Readonly<Record<string, number>>;
   /** Live stock count per manufacturer, so the brand rail never offers a dead end. */
   readonly countsByMake: Readonly<Record<string, number>>;
+  /**
+   * The option lists the hero search offers, derived from this same stock.
+   *
+   * Carried on the stock payload rather than fetched separately so the dropdowns and the counts they
+   * sit beside can never disagree — one read of the marketplace, one answer.
+   */
+  readonly facets: SearchFacets;
   /** The dealership with the deepest visible stock, and its best-presented vehicles. */
   readonly spotlight: DealerSpotlight | null;
   /**
@@ -59,6 +68,7 @@ const EMPTY: HomepageStock = {
   total: 0,
   countsByBodyType: {},
   countsByMake: {},
+  facets: EMPTY_FACETS,
   spotlight: null,
   curated: false,
 };
@@ -104,7 +114,7 @@ export async function loadHomepageStock(): Promise<HomepageStock> {
       .filter((listing) => Boolean(listing.imageSrc));
 
     if (listings.length === 0) {
-      return { ...EMPTY, total: visible.length, countsByBodyType, countsByMake };
+      return { ...EMPTY, total: visible.length, countsByBodyType, countsByMake, facets: buildSearchFacets(visible) };
     }
 
     /**
@@ -231,6 +241,7 @@ export async function loadHomepageStock(): Promise<HomepageStock> {
       total: visible.length,
       countsByBodyType,
       countsByMake,
+      facets: buildSearchFacets(visible),
       spotlight,
       curated: curatedFeatured.length > 0 || curatedSections.length > 0,
     };
