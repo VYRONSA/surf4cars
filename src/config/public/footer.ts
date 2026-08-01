@@ -22,8 +22,9 @@
  * comes to two columns, and two honest columns are worth more than five padded ones — a footer's job
  * is to answer "where else can I go", and inventing entries to fill a grid answers it wrongly.
  *
- * The sections a real marketplace needs — terms, privacy, contact, about — are absent because the
- * pages are absent. They belong here the day they exist, and not before.
+ * Legal was added in PCP-029 when the pages behind it were written. It sits second, before Accounts:
+ * a visitor looking for a privacy policy is usually looking for it urgently, and burying it under
+ * sign-up links is the pattern that makes people assume it is hidden on purpose.
  */
 
 export interface PublicFooterLink {
@@ -47,6 +48,16 @@ export const PUBLIC_FOOTER_SECTIONS: readonly PublicFooterSection[] = [
       { id: "suvs", label: "SUVs", href: "/search?bodyType=SUV" },
       { id: "double-cabs", label: "Double cabs", href: "/search?bodyType=Double%20Cab" },
       { id: "under-300k", label: "Under R300 000", href: "/search?priceMax=30000000" },
+    ],
+  },
+  {
+    id: "legal",
+    title: "Legal",
+    links: [
+      { id: "privacy", label: "Privacy Policy", href: "/legal/privacy" },
+      { id: "terms", label: "Terms & Conditions", href: "/legal/terms" },
+      { id: "cookies", label: "Cookie Policy", href: "/legal/cookies" },
+      { id: "contact", label: "Contact", href: "/contact" },
     ],
   },
   {
