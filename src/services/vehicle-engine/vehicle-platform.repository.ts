@@ -379,8 +379,25 @@ export class VehiclePlatformRepository implements VehicleEngineRepository {
       items = items.filter((item) => item.marketing.channels.some((channel) => channel.channel === "marketplace" && channel.enabled));
     }
     if (filters.query) {
-      const q = filters.query.toLowerCase();
-      items = items.filter((item) => toVehicleSearchDocument(item).searchText.includes(q));
+      /*
+        Every token must appear, rather than the whole phrase as one substring.
+        =====================================================================
+        `searchText.includes("toyota hilux double cab")` requires those words to be adjacent and in
+        that order in the document, which is a coincidence rather than a search. Matching each token
+        independently means word order and anything between them stops mattering, and "hilux toyota"
+        finds the same cars as "toyota hilux".
+
+        This is the second half of the descriptive-search fix; `interpretDescription` removes the
+        words that carry a filter, and this makes what is left behave like a search rather than an
+        exact-phrase lookup.
+      */
+      const tokens = filters.query.toLowerCase().split(/\s+/).filter(Boolean);
+      if (tokens.length > 0) {
+        items = items.filter((item) => {
+          const text = toVehicleSearchDocument(item).searchText;
+          return tokens.every((token) => text.includes(token));
+        });
+      }
     }
     if (filters.make) items = items.filter((item) => item.core.make.toLowerCase() === filters.make?.toLowerCase());
     if (filters.model) items = items.filter((item) => item.core.model.toLowerCase().includes(filters.model?.toLowerCase() ?? ""));

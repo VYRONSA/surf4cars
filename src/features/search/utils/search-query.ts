@@ -1,5 +1,7 @@
 import type { VehicleSearchFilters, VehicleSearchQuery, VehicleSearchSortField } from "@/domain/vehicle";
 
+import { interpretDescription } from "./interpret-description";
+
 const SEARCH_PARAM_ALIASES = {
 	query: ["query", "q"],
 	make: ["make"],
@@ -114,20 +116,36 @@ export function parseSearchState(input: URLSearchParams | Record<string, string 
 	const page = parseOptionalNumber(getParamValue(input, SEARCH_PARAM_ALIASES.page));
 	const pageSize = parseOptionalNumber(getParamValue(input, SEARCH_PARAM_ALIASES.pageSize));
 
+	/*
+		A described search becomes a filtered one.
+		=========================================
+		Free text was matched as a single substring, so any sentence returned nothing — including the
+		hero's own example chips. `interpretDescription` pulls the budget, body style, fuel, gearbox,
+		province and mileage out of the phrase and leaves the rest as text.
+
+		Explicit parameters always win. A URL that already carries `bodyType=SUV` is somebody's saved
+		or shared link, and a sentence must never quietly overrule it.
+
+		Only sentences are interpreted. One or two words are already a working literal search — "Toyota
+		Hilux" returns nine cars — and putting that through the interpreter would strip it to nothing.
+	*/
+	const description = query && query.split(/\s+/).length >= 3 ? interpretDescription(query) : undefined;
+	const derived = description?.interpreted ? description : undefined;
+
 	return {
-		query,
+		query: derived ? derived.residual || undefined : query,
 		make,
 		model,
 		variant,
-		yearMin,
+		yearMin: yearMin ?? derived?.yearMin,
 		yearMax,
-		priceMinCents,
-		priceMaxCents,
-		mileageMaxKm,
-		fuel,
-		transmission,
-		bodyType,
-		province,
+		priceMinCents: priceMinCents ?? derived?.priceMinCents,
+		priceMaxCents: priceMaxCents ?? derived?.priceMaxCents,
+		mileageMaxKm: mileageMaxKm ?? derived?.mileageMaxKm,
+		fuel: fuel ?? derived?.fuel,
+		transmission: transmission ?? derived?.transmission,
+		bodyType: bodyType ?? derived?.bodyType,
+		province: province ?? derived?.province,
 		city,
 		dealer,
 		colour,
