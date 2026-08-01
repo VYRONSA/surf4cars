@@ -11,6 +11,7 @@ import {
   persistEnquiry,
 } from "@/features/enquiries/server/enquiry-persistence";
 import { buildEnquiryFingerprint } from "@/features/enquiries/server/enquiry-fingerprint";
+import { notifyDealershipOfEnquiry } from "@/features/notifications";
 
 function parseCookieHeader(cookieHeader: string | null): Map<string, string> {
   const cookies = new Map<string, string>();
@@ -45,10 +46,30 @@ export async function POST(request: Request) {
       sourcePage: request.headers.get("referer"),
     });
 
+    /*
+      Notification comes after persistence, and cannot undo it.
+      ========================================================
+      The lead is committed by this line. `notifyDealershipOfEnquiry` returns an outcome for every
+      path and throws on none, so a provider outage cannot turn a recorded enquiry into a 503 — the
+      buyer would retype everything and produce a duplicate of a lead that was already safe.
+
+      It is awaited rather than left running. On a serverless host the function is frozen when the
+      response is returned, so a floating promise is a send that sometimes happens; and awaiting is
+      what lets the confirmation below describe what actually occurred instead of guessing.
+    */
+    const notification = await notifyDealershipOfEnquiry({
+      leadId: enquiry.id,
+      dealershipId: parsed.dealershipId,
+    });
+
     return NextResponse.json({
       ok: true,
       duplicate: enquiry.duplicate,
       reference: enquiry.reference,
+      /* The single fact the buyer's confirmation turns on. True only when a provider accepted the
+         message — never inferred from the enquiry having been saved. */
+      dealerNotified: notification.dealerNotified,
+      notificationStatus: notification.disposition,
     });
   } catch (error) {
     /*

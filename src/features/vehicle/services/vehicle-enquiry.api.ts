@@ -10,6 +10,16 @@ export interface EnquirySubmission {
   readonly reference: string;
   /** True when this exact enquiry was already on record. Still a success from the buyer's side. */
   readonly duplicate: boolean;
+  /**
+   * True only when an email provider accepted the notification to the dealership.
+   *
+   * This is not "the enquiry saved" — that is implied by not throwing. It is the narrower and much
+   * more consequential claim that somebody at the dealership has it in an inbox, and the
+   * confirmation wording depends on it. Defaulting to false when the server does not say is the
+   * only safe direction: understating means a buyer might ring to check, overstating means they
+   * wait for a call that nobody was told to make.
+   */
+  readonly dealerNotified: boolean;
 }
 
 export class EnquirySubmissionError extends Error {
@@ -50,7 +60,13 @@ export async function submitVehicleEnquiry(payload: {
   }
 
   const body = (await response.json().catch(() => null)) as
-    | { error?: string; retryable?: boolean; reference?: string; duplicate?: boolean }
+    | {
+        error?: string;
+        retryable?: boolean;
+        reference?: string;
+        duplicate?: boolean;
+        dealerNotified?: boolean;
+      }
     | null;
 
   if (!response.ok) {
@@ -60,5 +76,9 @@ export async function submitVehicleEnquiry(payload: {
     );
   }
 
-  return { reference: body?.reference ?? "—", duplicate: body?.duplicate ?? false };
+  return {
+    reference: body?.reference ?? "—",
+    duplicate: body?.duplicate ?? false,
+    dealerNotified: body?.dealerNotified === true,
+  };
 }

@@ -31,7 +31,11 @@ export function VehicleEnquiryPanel(props: {
   const [isSubmitting, setIsSubmitting] = useState(false);
   /* The reference, not a boolean. A confirmation that cannot be quoted back to the dealership is
      just a colour change. */
-  const [sent, setSent] = useState<{ reference: string; duplicate: boolean } | null>(null);
+  const [sent, setSent] = useState<{
+    reference: string;
+    duplicate: boolean;
+    dealerNotified: boolean;
+  } | null>(null);
   const [error, setError] = useState<{ message: string; retryable: boolean } | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
 
@@ -134,8 +138,24 @@ export function VehicleEnquiryPanel(props: {
         <p className="text-[length:var(--text-h5)] font-semibold text-[var(--color-foreground)]">
           {sent.duplicate ? "You have already sent this one." : "Your enquiry is in."}
         </p>
+        {/*
+          Two messages, and which one shows is decided by the server, not by this component.
+          ===============================================================================
+          The enquiry is recorded either way — nothing reaches this branch otherwise — but "the
+          dealership has been emailed" is a separate claim from "the enquiry is saved", and it is
+          only true when a provider accepted the message.
+
+          The second wording is the one that costs something to write and is worth every word of it.
+          A buyer told the dealer was notified stops chasing and waits. If nobody was actually told,
+          that buyer waits for a call that will never come, and the platform has not merely failed
+          quietly — it has talked them out of the thing that would have worked. Saying "we are still
+          trying" keeps them holding the option to ring, which is why the telephone link below is
+          not optional decoration in this state.
+        */}
         <p className="mt-2 text-[length:var(--text-body-md)] leading-relaxed text-[var(--color-muted-foreground)]">
-          The dealership has it and will be in touch. Quote this reference if you call them first.
+          {sent.dealerNotified
+            ? "The dealership has been sent your details and will be in touch. Quote this reference if you call them first."
+            : "Your enquiry has been received and the dealership can see it in their dashboard. We are still working on getting a notification through to them, so it is worth calling if you would like an answer today."}
         </p>
         <p className="mt-5 font-mono text-[length:var(--text-h4)] font-semibold tracking-[0.08em] text-[var(--color-foreground)]">
           {sent.reference}
