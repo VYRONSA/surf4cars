@@ -40,7 +40,7 @@ import { selectBrands } from "@/services/presentation";
  * than falling back to the invented listings the original homepage shipped.
  */
 export async function HomePage() {
-  const { featured, collections, total, countsByMake, spotlight } = await loadHomepageStock();
+  const { featured, collections, total, countsByMake, facets, spotlight } = await loadHomepageStock();
 
   /* The rail is a wall of marks, so it takes only marques we hold artwork for — a brand name set in type
      between nine coloured logos reads as a missing image. Everything else is reached via the rail's "All"
@@ -49,7 +49,7 @@ export async function HomePage() {
 
   return (
     <>
-      <HomeHeroV2 vehicleCount={total} />
+      <HomeHeroV2 vehicleCount={total} facets={facets} />
 
       {/*
         Photography follows photography.

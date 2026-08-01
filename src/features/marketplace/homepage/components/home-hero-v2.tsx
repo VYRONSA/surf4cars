@@ -1,68 +1,54 @@
-"use client";
-
-import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
-
-import { SurfWordmark } from "@/components/brand";
-import { Button } from "@/components/ui/button";
+import { HomeHeroSearch } from "@/features/marketplace/homepage/components/home-hero-search";
+import type { SearchFacets } from "@/features/marketplace/homepage/server/homepage-facets";
 import { Icon } from "@/components/ui/icons";
-import { Search, Sparkles } from "@/components/ui/icons/registry";
 import { HeroImageBackground } from "@/components/ui/media";
 import { PREMIUM_IMAGE_SIZES, PREMIUM_IMAGES } from "@/config/images";
-import { cn } from "@/utils";
+import { BadgeCheck, Car, Shield } from "@/components/ui/icons/registry";
 
 /**
- * Homepage V2 hero.
+ * Homepage hero, built to the PCP-031 reference composition.
  *
- * Built to the Experience Bible: the interface is the unlit room and the photography is the lit
- * object, so the chrome here is deliberately minimal — a scrim, one headline, and the search.
+ * THE COMPOSITION
+ * ===============
+ * Brand top left, headline lower left, search beneath the headline, vehicle lower right, background
+ * uninterrupted, navigation floating. That is the reference and it is followed closely, because the
+ * arrangement is doing real work: the eye enters at the marque, falls down the left edge through the
+ * statement into the search, and the car occupies the space it travels past. Nothing crosses the
+ * photograph's right half above the car.
  *
- * Search is the hero, not a field inside it. Two modes share one input because they are the same
- * user intent expressed differently: describe the car you want, or specify it. Both land on
- * /search, so the existing search route, parsing and SEO are untouched.
+ * WHAT MOVED, AND WHY
+ * ===================
+ * The wordmark used to sit at display scale in the middle-left of the hero, with the masthead's own
+ * mark hidden on the homepage to avoid showing the brand twice. The reference puts the marque in the
+ * masthead instead — smaller, but *permanent*, and lockup-shaped rather than word-shaped.
+ *
+ * That is the better arrangement and it resolves an awkwardness the old one had: the brand was
+ * absent from every interior page's first screen, and reappeared on scroll, which meant the identity
+ * behaved differently depending on where you were. Now it is in the same place on every page, and
+ * the hero's largest element is the statement — which is what a luxury title card actually does.
+ *
+ * NO CLIENT JAVASCRIPT IN THIS FILE
+ * =================================
+ * This is a server component. The only interactive part of the hero is the search panel, which is
+ * its own client island. The headline, the marque, the stat cards and the assurance strip are all
+ * static markup — so the hero paints without waiting for hydration, which is the whole reason its
+ * CLS is 0.000 and should stay that way.
  */
 
-const AI_EXAMPLES = [
-  "Family SUV under R500 000 in Cape Town",
-  "Reliable first car with low mileage",
-  "Double cab that can tow a boat",
-  "Something economical for the N1 commute",
-] as const;
-
 export interface HomeHeroV2Props {
-  /** Live marketplace stock count. Omitted rather than faked when unavailable. */
   readonly vehicleCount?: number;
+  readonly facets: SearchFacets;
 }
 
-export function HomeHeroV2({ vehicleCount }: HomeHeroV2Props) {
-  const router = useRouter();
-  const [mode, setMode] = useState<"ai" | "classic">("ai");
-  const [query, setQuery] = useState("");
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const next = query.trim();
-    router.push(next ? `/search?query=${encodeURIComponent(next)}` : "/search");
-  };
-
-  const countLabel =
-    typeof vehicleCount === "number" && vehicleCount > 0
-      ? `Search ${vehicleCount.toLocaleString("en-ZA").replace(/,/g, " ")} vehicles`
-      : "Search vehicles";
+export function HomeHeroV2({ vehicleCount, facets }: HomeHeroV2Props) {
+  const count = typeof vehicleCount === "number" && vehicleCount > 0 ? vehicleCount : 0;
+  const formattedCount = count.toLocaleString("en-ZA").replace(/,/g, " ");
 
   return (
     <section
-      /*
-        Pulled up under the sticky header, so the photograph starts at the top of the viewport.
-        =====================================================================================
-        The header is 4.5rem tall and sits in normal flow, so without this the hero began 72px down
-        the page and the sky was clipped by a bar. The negative margin puts the frame where a
-        cinematic hero belongs — against the top edge — and the header floats on it.
-
-        The height grows by the same amount so the visible hero is unchanged: 92svh of image, with
-        the last 8% of the viewport showing the section beneath as an invitation to scroll.
-      */
-      className="relative isolate -mt-[4.5rem] flex min-h-[calc(92svh+4.5rem)] flex-col justify-end overflow-hidden lg:-mt-[5rem] lg:min-h-[calc(92svh+5rem)]"
+      /* Pulled up under the floating masthead so the photograph starts at the top edge of the
+         viewport. The header floats on the image rather than sitting above it. */
+      className="relative isolate -mt-[4.5rem] flex min-h-[calc(94svh+4.5rem)] flex-col justify-end overflow-hidden lg:-mt-[5rem] lg:min-h-[calc(94svh+5rem)]"
       aria-labelledby="hero-heading"
     >
       <HeroImageBackground
@@ -72,31 +58,28 @@ export function HomeHeroV2({ vehicleCount }: HomeHeroV2Props) {
         sizes={PREMIUM_IMAGE_SIZES.fullWidth}
         overlay={false}
         objectPosition="center"
-        /**
-         * The contrast comes from the photograph, not from black on top of it. A small lift in
-         * contrast and saturation separates the mountain from the sky and the tail-lights from the
-         * road — which is what "cinematic" actually means. Kept deliberately slight: past about 1.1
-         * the sunset band posterises and the frame starts to look processed rather than shot.
-         */
         imageClassName="[filter:brightness(1.16)_contrast(1.05)_saturate(1.08)]"
       />
 
       {/*
-        Scrims, reshaped.
-        =================
-        This hero was measurably too dark rather than arguably so. With the copy hidden, the frame
-        averaged 0.025 relative luminance, the sports car sat at 0.011 — effectively black — and the
-        sub-headline was carrying 6.68:1 against a 4.5:1 requirement. That headroom was being spent
-        on darkness nobody asked for: two full-bleed linear gradients, 0.94 and 0.82 deep, flattening
-        the entire frame to protect two lines of text in one corner.
+        Scrims, shaped to the copy rather than applied to the photograph.
+        ===============================================================
+        A horizontal wash carrying the left column, masked by a vertical fade so it never touches the
+        mountain, the skyline or the car.
 
-        So the darkness is now shaped to the text instead of applied to the photograph. A radial
-        ellipse anchored bottom-left does the contrast work where the copy actually is, and the
-        vertical gradient is pulled in to the bottom third — enough to carry the page into the next
-        section without a seam, and no further. The mountain, the skyline and the car are left alone.
+        RETUNED FOR THIS COMPOSITION, AND MEASURED
+        ==========================================
+        The PCP-022 tuning assumed a headline anchored near the bottom of the frame, so the mask went
+        transparent above 66%. The reference composition lifts the statement into the middle of the
+        hero, and the first render of it measured 2.40:1 on the headline and 2.06:1 on the
+        sub-headline — both failing, both invisible to `audit-design-contrast.mjs`, which reads token
+        pairings and cannot see a photograph.
 
-        Verified by measurement, not by eye: see the numbers in the sprint notes. Anyone retuning
-        these stops should re-run the check rather than trusting the result to look right.
+        The mask now carries to 84% and the wash is a little deeper across the copy column. Nothing
+        right of 82% of the frame is touched, so the car and the mountain are unchanged.
+
+        Re-measure with `scripts/verify-hero-premium.mjs` after any change here. It samples the
+        rendered pixels behind each line, which is the only way this is knowable.
       */}
       <div
         aria-hidden
@@ -104,182 +87,150 @@ export function HomeHeroV2({ vehicleCount }: HomeHeroV2Props) {
       />
       <div
         aria-hidden
-        /**
-         * The copy column, and only the copy column.
-         *
-         * A horizontal wash masked by a vertical fade — a proper two-dimensional falloff, which a
-         * single gradient cannot express and a radial ellipse gets wrong. The ellipse that was here
-         * first protected the text but closed the city lights back down to darker than they started,
-         * because the skyline and the headline occupy the same band of the frame. Feathering right
-         * *and* up separates them: the type keeps its column, the mountain and the car keep the frame.
-         */
-        className="absolute inset-0 bg-[linear-gradient(to_right,rgba(var(--color-scrim-rgb),0.90)_0%,rgba(var(--color-scrim-rgb),0.84)_22%,rgba(var(--color-scrim-rgb),0.54)_42%,rgba(var(--color-scrim-rgb),0.18)_62%,transparent_80%)] [mask-image:linear-gradient(to_top,black_0%,black_42%,rgba(0,0,0,0.55)_66%,transparent_88%)]"
+        className="absolute inset-0 bg-[linear-gradient(to_right,rgba(var(--color-scrim-rgb),0.95)_0%,rgba(var(--color-scrim-rgb),0.93)_32%,rgba(var(--color-scrim-rgb),0.82)_46%,rgba(var(--color-scrim-rgb),0.30)_64%,transparent_82%)] [mask-image:linear-gradient(to_top,black_0%,black_66%,rgba(0,0,0,0.62)_84%,transparent_97%)]"
       />
-
-      {/*
-        The brand, as the opening frame.
-        ================================
-        The identity used to live only in the masthead at 2rem — the size and position of ordinary
-        website navigation, which is what it read as. A visitor's first impression was the photograph
-        and a search box, with the name of the company a detail in the corner.
-
-        It now anchors the top of the hero at display scale, with the headline and search anchored to
-        the bottom and the car occupying the frame between them. That is the composition of a luxury
-        automotive title card: marque above, statement below, subject in the middle.
-
-        Three constraints held it here rather than anywhere else:
-
-          it must not cover the vehicle   — the car sits lower-right, so the mark takes the upper-left
-                                            sky, which is the emptiest region of the frame
-          it must not compete with search — 500px of vertical separation, and the search panel keeps
-                                            the only filled red button on the screen
-          it must stay legible            — the top scrim already darkens this band for the site
-                                            header, so no new overlay was needed
-
-        `aria-hidden`: the accessible name for the brand is on the masthead link, which is a real
-        navigation landmark. Announcing "SURF4CARS" twice on arrival helps nobody.
-      */}
+      {/* A short top scrim so the floating navigation keeps its contrast against open sky. */}
       <div
         aria-hidden
-        /* Header height plus a clear 3rem, so the mark sits in open sky rather than immediately
-             beneath the navigation. */
-          className="pointer-events-none absolute inset-x-0 top-0 z-10 mx-auto w-full max-w-[var(--container-2xl)] px-6 pt-[7.5rem] sm:px-8 lg:px-10 lg:pt-[8.5rem]"
-      >
-        <SurfWordmark size="display" />
-        {/* Lifted from `white/45`, which was faint enough that a pixel sample of the rendered hero
-            could not find it at all against the sky. A locality line under a marque is part of the
-            lockup — it should read as quietly deliberate, not as something that failed to load. */}
-        <p className="mt-3 text-[length:var(--text-body-sm)] uppercase tracking-[0.34em] text-white/65 sm:mt-4">
-          South Africa
-        </p>
-      </div>
+        className="absolute inset-x-0 top-0 h-40 bg-[linear-gradient(to_bottom,rgba(var(--color-scrim-rgb),0.78)_0%,rgba(var(--color-scrim-rgb),0.34)_46%,transparent_100%)]"
+      />
 
-      <div className="relative mx-auto w-full max-w-[var(--container-2xl)] px-6 pb-20 pt-32 sm:px-8 lg:px-10 lg:pb-28">
+      <div className="relative mx-auto w-full max-w-[var(--container-2xl)] px-6 pb-12 pt-28 sm:px-8 sm:pb-16 sm:pt-32 lg:px-10 lg:pb-20">
+        {/*
+          The eyebrow, and the claim that is not in it.
+          ============================================
+          The concept reads "South Africa's trusted car marketplace". "Trusted" is an assertion about
+          a reputation the platform has not had time to earn, and this codebase has an entire section
+          of AGENTS.md about the difference between an obviously empty placeholder and a convincing
+          claim nobody checks.
+
+          What can be said instead is what the marketplace *is*: every car on it was listed by a
+          registered dealership rather than by an anonymous seller, which is the actual substance
+          behind the word "trusted" and is verifiable from the data model.
+        */}
+        <p className="inline-flex items-center gap-2.5 rounded-[var(--radius-pill)] border border-white/12 bg-black/25 px-4 py-2 backdrop-blur-sm">
+          <Icon icon={Shield} aria-hidden className="size-4 text-[var(--color-primary)]" />
+          <span className="text-[length:var(--text-caption)] font-medium uppercase tracking-[0.16em] text-white/85">
+            South Africa&rsquo;s dealership marketplace
+          </span>
+        </p>
+
+        {/*
+          The statement, in two lines and in caps.
+          =======================================
+          Uppercase because the reference is uppercase and because at this scale it is the difference
+          between a headline and a title card — caps have a flat top line, so two stacked lines read
+          as a block rather than as a sentence that wrapped.
+
+          `text-balance` is deliberately *not* used: the break between the two sentences is the
+          composition, and letting the browser rebalance it moves "DRIVE" onto the first line at some
+          widths.
+        */}
         <h1
           id="hero-heading"
-          className="max-w-4xl text-balance text-[length:var(--text-display-md)] font-semibold leading-[1.02] tracking-[-0.02em] text-[var(--color-foreground)] sm:text-[length:var(--text-display-lg)] lg:text-[length:var(--text-display-xl)]"
+          /* Sized in `clamp` at the small end rather than jumping at a breakpoint. At the display-md
+             token a 390px screen wrapped the statement onto four lines and pushed the search panel —
+             the thing the hero exists to present — entirely below the fold. */
+          className="mt-5 max-w-[19ch] text-[clamp(2.1rem,8.4vw,3.25rem)] font-bold uppercase leading-[0.94] tracking-[-0.015em] text-white sm:mt-7 sm:text-[length:var(--text-display-lg)] lg:text-[length:var(--text-display-xl)]"
         >
-          Find the one.
+          Find <span className="text-[var(--color-primary)]">the</span> one.
+          <br />
+          Drive your story.
         </h1>
 
-        {/*
-          Brighter than `--color-muted-foreground`, deliberately.
-          ======================================================
-          The muted token is calibrated against flat surfaces, where it holds 9:1. Over a photograph it is
-          the wrong instrument: brightening the frame by a third dropped this line to 4.47:1 — under AA by
-          three hundredths — and the honest fix is not to re-darken a hero the brief asked to lighten.
+        {/* A hairline rule under the statement — the editorial device that separates a title from its
+            standfirst in print, and the cheapest way to make a hero read as composed. */}
+        <div aria-hidden className="mt-5 h-[3px] w-24 rounded-full bg-[var(--color-primary)] sm:mt-7" />
 
-          #c7c7c7 restores the margin to 5.5:1 while reading as the same tone against a photograph, and it
-          leaves the token untouched everywhere it is correct. Re-measure with the hero harness if either
-          the scrim or this colour changes; the two are a pair.
+        {/*
+          "Every verified dealer" was the previous line here, and it had to go.
+          ====================================================================
+          `vehicle-platform.repository.ts` sets `verified: true` on every dealership unconditionally
+          — alongside a 4.8 rating, 24 reviews and eight years in business, none of which is measured
+          from anything. There is no verification column in the database to measure it from.
+
+          Repeating that on the hero would put the platform's least defensible claim in its most
+          prominent position. What is left is true of every listing on the site.
         */}
         {/*
-          Shortened to fit the scrim, not just to be shorter.
-          =================================================
-          The previous line ran to "…the intelligence to tell you which one is actually worth
-          buying" — 96 characters, which pushed the last third of it past the horizontal wash and
-          onto the brightest part of the photograph, the city lights. Measured contrast there was
-          fine on paper because the scrim is sampled at the copy column; on screen the tail of the
-          sentence was unreadable.
+          #dedede and a narrower measure, both for the same reason.
+          ========================================================
+          Measured at 3.07:1 against the brightest pixels behind it, where 4.5:1 is required. Two
+          things were wrong: the tone was calibrated for a flat surface, and the line ran far enough
+          right to cross the city lights, which are the brightest part of the photograph.
 
-          A shorter line is also the better line. The headline already says what the page is for.
+          Lifting the tone alone would have needed near-white, which then competes with the headline
+          two lines above it. Pulling the measure in moves the tail of the sentence back over the
+          darkened column instead, and a shorter line is the better line anyway.
         */}
-        <p className="mt-6 max-w-md text-[length:var(--text-body-lg)] leading-relaxed text-[#c7c7c7]">
-          Every vehicle. Every verified dealer.
+        <p className="mt-5 max-w-md text-[length:var(--text-body-md)] leading-relaxed text-[#dedede] sm:mt-7 sm:text-[length:var(--text-body-lg)]">
+          Every car listed by a registered dealership.
+          <br />
+          Photographed, specified and priced by the people who sell it.
         </p>
 
-        {/* The search block floats over the photography — the one place glass is correct here. */}
-        <div className="glass-hero-float mt-12 max-w-3xl lg:mt-14 rounded-[var(--radius-2xl)] border border-[var(--color-glass-border)] p-2 sm:p-3">
-          <div
-            role="tablist"
-            aria-label="Search mode"
-            className="flex gap-1 px-1 pb-2 pt-1"
-          >
-            {(
-              [
-                { id: "ai", label: "Describe it", icon: Sparkles },
-                { id: "classic", label: "Specify it", icon: Search },
-              ] as const
-            ).map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                aria-selected={mode === tab.id}
-                onClick={() => setMode(tab.id)}
-                className={cn(
-                  "motion-button inline-flex items-center gap-2 rounded-[var(--radius-pill)] px-4 py-2 text-[length:var(--text-body-sm)] font-medium",
-                  /* Neutral, not brand red. A filled red tab sat 40px above a filled red submit
-                     button, so the loudest thing on the hero was a *mode switch* rather than the
-                     action. This is the same segmented control the vehicle enquiry form uses —
-                     one pattern for "pick one of these", everywhere. */
-                  mode === tab.id
-                    ? "bg-[var(--color-foreground)] text-[var(--color-background)]"
-                    : "text-[var(--color-muted-foreground)] hover:bg-[var(--color-hover)] hover:text-[var(--color-foreground)]",
-                )}
-              >
-                <Icon icon={tab.icon} className="size-4" />
-                {tab.label}
-              </button>
-            ))}
-          </div>
+        {/*
+          The stat row: four cards in the concept, three here, all countable.
+          ==================================================================
+          The concept's set is "229+ Vehicles / Verified Dealers / Trusted Marketplace / Local
+          Support". Only the first of those is a number, and the other three are adjectives arranged
+          to look like data — which is the most persuasive way to say nothing.
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:flex-row">
-            <label htmlFor="hero-search" className="sr-only">
-              {mode === "ai" ? "Describe the vehicle you want" : "Search by make or model"}
-            </label>
-            <div className="relative flex-1">
-              <Icon
-                icon={mode === "ai" ? Sparkles : Search}
-                aria-hidden
-                className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-[var(--color-muted)]"
-              />
-              <input
-                id="hero-search"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder={
-                  mode === "ai"
-                    ? "Family SUV under R500 000 in Cape Town"
-                    : "Make, model or keyword"
-                }
-                className="h-14 w-full rounded-[var(--radius-xl)] border border-[var(--color-border-interactive)] bg-[var(--color-surface)]/80 pl-12 pr-4 text-[length:var(--text-body-md)] text-[var(--color-foreground)] placeholder:text-[var(--color-muted)] focus-visible:border-[var(--color-focus)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
-              />
-            </div>
-            <Button type="submit" size="xl" className="shrink-0 sm:w-auto">
-              {countLabel}
-            </Button>
-          </form>
+          These three are each a figure the platform can produce on demand: live published stock, the
+          dealerships behind it, and the provinces they cover. `229+` becomes the exact figure,
+          because a marketplace that knows its own stock to the unit should say so — "+" is what you
+          write when you are rounding up.
 
-          {mode === "ai" && (
-            <div className="flex flex-wrap gap-2 px-1 pb-1 pt-3">
-              {AI_EXAMPLES.map((example) => (
-                <button
-                  key={example}
-                  type="button"
-                  onClick={() => setQuery(example)}
-                  className="motion-hover rounded-[var(--radius-pill)] border border-[var(--color-border)] px-3 py-1.5 text-[length:var(--text-caption)] text-[var(--color-muted-foreground)] hover:border-[var(--color-primary)] hover:text-[var(--color-foreground)]"
-                >
-                  {example}
-                </button>
-              ))}
-            </div>
+          Each card renders only when its number is real. A hero with two cards on a quiet day is
+          better than a hero with a zero dressed up as a feature.
+        */}
+        <div className="mt-6 flex flex-wrap gap-2.5 sm:mt-9 sm:gap-3">
+          {count > 0 && (
+            <HeroStat icon={Car} value={formattedCount} label={count === 1 ? "Vehicle" : "Vehicles"} />
+          )}
+          {facets.dealershipCount > 0 && (
+            <HeroStat
+              icon={BadgeCheck}
+              value={String(facets.dealershipCount)}
+              label={facets.dealershipCount === 1 ? "Dealership" : "Dealerships"}
+            />
+          )}
+          {facets.provinces.length > 0 && (
+            <HeroStat
+              icon={Shield}
+              value={String(facets.provinces.length)}
+              label={facets.provinces.length === 1 ? "Province" : "Provinces"}
+            />
           )}
         </div>
 
-        {/*
-          The "Popular" row is gone.
-          ========================
-          Between the example chips inside the panel and this row beneath it, the first screen
-          offered ten pre-canned searches in two different visual languages — pills that fill the
-          input, and links that navigate. Two mechanisms, one purpose, and the eye had to work out
-          which was which before it could use either.
-
-          The chips stay because they teach the search what it accepts. The collections stay too —
-          on the marketplace, where somebody browsing rather than describing will actually reach for
-          them, and where they are already the catalogue header's first row.
-        */}
+        {/* Full content width, not `max-w-6xl`. Six selects and a button share one row, and at the
+            narrower measure the option text clipped mid-word — "Any locatior", "Choose a m". A
+            control that cannot show its own label is a control a visitor does not trust. */}
+        <div className="mt-7 sm:mt-10 lg:mt-12">
+          <HomeHeroSearch facets={facets} vehicleCount={count} />
+        </div>
       </div>
     </section>
+  );
+}
+
+function HeroStat({
+  icon,
+  value,
+  label,
+}: {
+  readonly icon: Parameters<typeof Icon>[0]["icon"];
+  readonly value: string;
+  readonly label: string;
+}) {
+  return (
+    <div className="flex items-center gap-3 rounded-[var(--radius-xl)] border border-white/10 bg-black/25 px-5 py-3.5 backdrop-blur-sm">
+      <Icon icon={icon} aria-hidden className="size-5 shrink-0 text-[var(--color-primary)]" />
+      <span className="flex flex-col leading-tight">
+        <span className="text-[length:var(--text-body-md)] font-semibold text-white">{value}</span>
+        <span className="text-[length:var(--text-caption)] text-white/65">{label}</span>
+      </span>
+    </div>
   );
 }

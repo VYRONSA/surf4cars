@@ -4,9 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
-import { SurfWordmarkLink } from "@/components/brand";
+import { SurfMarque, SurfWordmarkLink } from "@/components/brand";
 import { Icon } from "@/components/ui/icons";
-import { Menu, X } from "@/components/ui/icons/registry";
+import { Car, Menu, User, X } from "@/components/ui/icons/registry";
 import { cn } from "@/utils";
 
 /**
@@ -40,9 +40,24 @@ import { cn } from "@/utils";
  * for it.
  */
 
+/*
+  Three destinations, not six.
+  ===========================
+  The PCP-031 concept shows Home · Marketplace · Dealers · Sell my car · About us · Contact. Three of
+  those have nowhere to go: `/dealers` exists only as `[slug]`, so the index 404s, and `/sell-my-car`
+  and `/about` do not exist at all.
+
+  Rule 7 of the brief is explicit — "every navigation item must have a destination, nothing
+  decorative" — and it outranks matching the picture. Shipping three dead links to look like a
+  concept is the exact pattern the footer was stripped of in PCP-018.
+
+  Adding the missing pages is a page-building job, not a hero job, and this brief forbids new
+  functionality. The gap is reported rather than papered over.
+*/
 const NAV_LINKS = [
   { id: "home", label: "Home", href: "/" },
   { id: "search", label: "Marketplace", href: "/search" },
+  { id: "contact", label: "Contact", href: "/contact" },
 ] as const;
 
 export interface PublicHeaderProps {
@@ -53,7 +68,6 @@ export function PublicHeader({ className }: PublicHeaderProps) {
   const pathname = usePathname();
   const [menuPath, setMenuPath] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
-  const [pastHero, setPastHero] = useState(false);
 
   const mobileOpen = menuPath === pathname;
 
@@ -76,8 +90,6 @@ export function PublicHeader({ className }: PublicHeaderProps) {
 
   const handleScroll = useCallback(() => {
     setScrolled(window.scrollY > 8);
-    /* Half a viewport is past the wordmark's block on every screen size the hero is designed for. */
-    setPastHero(window.scrollY > window.innerHeight * 0.5);
   }, []);
 
   useEffect(() => {
@@ -120,14 +132,28 @@ export function PublicHeader({ className }: PublicHeaderProps) {
         )}
         role="banner"
       >
-        <div className="mx-auto flex h-[4.5rem] max-w-[var(--container-2xl)] items-center gap-6 px-5 lg:h-[5rem] lg:px-8">
-          <SurfWordmarkLink
-            size="hero"
-            className={cn(
-              "motion-nav",
-              isHomepage && !pastHero && "pointer-events-none opacity-0",
-            )}
-          />
+        {/* Padding matched to the hero's content column — `px-6 sm:px-8 lg:px-10`. It was `px-5 lg:px-8`,
+              which put the marque 8px left of the headline it sits above: close enough to look like a
+              mistake rather than a decision, and the brief asks for one visual grid. */}
+          <div className="mx-auto flex h-[4.5rem] max-w-[var(--container-2xl)] items-center gap-6 px-6 sm:px-8 lg:h-[5rem] lg:px-10">
+          {/*
+            The brand, top left, on every page including the homepage.
+            =========================================================
+            It used to yield on the homepage, because the hero carried a display-scale wordmark and
+            two marks 200px apart is a competition. The reference resolves that differently and
+            better: the marque lives in the masthead permanently, and the hero's largest element is
+            the statement rather than the name.
+
+            So the identity is now in the same place on every page and at every scroll position,
+            which is what a marque is for. Only the header's *background* still reacts to scroll.
+          */}
+          <Link
+            href="/"
+            aria-label="SURF4CARS — home"
+            className="motion-nav inline-flex shrink-0 rounded-[var(--radius-md)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
+          >
+            <SurfMarque size="header" />
+          </Link>
 
           <nav className="ml-auto hidden items-center gap-8 lg:flex" aria-label="Primary">
             {NAV_LINKS.map((item) => {
@@ -149,18 +175,22 @@ export function PublicHeader({ className }: PublicHeaderProps) {
               );
             })}
 
+            {/* Outlined, not plain text: the concept pairs two pills, and an account entry point that
+                looks like body copy is missed by everyone who is not already looking for it. */}
             <Link
               href="/auth/sign-in"
-              className="text-[length:var(--text-body-sm)] font-medium text-[var(--color-muted-foreground)] motion-nav hover:text-[var(--color-foreground)]"
+              className="motion-button inline-flex h-11 items-center gap-2 rounded-[var(--radius-pill)] border border-[var(--color-border-interactive)] px-5 text-[length:var(--text-body-sm)] font-medium text-[var(--color-foreground)] hover:border-[var(--color-border-strong)] hover:bg-[var(--color-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
             >
+              <Icon icon={User} aria-hidden className="size-4" />
               Sign in
             </Link>
 
             {/* The one filled button on the page, and it goes somewhere. */}
             <Link
               href="/auth/sign-up/dealer"
-              className="motion-button inline-flex h-11 items-center rounded-[var(--radius-pill)] bg-[var(--color-primary)] px-5 text-[length:var(--text-body-sm)] font-medium text-white hover:bg-[var(--color-primary-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
+              className="motion-button inline-flex h-11 items-center gap-2 rounded-[var(--radius-pill)] bg-[var(--color-primary)] px-5 text-[length:var(--text-body-sm)] font-medium text-white hover:bg-[var(--color-primary-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
             >
+              <Icon icon={Car} aria-hidden className="size-4" />
               List your stock
             </Link>
           </nav>
