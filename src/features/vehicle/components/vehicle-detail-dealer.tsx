@@ -1,8 +1,9 @@
 import Link from "next/link";
 
 import { Icon } from "@/components/ui/icons";
-import { ArrowRight, BadgeCheck, Star } from "@/components/ui/icons/registry";
+import { ArrowRight, BadgeCheck } from "@/components/ui/icons/registry";
 import { vehiclePolish } from "@/features/vehicle/config/vehicle-shared";
+import { describeVerificationForCustomer } from "@/domain/vehicle";
 import type { VehicleDealerProfile } from "@/features/vehicle/types/vehicle.types";
 import { cn } from "@/utils";
 
@@ -22,8 +23,43 @@ export interface VehicleDetailDealerProps {
  * "Dealer type: Premium franchise" has gone entirely. It was hardcoded on every listing regardless of
  * the dealership, which makes it a claim about somebody else's business that nobody checked — exactly
  * the kind of believable fabrication that is worse than an obvious gap.
+ *
+ * PCP-032: THE REST OF IT WENT THE SAME WAY
+ * =========================================
+ * This card was still printing a 4.8 star rating from 24 reviews, eight years in business and
+ * "responds within 15 minutes" — for every dealership on the platform, from five hardcoded literals.
+ * There is no reviews table in this schema, no response-time measurement and no trading-since date.
+ *
+ * One number survived: vehicles in stock, which was always counted from live listings.
+ *
+ * What replaces the rest is not a smaller set of claims — it is an honest absence. A dealership with
+ * no reviews reads "No reviews yet", because that is a fact and it is also useful: it tells a buyer
+ * this is a new listing rather than one everybody has ignored.
  */
 export function VehicleDetailDealer({ dealer, className }: VehicleDetailDealerProps) {
+  const verificationLabel = describeVerificationForCustomer(dealer.verificationStatus);
+
+  /*
+    "No reviews yet" is stated; everything unknown is simply absent.
+    ==============================================================
+    The difference matters. Zero reviews is a measured fact and worth saying — it tells a buyer the
+    silence is newness rather than a bad record. An unknown response time is not a fact about the
+    dealership at all, it is a gap in our instrumentation, and printing "Response time unknown"
+    would make our missing data look like their shortcoming.
+  */
+  const facts = [
+    dealer.rating !== null && dealer.reviewCount > 0
+      ? `${dealer.rating.toFixed(1)} from ${dealer.reviewCount} review${dealer.reviewCount === 1 ? "" : "s"}`
+      : "No reviews yet",
+    dealer.yearsInBusiness !== null
+      ? `${dealer.yearsInBusiness} ${dealer.yearsInBusiness === 1 ? "year" : "years"} in business`
+      : null,
+    dealer.vehiclesInStock > 0
+      ? `${dealer.vehiclesInStock} ${dealer.vehiclesInStock === 1 ? "vehicle" : "vehicles"} in stock`
+      : null,
+    dealer.responseTime ? `Responds ${dealer.responseTime.toLowerCase()}` : null,
+  ].filter((fact): fact is string => Boolean(fact));
+
   return (
     <section className={cn(vehiclePolish.section, className)} aria-labelledby="vehicle-dealer-heading">
       <h2 id="vehicle-dealer-heading" className={vehiclePolish.sectionTitle}>
@@ -35,31 +71,28 @@ export function VehicleDetailDealer({ dealer, className }: VehicleDetailDealerPr
           <h3 className="text-[length:var(--text-h5)] font-semibold tracking-[var(--tracking-heading)]">
             {dealer.name}
           </h3>
-          {dealer.verified && (
+          {verificationLabel && (
             <span className="inline-flex items-center gap-1.5 text-[length:var(--text-caption)] font-medium uppercase tracking-[0.14em] text-[var(--color-muted-foreground)]">
               <Icon icon={BadgeCheck} aria-hidden className="size-4 text-[var(--color-success)]" />
-              Verified by SURF4CARS
+              {verificationLabel}
             </span>
           )}
         </div>
 
-        {/* One line of facts rather than three bordered tiles. */}
+        {/*
+          Only the facts that exist, joined by separators that adapt to how many there are.
+          ==============================================================================
+          Built from an array rather than written inline because the number of facts is now variable.
+          Hardcoding four with three separators is how a card ends up reading "· · 12 vehicles in
+          stock" the first time one of them is missing.
+        */}
         <p className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
-          <span className="inline-flex items-center gap-1.5">
-            <Icon icon={Star} aria-hidden className="size-4 text-[var(--color-accent)]" />
-            <span className="font-medium text-[var(--color-foreground)]">
-              {dealer.rating.toFixed(1)}
+          {facts.map((fact, index) => (
+            <span key={fact} className="inline-flex items-center gap-3">
+              {index > 0 && <Separator />}
+              <span>{fact}</span>
             </span>
-            <span>({dealer.reviewCount} reviews)</span>
-          </span>
-          <Separator />
-          <span>
-            {dealer.yearsInBusiness} {dealer.yearsInBusiness === 1 ? "year" : "years"} in business
-          </span>
-          <Separator />
-          <span>{dealer.vehiclesInStock} vehicles in stock</span>
-          <Separator />
-          <span>Responds {dealer.responseTime.toLowerCase()}</span>
+          ))}
         </p>
 
         <Link

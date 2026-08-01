@@ -22,9 +22,18 @@ export const HOME_BUYER_REASONS: readonly HomePillar[] = [
     tagline: "Full galleries and real photography. No listing hiding behind “more photos on request”.",
   },
   {
-    id: "verified",
-    title: "Dealers who are verified",
-    tagline: "Every dealership is checked before it can publish a single vehicle.",
+    /*
+      Was "Dealers who are verified" / "Every dealership is checked before it can publish a single
+      vehicle." Neither was true: there was no verification step and no column to record one, and
+      the badge it referred to was a hardcoded `true`.
+
+      What is true is the structural fact — this is a dealership marketplace, not a classifieds
+      board, so every seller is a registered business with a licence number on file rather than an
+      anonymous individual. That is a real difference to a buyer and it is provable from the row.
+    */
+    id: "registered",
+    title: "Registered dealerships only",
+    tagline: "Every seller is a licensed motor trader, not an anonymous private advert.",
   },
   {
     id: "context",

@@ -9,9 +9,9 @@ import { cn } from "@/utils";
 
 export interface VehicleDetailStickyBarProps {
   readonly price: string;
-  readonly monthlyRepayment: string;
-  readonly dealerPhone: string;
-  readonly dealerWhatsapp: string;
+  readonly monthlyRepayment: string | null;
+  readonly dealerPhone: string | null;
+  readonly dealerWhatsapp: string | null;
 }
 
 export function VehicleDetailStickyBar({ price, monthlyRepayment, dealerPhone, dealerWhatsapp }: VehicleDetailStickyBarProps) {
@@ -45,19 +45,30 @@ export function VehicleDetailStickyBar({ price, monthlyRepayment, dealerPhone, d
       <div className="mx-auto flex max-w-[var(--container-2xl)] items-center gap-3 px-4 py-3 lg:px-6">
         <div className="min-w-0 flex-1">
           <p className="truncate text-[length:var(--text-body-md)] font-semibold">{price}</p>
-          <p className="text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">
-            {monthlyRepayment} / month
-          </p>
+          {monthlyRepayment && (
+            <p className="text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">
+              {monthlyRepayment} / month
+            </p>
+          )}
         </div>
 
+        {/* The sticky bar's whole purpose is a quick action, so an action that cannot work has no
+            business being in it. Both numbers were "+27" for every dealership on the platform. */}
         <div className="flex shrink-0 items-center gap-2">
-          <a href={`tel:${dealerPhone}`} className="hidden h-11 items-center rounded-[var(--radius-lg)] border border-[var(--color-border)] px-4 text-[length:var(--text-body-sm)] font-medium sm:inline-flex">
-            <Icon icon={Phone} size="sm" aria-hidden />
-            Call
-          </a>
-          <a href={`https://wa.me/${dealerWhatsapp.replace(/\D/g, "")}`} target="_blank" rel="noreferrer" className="inline-flex h-11 items-center rounded-[var(--radius-lg)] border border-[var(--color-border)] px-4 text-[length:var(--text-body-sm)] font-medium">
-            <Icon icon={MessageCircle} size="sm" aria-hidden />
-            <span className="hidden sm:inline">WhatsApp</span>
+          {dealerPhone && (
+            <a href={`tel:${dealerPhone}`} className="hidden h-11 items-center rounded-[var(--radius-lg)] border border-[var(--color-border)] px-4 text-[length:var(--text-body-sm)] font-medium sm:inline-flex">
+              <Icon icon={Phone} size="sm" aria-hidden />
+              Call
+            </a>
+          )}
+          {dealerWhatsapp && (
+            <a href={`https://wa.me/${dealerWhatsapp.replace(/\D/g, "")}`} target="_blank" rel="noreferrer" className="inline-flex h-11 items-center rounded-[var(--radius-lg)] border border-[var(--color-border)] px-4 text-[length:var(--text-body-sm)] font-medium">
+              <Icon icon={MessageCircle} size="sm" aria-hidden />
+              <span className="hidden sm:inline">WhatsApp</span>
+            </a>
+          )}
+          <a href="#enquiry" className="inline-flex h-11 items-center rounded-[var(--radius-lg)] bg-[var(--color-primary)] px-4 text-[length:var(--text-body-sm)] font-medium text-white">
+            Enquire
           </a>
         </div>
       </div>

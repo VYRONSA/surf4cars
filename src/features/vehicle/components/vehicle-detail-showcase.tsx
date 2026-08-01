@@ -1,5 +1,6 @@
 "use client";
 
+import { hasValue } from "@/features/vehicle/config/unspecified";
 import Image from "next/image";
 
 import { Icon } from "@/components/ui/icons";
@@ -29,7 +30,7 @@ export interface VehicleDetailShowcaseProps {
   readonly title: string;
   readonly subtitle: string;
   readonly price: string;
-  readonly monthlyRepayment: string;
+  readonly monthlyRepayment: string | null;
   readonly year: number;
   readonly mileage: string;
   readonly transmission: string;
@@ -171,7 +172,7 @@ export function VehicleDetailShowcase({
         {/* Four facts, as one line. The full specification is a scroll away; this is what a buyer
             checks before they decide whether to keep reading. */}
         <p className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[length:var(--text-body-md)] text-white/80">
-          {[String(year), mileage, transmission, fuel, location].map((fact, index) => (
+          {[String(year), mileage, transmission, fuel, location].filter(hasValue).map((fact, index) => (
             <span key={fact} className="inline-flex items-center gap-3">
               {index > 0 && (
                 <span aria-hidden className="text-white/30">

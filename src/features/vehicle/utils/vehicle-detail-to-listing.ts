@@ -10,7 +10,7 @@ export function unifiedVehicleToListing(record: UnifiedVehicleRecord): ShowcaseV
 
 export function vehicleDetailToListing(vehicle: VehicleDetail): ShowcaseVehicleListing & { slug: string } {
   const primary = vehicle.gallery[0];
-  const financeShort = vehicle.financeEstimate.replace(/ at .+$/, "");
+  const financeShort = vehicle.financeEstimate?.replace(/ at .+$/, "") ?? null;
 
   return {
     id: vehicle.id,
@@ -23,7 +23,7 @@ export function vehicleDetailToListing(vehicle: VehicleDetail): ShowcaseVehicleL
     transmission: vehicle.transmission,
     dealer: vehicle.dealer.name,
     location: vehicle.location,
-    financeEstimate: financeShort.includes("/mo") ? financeShort : vehicle.financeEstimate,
+    financeEstimate: financeShort ? (financeShort.includes("/mo") ? financeShort : (vehicle.financeEstimate ?? undefined)) : undefined,
     aiMatchScore: vehicle.aiMatchScore,
     imageSrc: primary?.src ?? PREMIUM_IMAGES.vehicles.details,
     imagePosition: primary?.objectPosition ?? "center",

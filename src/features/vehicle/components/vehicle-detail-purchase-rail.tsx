@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { isVerifiedDealer } from "@/domain/vehicle";
 import { Icon } from "@/components/ui/icons";
 import { ArrowRight, BadgeCheck, MessageCircle, Phone } from "@/components/ui/icons/registry";
 import { VehicleDetailSaveShare } from "@/features/vehicle/components/vehicle-detail-save-share";
@@ -46,9 +47,15 @@ export function VehicleDetailPurchaseRail({ vehicle, className }: VehicleDetailP
         <p className="text-[length:var(--text-h3)] font-semibold tabular-nums tracking-[-0.02em] text-[var(--color-foreground)]">
           {vehicle.price}
         </p>
-        <p className="mt-1 text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
-          {vehicle.monthlyRepayment} / month · {vehicle.financeEstimate}
-        </p>
+        {/* The monthly figure was `price / 72 * 1.18` — a multiplier matching no interest rate, over
+            an unstated term, for a product no lender had agreed to. Rendered only if a real one
+            ever arrives. */}
+        {vehicle.monthlyRepayment && (
+          <p className="mt-1 text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
+            {vehicle.monthlyRepayment} / month
+            {vehicle.financeEstimate ? ` · ${vehicle.financeEstimate}` : ""}
+          </p>
+        )}
       </div>
 
       <p className="text-[length:var(--text-body-sm)] text-[var(--color-success)] lg:mt-4">
@@ -68,24 +75,41 @@ export function VehicleDetailPurchaseRail({ vehicle, className }: VehicleDetailP
           Enquire about this vehicle
         </a>
 
-        <div className="grid grid-cols-2 gap-2.5">
-          <a
-            href={`tel:${dealer.phone}`}
-            className="motion-button inline-flex h-12 items-center justify-center gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border-interactive)] text-[length:var(--text-body-sm)] font-medium hover:border-[var(--color-border-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
-          >
-            <Icon icon={Phone} aria-hidden className="size-4" />
-            Call
-          </a>
-          <a
-            href={`https://wa.me/${dealer.whatsapp.replace(/\D/g, "")}`}
-            target="_blank"
-            rel="noreferrer"
-            className="motion-button inline-flex h-12 items-center justify-center gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border-interactive)] text-[length:var(--text-body-sm)] font-medium hover:border-[var(--color-border-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
-          >
-            <Icon icon={MessageCircle} aria-hidden className="size-4" />
-            WhatsApp
-          </a>
-        </div>
+        {/*
+          A call button only when there is something to call.
+          =================================================
+          `dealer.phone` fell back to the literal "+27", so this rendered `tel:+27` on every vehicle
+          on the platform — not one of the 128 dealerships has a telephone number on record. The
+          button looked identical to a working one, which is the damage: a buyer taps Call, nothing
+          happens, and they conclude the dealership ignored them.
+
+          When neither number exists the enquiry form below is the only route, and it works. Showing
+          two dead buttons beside it made the working path look like the fallback.
+        */}
+        {(dealer.phone || dealer.whatsapp) && (
+          <div className={cn("grid gap-2.5", dealer.phone && dealer.whatsapp ? "grid-cols-2" : "grid-cols-1")}>
+            {dealer.phone && (
+              <a
+                href={`tel:${dealer.phone}`}
+                className="motion-button inline-flex h-12 items-center justify-center gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border-interactive)] text-[length:var(--text-body-sm)] font-medium hover:border-[var(--color-border-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
+              >
+                <Icon icon={Phone} aria-hidden className="size-4" />
+                Call
+              </a>
+            )}
+            {dealer.whatsapp && (
+              <a
+                href={`https://wa.me/${dealer.whatsapp.replace(/\D/g, "")}`}
+                target="_blank"
+                rel="noreferrer"
+                className="motion-button inline-flex h-12 items-center justify-center gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border-interactive)] text-[length:var(--text-body-sm)] font-medium hover:border-[var(--color-border-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
+              >
+                <Icon icon={MessageCircle} aria-hidden className="size-4" />
+                WhatsApp
+              </a>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Who is selling it, as a line rather than as a card. The full dealer section is below. */}
@@ -97,10 +121,10 @@ export function VehicleDetailPurchaseRail({ vehicle, className }: VehicleDetailP
           <span className="min-w-0">
             <span className="flex items-center gap-1.5 text-[length:var(--text-body-sm)] font-medium text-[var(--color-foreground)]">
               <span className="truncate">{dealer.name}</span>
-              {dealer.verified && (
+              {isVerifiedDealer(dealer.verificationStatus) && (
                 <Icon
                   icon={BadgeCheck}
-                  aria-label="Verified dealer"
+                  aria-label="Verified by SURF4CARS"
                   className="size-3.5 shrink-0 text-[var(--color-success)]"
                 />
               )}

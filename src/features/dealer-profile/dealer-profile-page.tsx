@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { describeVerificationForOperations, isVerifiedDealer, type DealerVerificationStatus } from "@/domain/vehicle";
 import { Icon } from "@/components/ui/icons";
 import {
   ArrowRight,
@@ -155,7 +156,9 @@ export function DealerProfilePage({ dealer }: DealerProfilePageProps) {
                     Demonstration listing
                   </span>
                 )}
-                {dealer.verified && (
+                {/* Only a real `verified` status earns this. It previously rendered whenever the
+                    dealership had finished onboarding, which is all of them. */}
+                {isVerifiedDealer(dealer.verificationStatus) && (
                   <span className="inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] bg-[var(--color-success-muted)] px-3 py-1 text-[length:var(--text-caption)] font-semibold uppercase tracking-[0.14em] text-[var(--color-success)]">
                     <Icon icon={BadgeCheck} aria-hidden className="size-3.5" />
                     Verified dealer
@@ -213,10 +216,17 @@ export function DealerProfilePage({ dealer }: DealerProfilePageProps) {
               label="Vehicles in stock"
               provenance="platform"
             />
+            {/*
+              "Unverified" was the false branch here, and it is as much of a claim as "Verified".
+              It reads as a judgement SURF4CARS has made about a business, when the truth is that
+              nobody has looked yet. The state is named plainly instead — this is the one customer
+              surface where a buyer is specifically assessing the dealership, so silence would be
+              withholding rather than restraint.
+            */}
             <Stat
-              value={dealer.verified ? "Verified" : "Unverified"}
-              label="Dealer status"
-              provenance="verified"
+              value={describeVerificationForCustomerProfile(dealer.verificationStatus)}
+              label="SURF4CARS verification"
+              provenance={isVerifiedDealer(dealer.verificationStatus) ? "verified" : "platform"}
             />
             <Stat value={dealer.listedSince ?? "—"} label="On SURF4CARS since" provenance="platform" />
             <Stat
@@ -428,3 +438,13 @@ export function DealerProfilePage({ dealer }: DealerProfilePageProps) {
   );
 }
 
+
+/**
+ * The verification state, worded for a buyer rather than for an operator.
+ *
+ * Operations reads "Not assessed"; a buyer reads the same fact with the subject made explicit, so
+ * the sentence is about what SURF4CARS has done rather than about the dealership's standing.
+ */
+function describeVerificationForCustomerProfile(status: DealerVerificationStatus): string {
+  return status === "unknown" ? "Not yet assessed" : describeVerificationForOperations(status);
+}

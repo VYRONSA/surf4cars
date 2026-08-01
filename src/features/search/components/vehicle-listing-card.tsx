@@ -1,3 +1,4 @@
+import { orNotSpecified } from "@/features/vehicle/config/unspecified";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -81,8 +82,8 @@ export function VehicleListingCard({ listing, className, href, ...props }: Vehic
       }
       yearSlot={<span className="tabular-nums">{listing.year}</span>}
       mileageSlot={<span className="tabular-nums">{listing.mileage}</span>}
-      fuelSlot={<span>{listing.fuel}</span>}
-      transmissionSlot={<span>{listing.transmission}</span>}
+      fuelSlot={<span>{orNotSpecified(listing.fuel)}</span>}
+      transmissionSlot={<span>{orNotSpecified(listing.transmission)}</span>}
       locationSlot={
         <p className="text-[length:var(--text-body-sm)] text-[var(--color-muted)]">
           {listing.location}

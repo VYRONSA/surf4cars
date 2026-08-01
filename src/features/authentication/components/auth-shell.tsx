@@ -66,7 +66,7 @@ export function AuthShell({ eyebrow, heading, description, children, footer }: A
           className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgba(var(--color-scrim-rgb),0.88)_0%,rgba(var(--color-scrim-rgb),0.35)_45%,transparent_75%)]"
         />
         <p className="relative max-w-md p-10 text-[length:var(--text-h3)] font-semibold leading-[1.15] tracking-[-0.02em] text-white xl:p-14">
-          Every vehicle, every verified dealer.
+          Every vehicle, from a registered dealership.
         </p>
       </div>
 

@@ -66,7 +66,7 @@ export async function HomePage() {
       <HomeFeaturedEditorial
         eyebrow="Featured"
         title="This week's featured vehicles"
-        description="Chosen for how completely they are presented — full galleries, verified dealers, nothing hidden."
+        description="Chosen for how completely they are presented — full galleries, full specifications, nothing hidden."
         listings={featured}
         priority
       />

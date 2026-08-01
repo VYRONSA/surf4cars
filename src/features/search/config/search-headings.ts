@@ -72,7 +72,7 @@ export function buildSearchHeading(state: SearchQueryState): SearchHeading {
     return {
       heading: "Every vehicle",
       subheading:
-        "The full marketplace — every listing from every verified dealership, photographed and checked before it went live.",
+        "The full marketplace — every listing from every registered dealership on SURF4CARS.",
       isFiltered: false,
     };
   }
@@ -86,7 +86,7 @@ export function buildSearchHeading(state: SearchQueryState): SearchHeading {
      stronger would flatten "SUV" and "GT-Line" on the way past. */
   return {
     heading: heading.charAt(0).toUpperCase() + heading.slice(1),
-    subheading: "Every listing verified, and photographed in full before it went live.",
+    subheading: "Every listing published by a registered dealership.",
     isFiltered: true,
   };
 }

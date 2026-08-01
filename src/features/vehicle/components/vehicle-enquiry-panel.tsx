@@ -13,8 +13,10 @@ import { cn } from "@/utils";
 export function VehicleEnquiryPanel(props: {
   readonly vehicleId: string;
   readonly dealershipId: string;
-  readonly dealerPhone: string;
-  readonly dealerWhatsapp: string;
+  /* Null when the dealership has no number on record — which today is all of them. Every consumer
+     has to decide what to show instead, rather than being handed "+27" and rendering a dead link. */
+  readonly dealerPhone: string | null;
+  readonly dealerWhatsapp: string | null;
   readonly idPrefix?: string;
 }) {
   const idPrefix = props.idPrefix ?? "buyer";
@@ -155,18 +157,22 @@ export function VehicleEnquiryPanel(props: {
         <p className="mt-2 text-[length:var(--text-body-md)] leading-relaxed text-[var(--color-muted-foreground)]">
           {sent.dealerNotified
             ? "The dealership has been sent your details and will be in touch. Quote this reference if you call them first."
-            : "Your enquiry has been received and the dealership can see it in their dashboard. We are still working on getting a notification through to them, so it is worth calling if you would like an answer today."}
+            : props.dealerPhone
+              ? "Your enquiry has been received and the dealership can see it in their dashboard. We are still working on getting a notification through to them, so it is worth calling if you would like an answer today."
+              : "Your enquiry has been received and the dealership can see it in their dashboard. We are still working on getting a notification through to them."}
         </p>
         <p className="mt-5 font-mono text-[length:var(--text-h4)] font-semibold tracking-[0.08em] text-[var(--color-foreground)]">
           {sent.reference}
         </p>
-        <p className="mt-5 text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
-          Prefer to speak now?{" "}
-          <a href={`tel:${props.dealerPhone}`} className="motion-nav underline underline-offset-4 hover:text-[var(--color-foreground)]">
-            Call the dealership
-          </a>
-          .
-        </p>
+        {props.dealerPhone && (
+          <p className="mt-5 text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
+            Prefer to speak now?{" "}
+            <a href={`tel:${props.dealerPhone}`} className="motion-nav underline underline-offset-4 hover:text-[var(--color-foreground)]">
+              Call the dealership
+            </a>
+            .
+          </p>
+        )}
       </div>
     );
   }
@@ -240,21 +246,29 @@ export function VehicleEnquiryPanel(props: {
         <Button type="submit" size="lg" disabled={isSubmitting} className="min-w-[11rem]">
           {isSubmitting ? "Sending…" : "Send enquiry"}
         </Button>
-        <p className="text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
-          or{" "}
-          <a href={`tel:${props.dealerPhone}`} className="motion-nav underline underline-offset-4 hover:text-[var(--color-foreground)]">
-            call them
-          </a>{" "}
-          ·{" "}
-          <a
-            href={`https://wa.me/${props.dealerWhatsapp.replace(/\D/g, "")}`}
-            target="_blank"
-            rel="noreferrer"
-            className="motion-nav underline underline-offset-4 hover:text-[var(--color-foreground)]"
-          >
-            WhatsApp
-          </a>
-        </p>
+        {/* Alternatives, only where they exist. This line used to offer "call them · WhatsApp"
+            unconditionally, pointing at tel:+27 and wa.me/27 — the fallback every dealership hit. */}
+        {(props.dealerPhone || props.dealerWhatsapp) && (
+          <p className="text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
+            or{" "}
+            {props.dealerPhone && (
+              <a href={`tel:${props.dealerPhone}`} className="motion-nav underline underline-offset-4 hover:text-[var(--color-foreground)]">
+                call them
+              </a>
+            )}
+            {props.dealerPhone && props.dealerWhatsapp ? " · " : ""}
+            {props.dealerWhatsapp && (
+              <a
+                href={`https://wa.me/${props.dealerWhatsapp.replace(/\D/g, "")}`}
+                target="_blank"
+                rel="noreferrer"
+                className="motion-nav underline underline-offset-4 hover:text-[var(--color-foreground)]"
+              >
+                WhatsApp
+              </a>
+            )}
+          </p>
+        )}
       </div>
 
       {error && (
@@ -272,8 +286,8 @@ export function VehicleEnquiryPanel(props: {
           */}
           {error.retryable && (
             <p className="mt-1 text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">
-              Your details are still here. Press Send enquiry to try again, or call the dealership
-              on the number above.
+              Your details are still here. Press Send enquiry to try again
+              {props.dealerPhone ? ", or call the dealership on the number above" : ""}.
             </p>
           )}
         </div>
