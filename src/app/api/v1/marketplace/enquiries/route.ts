@@ -12,6 +12,25 @@ import {
 } from "@/features/enquiries/server/enquiry-persistence";
 import { buildEnquiryFingerprint } from "@/features/enquiries/server/enquiry-fingerprint";
 import { notifyDealershipOfEnquiry } from "@/features/notifications";
+import { createPostgresRateLimitStore } from "@/lib/security/postgres-rate-limit-store";
+import {
+  buildRateLimitHeaders,
+  configureRateLimitStore,
+  evaluateRateLimit,
+  resolveRateLimitKey,
+} from "@/lib/security/rate-limit";
+
+/*
+  The durable store is installed here, at the only endpoint that uses it.
+  =====================================================================
+  `rate-limit.ts` has shipped a complete framework and an explicit note that its default store is
+  "per-instance and therefore only correct for a single process" since PCP-001J1, with no endpoint
+  wired to it. On a serverless host that default means a limit of ten permits ten *per instance*.
+
+  This is the endpoint that most needs it and the only one that is unauthenticated: it writes leads
+  into dealers' CRMs and now spends money and sender reputation at an email provider on every call.
+*/
+configureRateLimitStore(createPostgresRateLimitStore());
 
 function parseCookieHeader(cookieHeader: string | null): Map<string, string> {
   const cookies = new Map<string, string>();
@@ -29,6 +48,33 @@ function parseCookieHeader(cookieHeader: string | null): Map<string, string> {
 }
 
 export async function POST(request: Request) {
+  /*
+    Checked before the body is parsed, and outside the try.
+    ======================================================
+    Before, so a flood costs a counter increment rather than a validation pass and three database
+    round trips. Outside, because a 429 is not an error in the sense the catch block means — it
+    would otherwise be reported to the buyer as a malformed submission.
+
+    Ten in ten minutes is generous for a person and restrictive for a script. It is applied per
+    address, so an office behind one NAT shares a budget; at this limit that is a cost worth paying
+    for an endpoint that spends money on every call.
+  */
+  const decision = await evaluateRateLimit(
+    "publicEnquiry",
+    resolveRateLimitKey({ rule: "publicEnquiry", request }),
+  );
+
+  if (!decision.allowed) {
+    return NextResponse.json(
+      {
+        error:
+          "You have sent several enquiries in a short time. Please wait a few minutes, or call the dealership directly.",
+        retryable: true,
+      },
+      { status: 429, headers: buildRateLimitHeaders(decision) },
+    );
+  }
+
   try {
     const parsed = await parseCreateDealerEnquiryRequest(request);
     const cookies = parseCookieHeader(request.headers.get("cookie"));
