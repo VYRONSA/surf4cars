@@ -1,3 +1,4 @@
+import { isVerifiedDealer } from "@/domain/vehicle";
 import type { UnifiedVehicleRecord, VehicleSearchQuery, VehicleSearchResult } from "@/domain/vehicle";
 import type { VehicleEngineRepository } from "@/services/vehicle-engine/vehicle-engine.repository";
 import { getShowcaseSeedRecords } from "@/services/vehicle-engine/vehicle-showcase.seed";
@@ -55,7 +56,7 @@ export class VehicleShowcaseRepository implements VehicleEngineRepository {
       items = items.filter((r) => r.marketing.featured === filters.featured);
     }
     if (filters.verified !== undefined) {
-      items = items.filter((r) => r.dealer.verified === filters.verified);
+      items = items.filter((r) => isVerifiedDealer(r.dealer.verificationStatus) === filters.verified);
     }
     if (filters.make) {
       items = items.filter((r) => r.core.make.toLowerCase() === filters.make!.toLowerCase());

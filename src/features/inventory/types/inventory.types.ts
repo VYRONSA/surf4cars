@@ -28,7 +28,8 @@ export interface InventoryVehicle {
   readonly imagePosition: string;
   readonly price: string;
   readonly priceNumeric: number;
-  readonly financeEstimate: string;
+  /** Null until a finance partner supplies a rate — the old figure was an undocumented formula. */
+  readonly financeEstimate: string | null;
   readonly mileage: string;
   readonly year: number;
   readonly fuel: string;

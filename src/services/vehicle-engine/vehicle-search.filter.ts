@@ -1,3 +1,4 @@
+import { isVerifiedDealer } from "@/domain/vehicle";
 import type {
   UnifiedVehicleRecord,
   VehicleSearchQuery,
@@ -46,7 +47,7 @@ export function searchUnifiedVehicleRecords(
   if (filters.transmission) items = items.filter((item) => item.core.transmission.toLowerCase() === filters.transmission?.toLowerCase());
   if (filters.province) items = items.filter((item) => item.dealer.province.toLowerCase() === filters.province?.toLowerCase());
   if (filters.featured !== undefined) items = items.filter((item) => item.marketing.featured === filters.featured);
-  if (filters.verified !== undefined) items = items.filter((item) => item.dealer.verified === filters.verified);
+  if (filters.verified !== undefined) items = items.filter((item) => isVerifiedDealer(item.dealer.verificationStatus) === filters.verified);
 
   const compareBySort = (left: UnifiedVehicleRecord, right: UnifiedVehicleRecord): number => {
     switch (query.sort ?? "relevance") {

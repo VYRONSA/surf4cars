@@ -1,3 +1,4 @@
+import { isVerifiedDealer } from "@/domain/vehicle";
 import { VEHICLE_STATUS, PUBLISHABLE_VEHICLE_STATUSES } from "@/domain/vehicle/constants/vehicle-status.constants";
 import { isPresentablePhotograph } from "@/config/media";
 import { MARKETING_CHANNELS } from "@/domain/vehicle/types/vehicle-marketing.types";
@@ -188,7 +189,7 @@ export function toVehicleSearchDocument(record: UnifiedVehicleRecord): VehicleSe
     dealershipName: record.dealer.dealershipName,
     status: record.status.current,
     featured: record.marketing.featured,
-    verified: record.dealer.verified,
+    verified: isVerifiedDealer(record.dealer.verificationStatus),
     listingScore: record.ai.scores.listingScore,
     aiMatchScore: record.ai.scores.aiMatchScore,
     primaryImageUrl: resolvePrimaryImageUrl(record),
@@ -198,7 +199,7 @@ export function toVehicleSearchDocument(record: UnifiedVehicleRecord): VehicleSe
 
 export function toShowcaseVehicleListing(record: UnifiedVehicleRecord): ShowcaseVehicleListing {
   const primaryPhoto = record.media.photos.find((p) => p.isPrimary) ?? record.media.photos[0];
-  const financeShort = record.pricing.financeEstimateDisplay.replace(/ at .+$/, "");
+  const financeShort = record.pricing.financeEstimateDisplay?.replace(/ at .+$/, "") ?? null;
 
   return {
     id: record.id,
@@ -211,7 +212,7 @@ export function toShowcaseVehicleListing(record: UnifiedVehicleRecord): Showcase
     transmission: record.core.transmission,
     dealer: record.dealer.dealershipName,
     location: record.dealer.location,
-    financeEstimate: financeShort,
+    financeEstimate: financeShort ?? undefined,
     aiMatchScore: record.ai.scores.aiMatchScore,
     imageSrc: resolvePrimaryImageUrl(record),
     imagePosition: primaryPhoto?.objectPosition ?? "center",
@@ -221,7 +222,7 @@ export function toShowcaseVehicleListing(record: UnifiedVehicleRecord): Showcase
     make: record.core.make || undefined,
     featured: record.marketing.featured || undefined,
     reducedPrice: record.pricing.reducedPrice || undefined,
-    verified: record.dealer.verified || undefined,
+    verified: isVerifiedDealer(record.dealer.verificationStatus) || undefined,
   };
 }
 
@@ -263,7 +264,7 @@ export function toVehicleDetail(
     vin: record.core.vin,
     stockNumber: record.dealer.stockNumber,
     availability: record.status.availabilityLabel,
-    verified: record.dealer.verified,
+    verified: isVerifiedDealer(record.dealer.verificationStatus),
     location: record.dealer.location,
     province: record.dealer.province,
     bodyType: record.core.bodyType,
@@ -279,7 +280,7 @@ export function toVehicleDetail(
       name: record.dealer.dealershipName,
       slug: record.dealer.dealershipSlug,
       logoInitials: record.dealer.logoInitials,
-      verified: record.dealer.verified,
+      verificationStatus: record.dealer.verificationStatus,
       rating: record.dealer.rating,
       reviewCount: record.dealer.reviewCount,
       responseTime: record.dealer.responseTime,
@@ -303,7 +304,7 @@ export function toInventoryVehicle(record: UnifiedVehicleRecord): InventoryVehic
   const health = record.ai.scores.health;
   const imageSrc = resolvePrimaryImageUrl(record);
   const status = toInventoryListingStatus(record);
-  const financeShort = record.pricing.financeEstimateDisplay.replace(/ at .+$/, "");
+  const financeShort = record.pricing.financeEstimateDisplay?.replace(/ at .+$/, "") ?? null;
 
   return {
     id: record.id,

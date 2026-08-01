@@ -1,3 +1,4 @@
+import { toDealerVerificationStatus, type DealerVerificationStatus } from "@/domain/vehicle";
 /**
  * Public dealer profile — data loading.
  *
@@ -61,7 +62,7 @@ export interface DealerPublicProfile {
   readonly legalName: string | null;
   readonly initials: string;
   readonly businessType: string | null;
-  readonly verified: boolean;
+  readonly verificationStatus: DealerVerificationStatus;
   /**
    * True where this record exists to demonstrate the product.
    *
@@ -184,6 +185,7 @@ interface DealershipRow {
   email: string | null;
   website: string | null;
   onboarding_status: string | null;
+  verification_status: string | null;
   created_at: string | null;
 }
 
@@ -204,7 +206,7 @@ export async function loadDealerProfile(slug: string): Promise<DealerPublicProfi
     const { data, error } = await supabase
       .from("dealerships")
       .select(
-        "id,business_name,trading_name,business_type,physical_address,province,city,postal_code,gps_latitude,gps_longitude,telephone,whatsapp,email,website,onboarding_status,created_at,is_demonstration",
+        "id,business_name,trading_name,business_type,physical_address,province,city,postal_code,gps_latitude,gps_longitude,telephone,whatsapp,email,website,onboarding_status,verification_status,created_at,is_demonstration",
       )
       .limit(500);
 
@@ -227,7 +229,11 @@ export async function loadDealerProfile(slug: string): Promise<DealerPublicProfi
 
     const branchHours = String(branchResult.data?.[0]?.business_hours ?? "").trim();
 
-    const name = (row.trading_name ?? row.business_name ?? "SURF4CARS Dealer").trim();
+    /* No "SURF4CARS Dealer" fallback — it reads as a real trading name and would attribute a
+       stranger's stock to a business that does not exist. Every row has a name today; a row without
+       one is skipped rather than renamed. */
+    const name = (row.trading_name ?? row.business_name ?? "").trim();
+    if (!name) return null;
 
     /* Stock is counted from live marketplace records, never from a field the dealer controls. */
     const published = await getVehicleEngine().listPublishable();
@@ -248,7 +254,18 @@ export async function loadDealerProfile(slug: string): Promise<DealerPublicProfi
       legalName: clean(row.business_name) === name ? null : clean(row.business_name),
       initials: initialsOf(name),
       businessType: clean(row.business_type),
-      verified: row.onboarding_status === "completed",
+      /*
+        Verification is a check, not a completed signup.
+        ===============================================
+        This read `row.onboarding_status === "completed"`, which is true for all 128 dealerships —
+        so every dealer profile displayed "Verified dealer" and a "Dealer status: Verified" stat on
+        the strength of the business having finished its own registration form.
+
+        Those are different questions. Onboarding completion says the dealership filled everything
+        in; verification says SURF4CARS looked at the documents and confirmed it. Conflating them
+        made the platform vouch for 128 businesses it had never assessed.
+      */
+      verificationStatus: toDealerVerificationStatus(row.verification_status),
       isDemonstration: row.is_demonstration === true,
       vehiclesInStock: theirs.length,
       listedSince: row.created_at ? new Date(row.created_at).getFullYear().toString() : null,

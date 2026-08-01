@@ -23,14 +23,26 @@ export function buildPreviewListing(data: UploadFormData): ShowcaseVehicleListin
     mileage: data.specifications.mileage ? `${data.specifications.mileage} km` : "— km",
     fuel: data.specifications.fuel || "—",
     transmission: data.specifications.transmission || "—",
-    dealer: "Atlantic Auto Collective",
-    location: "Cape Town, WC",
-    financeEstimate: data.pricing.monthlyFinanceEstimate || "Finance available",
-    aiMatchScore: Math.min(98, 60 + data.media.length * 3 + Math.min(data.description.length / 20, 20)),
+    /*
+      A preview must not promise the dealer something the buyer will not see.
+      ======================================================================
+      This block previously showed "Atlantic Auto Collective" in "Cape Town, WC" with a Verified
+      badge and "Finance available" — none of it belonging to the dealer looking at it, and none of
+      it true of the listing they were about to publish.
+
+      "Atlantic Auto Collective" is the specific name AGENTS.md warns about: an earlier seed derived
+      `atlanticauto.co.za` from it and the domain resolved to a live third-party business.
+
+      "Your dealership" is deliberately not a plausible trading name. An obviously blank placeholder
+      gets replaced; a convincing one gets shipped.
+    */
+    dealer: "Your dealership",
+    location: "",
+    financeEstimate: data.pricing.monthlyFinanceEstimate || undefined,
+    aiMatchScore: 0,
     imageSrc: primary?.previewUrl ?? PREMIUM_IMAGES.vehicles.details,
     imagePosition: "center 40%",
     featured: data.publishing.featuredListing,
-    verified: true,
   };
 }
 

@@ -1,3 +1,4 @@
+import { isVerifiedDealer, toDealerVerificationStatus } from "@/domain/vehicle";
 import { VEHICLE_STATUS, type VehicleStatus } from "@/domain/vehicle/constants/vehicle-status.constants";
 import type {
   UnifiedVehicleRecord,
@@ -44,10 +45,30 @@ function formatCurrency(cents: number): string {
   }).format(cents / 100);
 }
 
-function estimateMonthly(cents: number): string {
-  const monthly = Math.round((cents / 100) / 72 * 1.18);
-  return `from R ${monthly.toLocaleString("en-ZA")} p/m`;
-}
+const emptyToNull = (value: string | null | undefined): string | null => {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : null;
+};
+
+/**
+ * There is no monthly repayment figure any more.
+ *
+ * It was `price / 72 * 1.18` — a magic multiplier over an unstated term, rendered as "from R X p/m"
+ * with no rate, no deposit and no disclosure. 1.18 across six years is not an interest rate; it is
+ * not derivable from anything, and no lender had agreed to it. A buyer reading it was being shown a
+ * financing figure that did not exist.
+ *
+ * WHY THIS IS NOT REPLACED WITH A BETTER FORMULA
+ * ==============================================
+ * Because choosing the rate would be the same act. Any monthly figure needs a term, a deposit
+ * assumption and an interest rate, and inventing those to produce a more plausible number is
+ * inventing with extra steps. PCP-032's standard is explicit: no estimates.
+ *
+ * Reinstating this needs a rate from a real finance partner and a disclosure line beside the
+ * number. That is a commercial decision, and it is flagged as one in the trust audit rather than
+ * decided here.
+ */
+const NO_FINANCE_FIGURE = null;
 
 function toUnifiedStatus(status: string): VehicleStatus {
   switch (status) {
@@ -183,9 +204,17 @@ export class VehiclePlatformRepository implements VehicleEngineRepository {
           year: vehicle.year,
           mileageKm: vehicle.mileageKm,
           mileageDisplay: `${vehicle.mileageKm.toLocaleString("en-ZA")} km`,
-          transmission: vehicle.transmission ?? "Automatic",
-          fuel: vehicle.fuel ?? "Petrol",
-          bodyType: vehicle.bodyType ?? "SUV",
+          /*
+            Specification fallbacks, removed.
+            ================================
+            Eleven published vehicles have no fuel, transmission or body type on record, and each was
+            being rendered as "Petrol", "Automatic" and "SUV" — on the listing card, in the spec
+            table and, for body type, as a filter a buyer could search by. Inventing the gearbox of a
+            car somebody is about to drive two hours to see is not a display default.
+          */
+          transmission: vehicle.transmission ?? "",
+          fuel: vehicle.fuel ?? "",
+          bodyType: vehicle.bodyType ?? "",
           engine: vehicle.engine ?? "Awaiting specification",
           colour: vehicle.colour ?? "Awaiting specification",
           condition: "used",
@@ -216,7 +245,10 @@ export class VehiclePlatformRepository implements VehicleEngineRepository {
         },
         dealer: {
           dealershipId: vehicle.dealershipId,
-          dealershipName: dealership?.tradingName ?? "SURF4CARS Dealer",
+          /* No "SURF4CARS Dealer" fallback: it reads as a real trading name and attributes stock to
+             a business that does not exist. Every row has one today; if one ever does not, the
+             surfaces show nothing rather than a plausible invention. */
+          dealershipName: dealership?.tradingName ?? "",
           dealershipSlug: slugify(dealership?.tradingName ?? "surf4cars-dealer"),
           branchId: vehicle.branchId,
           branchName: branch?.name ?? "Main Branch",
@@ -224,20 +256,45 @@ export class VehiclePlatformRepository implements VehicleEngineRepository {
           sellingPriceCents: vehicle.askingPriceCents,
           status: unifiedStatus,
           dateAdded: vehicle.createdAt,
-          location: branch?.city ?? dealership?.city ?? "South Africa",
-          province: branch?.province ?? dealership?.province ?? "Western Cape",
-          verified: true,
-          rating: 4.8,
-          reviewCount: 24,
-          responseTime: "within 15 minutes",
-          yearsInBusiness: 8,
+          location: branch?.city ?? dealership?.city ?? "",
+          /* Was `?? "Western Cape"`. A province fallback puts a dealership in a place it may not be,
+             and location is what a buyer uses to decide whether to drive there. Empty is honest. */
+          province: branch?.province ?? dealership?.province ?? "",
+          /*
+            Read, not asserted.
+            ==================
+            These five lines were `verified: true`, `rating: 4.8`, `reviewCount: 24`,
+            `responseTime: "within 15 minutes"` and `yearsInBusiness: 8` — identical for all 128
+            dealerships and derived from nothing.
+
+            `verificationStatus` now comes from the column added in PCP-032, which defaults to
+            `unknown` because nobody has been assessed. The other four are null: there is no reviews
+            table, no response-time measurement and no trading-since date anywhere in this schema.
+            When those exist, this is where they are read; until then the surfaces render nothing.
+          */
+          verificationStatus: toDealerVerificationStatus((dealership as { verificationStatus?: unknown } | undefined)?.verificationStatus),
+          rating: null,
+          reviewCount: 0,
+          responseTime: null,
+          yearsInBusiness: null,
           // Public-facing stock count: only listings a buyer can actually reach.
           vehiclesInStock: store.inventoryVehicles.filter((item) => (
             item.dealershipId === vehicle.dealershipId
             && MARKETPLACE_VISIBLE_LIFECYCLE_STATUSES.includes(item.lifecycleStatus)
           )).length,
-          phone: branch?.telephone ?? dealership?.telephone ?? "+27",
-          whatsapp: branch?.whatsapp ?? dealership?.whatsapp ?? "+27",
+          /*
+            No "+27" fallback.
+            =================
+            That literal was reached by every listing on the platform, because not one of the 128
+            dealerships or 128 branches has a telephone number on record. Every "Call them" link on
+            every vehicle page dialled `tel:+27`, and every WhatsApp button opened `wa.me/27`.
+
+            AGENTS.md is explicit that a customer-facing contact detail must be genuine, verified or
+            obviously ours. A dialable-looking fragment is none of the three, and it fails in the
+            worst way: the buyer believes they tried.
+          */
+          phone: emptyToNull(branch?.telephone ?? dealership?.telephone),
+          whatsapp: emptyToNull(branch?.whatsapp ?? dealership?.whatsapp),
           logoInitials: (dealership?.tradingName ?? "SD").split(" ").map((part) => part[0]).join("").slice(0, 2).toUpperCase(),
         },
         pricing: {
@@ -245,8 +302,8 @@ export class VehiclePlatformRepository implements VehicleEngineRepository {
           sellingPriceDisplay: formatCurrency(vehicle.askingPriceCents),
           previousPriceCents: pricingHistory.length > 1 ? pricingHistory[pricingHistory.length - 2]?.priceCents : undefined,
           reducedPrice: false,
-          financeEstimateDisplay: estimateMonthly(vehicle.askingPriceCents),
-          monthlyRepaymentDisplay: estimateMonthly(vehicle.askingPriceCents).replace("from ", ""),
+          financeEstimateDisplay: NO_FINANCE_FIGURE,
+          monthlyRepaymentDisplay: NO_FINANCE_FIGURE,
           currency: "ZAR",
           priceHistory: pricingHistory.map((entry) => ({
             date: entry.changedAt,
@@ -329,7 +386,16 @@ export class VehiclePlatformRepository implements VehicleEngineRepository {
             type: entry.eventType.includes("price") ? "price" : entry.eventType.includes("status") ? "status" : "note",
           })),
           trustIndicators: [
-            { id: "dealer", label: "Dealer verified", description: "Dealer account completed onboarding." },
+            /*
+              Was `{ label: "Dealer verified", description: "Dealer account completed onboarding." }`
+              — a badge whose own description conceded it meant something else. Completing onboarding
+              is the dealership filling in its own form; verification is SURF4CARS checking it. The
+              label now says what the description always said.
+
+              A real verification indicator is added by the surface when
+              `dealer.verificationStatus === "verified"`, which is a different fact from this one.
+            */
+            { id: "dealer", label: "Registered dealership", description: "Completed SURF4CARS onboarding." },
           ],
           // Related vehicles are derived rather than stored: nearest marketplace-visible stock by
           // body type, then make, then anything else live. Without this a dealer listing projects
@@ -412,7 +478,7 @@ export class VehiclePlatformRepository implements VehicleEngineRepository {
     if (filters.transmission) items = items.filter((item) => item.core.transmission.toLowerCase() === filters.transmission?.toLowerCase());
     if (filters.province) items = items.filter((item) => item.dealer.province.toLowerCase() === filters.province?.toLowerCase());
     if (filters.featured !== undefined) items = items.filter((item) => item.marketing.featured === filters.featured);
-    if (filters.verified !== undefined) items = items.filter((item) => item.dealer.verified === filters.verified);
+    if (filters.verified !== undefined) items = items.filter((item) => isVerifiedDealer(item.dealer.verificationStatus) === filters.verified);
 
     const compareBySort = (left: UnifiedVehicleRecord, right: UnifiedVehicleRecord): number => {
       switch (query.sort ?? "relevance") {

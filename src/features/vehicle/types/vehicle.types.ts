@@ -1,3 +1,5 @@
+import type { DealerVerificationStatus } from "@/domain/vehicle";
+
 import type { ShowcaseVehicleListing } from "@/features/search/config/search-showcase-listings";
 export type VehicleGalleryCategory =
   | "exterior"
@@ -52,14 +54,16 @@ export interface VehicleDealerProfile {
   readonly name: string;
   readonly slug: string;
   readonly logoInitials: string;
-  readonly verified: boolean;
-  readonly rating: number;
+  /* Was `verified: boolean`, and it was true for every dealership. Only `"verified"` may render a
+     badge — see `describeVerificationForCustomer`. */
+  readonly verificationStatus: DealerVerificationStatus;
+  readonly rating: number | null;
   readonly reviewCount: number;
-  readonly responseTime: string;
-  readonly yearsInBusiness: number;
+  readonly responseTime: string | null;
+  readonly yearsInBusiness: number | null;
   readonly vehiclesInStock: number;
-  readonly phone: string;
-  readonly whatsapp: string;
+  readonly phone: string | null;
+  readonly whatsapp: string | null;
 }
 
 export interface VehicleTrustIndicator {
@@ -78,8 +82,8 @@ export interface VehicleDetail {
   readonly model: string;
   readonly price: string;
   readonly priceNumeric: number;
-  readonly financeEstimate: string;
-  readonly monthlyRepayment: string;
+  readonly financeEstimate: string | null;
+  readonly monthlyRepayment: string | null;
   readonly year: number;
   readonly mileage: string;
   readonly transmission: string;

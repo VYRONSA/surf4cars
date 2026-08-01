@@ -1,4 +1,6 @@
 import { VEHICLE_STATUS, type VehicleStatus } from "@/domain/vehicle/constants/vehicle-status.constants";
+import { toDealerVerificationStatus } from "@/domain/vehicle";
+
 import type { UnifiedVehicleRecord } from "@/domain/vehicle";
 import type { VehicleMediaProvenance } from "@/domain/vehicle/types/vehicle-media.types";
 import { PREMIUM_IMAGES } from "@/config/images";
@@ -16,6 +18,11 @@ import { buildVehicleSlug, slugify } from "@/utils/slugify";
 const PLACEHOLDER_VEHICLE_IMAGE = PREMIUM_IMAGES.vehicles.details;
 
 /** Inventory lifecycle values that project to a marketplace-visible unified status. */
+const emptyToNull = (value: string | null | undefined): string | null => {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : null;
+};
+
 export const MARKETPLACE_VISIBLE_LIFECYCLE_STATUSES: readonly string[] = [
   "published",
   "performance-monitoring",
@@ -40,10 +47,13 @@ function formatCurrency(cents: number): string {
   }).format(cents / 100);
 }
 
-function estimateMonthly(cents: number): string {
-  const monthly = Math.round((cents / 100) / 72 * 1.18);
-  return `from R ${monthly.toLocaleString("en-ZA")} p/m`;
-}
+/**
+ * Removed — see the note in `vehicle-platform.repository.ts`.
+ *
+ * This was the second copy of `price / 72 * 1.18`. Fixing one and reading the other is exactly how
+ * the fabricated dealer block survived four programmes.
+ */
+const NO_FINANCE_FIGURE = null;
 
 function toUnifiedStatus(status: string): VehicleStatus {
   switch (status) {
@@ -381,9 +391,11 @@ export function buildUnifiedVehicleRecords(dataset: VehicleDataset): readonly Un
         year: vehicle.year,
         mileageKm: vehicle.mileageKm,
         mileageDisplay: `${vehicle.mileageKm.toLocaleString("en-ZA")} km`,
-        transmission: vehicle.transmission ?? "Automatic",
-        fuel: vehicle.fuel ?? "Petrol",
-        bodyType: vehicle.bodyType ?? "SUV",
+        /* The second copy of the specification fallbacks. Same reasoning as the platform
+           repository: a gearbox nobody recorded is not a display default. */
+        transmission: vehicle.transmission ?? "",
+        fuel: vehicle.fuel ?? "",
+        bodyType: vehicle.bodyType ?? "",
         engine: vehicle.engine ?? "Awaiting specification",
         colour: vehicle.colour ?? "Awaiting specification",
         condition: "used",
@@ -401,7 +413,7 @@ export function buildUnifiedVehicleRecords(dataset: VehicleDataset): readonly Un
       },
       dealer: {
         dealershipId: vehicle.dealershipId,
-        dealershipName: dealership?.tradingName ?? "SURF4CARS Dealer",
+        dealershipName: dealership?.tradingName ?? "",
         dealershipSlug: slugify(dealership?.tradingName ?? "surf4cars-dealer"),
         branchId: vehicle.branchId,
         branchName: branch?.name ?? "Main Branch",
@@ -409,16 +421,21 @@ export function buildUnifiedVehicleRecords(dataset: VehicleDataset): readonly Un
         sellingPriceCents: vehicle.askingPriceCents,
         status: unifiedStatus,
         dateAdded: vehicle.createdAt,
-        location: branch?.city ?? dealership?.city ?? "South Africa",
-        province: branch?.province ?? dealership?.province ?? "Western Cape",
-        verified: true,
-        rating: 4.8,
-        reviewCount: 24,
-        responseTime: "within 15 minutes",
-        yearsInBusiness: 8,
+        location: branch?.city ?? dealership?.city ?? "",
+        province: branch?.province ?? dealership?.province ?? "",
+        /* The second copy of the fabricated dealer block — see the note in
+           `vehicle-platform.repository.ts`. Two copies is why it survived four programmes: fixing
+           one and reading the other is how you conclude it is already fixed. */
+        verificationStatus: toDealerVerificationStatus(
+          (dealership as { verificationStatus?: unknown } | undefined)?.verificationStatus,
+        ),
+        rating: null,
+        reviewCount: 0,
+        responseTime: null,
+        yearsInBusiness: null,
         vehiclesInStock: liveStockByDealership.get(vehicle.dealershipId) ?? 0,
-        phone: branch?.telephone ?? dealership?.telephone ?? "+27",
-        whatsapp: branch?.whatsapp ?? dealership?.whatsapp ?? "+27",
+        phone: emptyToNull(branch?.telephone ?? dealership?.telephone),
+        whatsapp: emptyToNull(branch?.whatsapp ?? dealership?.whatsapp),
         logoInitials: (dealership?.tradingName ?? "SD").split(" ").map((part) => part[0]).join("").slice(0, 2).toUpperCase(),
       },
       pricing: {
@@ -426,8 +443,8 @@ export function buildUnifiedVehicleRecords(dataset: VehicleDataset): readonly Un
         sellingPriceDisplay: formatCurrency(vehicle.askingPriceCents),
         previousPriceCents: pricingHistory.length > 1 ? pricingHistory[pricingHistory.length - 2]?.priceCents : undefined,
         reducedPrice: false,
-        financeEstimateDisplay: estimateMonthly(vehicle.askingPriceCents),
-        monthlyRepaymentDisplay: estimateMonthly(vehicle.askingPriceCents).replace("from ", ""),
+        financeEstimateDisplay: NO_FINANCE_FIGURE,
+        monthlyRepaymentDisplay: NO_FINANCE_FIGURE,
         currency: "ZAR",
         priceHistory: pricingHistory.map((entry) => ({
           date: entry.changedAt,
@@ -512,7 +529,16 @@ export function buildUnifiedVehicleRecords(dataset: VehicleDataset): readonly Un
           type: entry.eventType.includes("price") ? "price" : entry.eventType.includes("status") ? "status" : "note",
         })),
         trustIndicators: [
-          { id: "dealer", label: "Dealer verified", description: "Dealer account completed onboarding." },
+          /*
+            Was `{ label: "Dealer verified", description: "Dealer account completed onboarding." }`
+            — a badge whose own description conceded it meant something else. Completing onboarding
+            is the dealership filling in its own form; verification is SURF4CARS checking it. The
+            label now says what the description always said.
+
+            A real verification indicator is added by the surface when
+            `dealer.verificationStatus === "verified"`, which is a different fact from this one.
+          */
+          { id: "dealer", label: "Registered dealership", description: "Completed SURF4CARS onboarding." },
         ],
         similarVehicleIds: resolveSimilarVehicleIds(vehicle, dataset.vehicles),
       },

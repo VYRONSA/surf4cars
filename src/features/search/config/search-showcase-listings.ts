@@ -11,7 +11,8 @@ export interface ShowcaseVehicleListing {
   readonly transmission: string;
   readonly dealer: string;
   readonly location: string;
-  readonly financeEstimate: string;
+  /** Null until a finance partner supplies a rate — see vehicle-platform.repository.ts. */
+  readonly financeEstimate?: string;
   readonly aiMatchScore: number;
   readonly imageSrc: string;
   readonly imagePosition: string;
