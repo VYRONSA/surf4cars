@@ -32,6 +32,9 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# The example is the exception, and has to be: it is the only record of which variables a deployment
+# needs, and `.env*` meant it was never committed. Every value in it is empty by construction.
+!.env.example
 
 # vercel
 .vercel
