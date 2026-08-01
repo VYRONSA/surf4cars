@@ -22,7 +22,7 @@
     "@supabase/supabase-js": "^2.108.2",
     "clsx": "^2.1.1",
     "lucide-react": "^1.21.0",
-    "next": "16.2.9",
+    "next": "16.2.12",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "simple-icons": "16.27.1",
@@ -36,8 +36,13 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "playwright": "1.52.0",
-    "sharp": "^0.34.5",
+    "postcss": "^8.5.25",
+    "sharp": "^0.35.3",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "overrides": {
+    "sharp": "$sharp",
+    "postcss": "$postcss"
   }
 }
