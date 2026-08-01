@@ -126,9 +126,17 @@ async function submitEnquiry(vehicle, note) {
     message: `Automated notification check ${note}.`,
     enquiryType: "contact",
   };
+  /* A distinct forwarded address per case. The enquiry endpoint is rate limited to ten submissions
+     per address per ten minutes, and this suite sends more than that — from one address it would
+     start failing at case six for a reason unrelated to notifications. Distinct addresses is also
+     the honest model: these are different buyers. */
+  const addressByte = (note.length * 7 + note.charCodeAt(0)) % 250;
   const response = await fetch(`${BASE}/api/v1/marketplace/enquiries`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "X-Forwarded-For": `198.51.100.${addressByte + 1}`,
+    },
     body: JSON.stringify(body),
   });
   const json = await response.json().catch(() => null);
@@ -443,6 +451,19 @@ try {
   {
     const browser = await chromium.launch();
     const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+
+    /*
+      Warm the routes first, and give navigation a real budget.
+      ========================================================
+      Turbopack compiles a route on its first request. `/search` and the vehicle page had never been
+      requested at this point in the run, and a cold compile exceeded Playwright's 30-second default
+      — reported as a page that would not load. AGENTS.md already records this exact false alarm
+      costing time once. Fetching the routes first moves the compile off the clock; the raised
+      timeout stops a slow machine reading as a broken page.
+    */
+    page.setDefaultNavigationTimeout(90_000);
+    page.setDefaultTimeout(30_000);
+    await fetch(`${BASE}/search`).catch(() => {});
 
     async function submitInBrowser(email, marker) {
       await setDealershipEmail(staffed.dealership_id, email);

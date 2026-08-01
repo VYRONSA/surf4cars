@@ -46,8 +46,30 @@ function secretMatches(presented: string, expected: string): boolean {
   return timingSafeEqual(a, b);
 }
 
+/**
+ * GET and POST do the same thing, because Vercel's scheduler issues GET.
+ *
+ * Worth stating plainly: a cron entry pointed at a POST-only route returns 405 every five minutes
+ * and the retry queue silently never drains. The dashboard would show the job running and
+ * succeeding at the platform level while nothing happened, which is the most expensive kind of
+ * wrong — a green tick over a dead process.
+ *
+ * `CRON_SECRET` is accepted alongside `NOTIFICATION_CRON_SECRET` for the same reason: Vercel injects
+ * `Authorization: Bearer $CRON_SECRET` automatically, but only for a variable of that exact name.
+ * Requiring our own name would mean the built-in authentication silently did nothing.
+ */
+function cronSecret(): string | undefined {
+  return (
+    process.env.NOTIFICATION_CRON_SECRET?.trim() || process.env.CRON_SECRET?.trim() || undefined
+  );
+}
+
+export async function GET(request: Request) {
+  return POST(request);
+}
+
 export async function POST(request: Request) {
-  const expected = process.env.NOTIFICATION_CRON_SECRET?.trim();
+  const expected = cronSecret();
 
   if (!expected) {
     return NextResponse.json(

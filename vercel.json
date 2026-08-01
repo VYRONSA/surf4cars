@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "regions": ["cpt1"],
+  "crons": [
+    {
+      "path": "/api/v1/internal/notifications/retry",
+      "schedule": "*/5 * * * *"
+    }
+  ]
+}
