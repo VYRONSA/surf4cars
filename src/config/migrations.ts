@@ -27,6 +27,8 @@ export const MIGRATION_MANIFEST: readonly MigrationDescriptor[] = [
   { id: "20260802090000_pcp017_editorial_console", description: "Editorial slots and placements for the Founder Editorial Console" },
   { id: "20260803090000_pcp029_enquiry_persistence", description: "Enquiry reference and source page on leads" },
   { id: "20260803100000_pcp029_leads_id_default", description: "Database-generated ids for leads and lead timeline" },
+  { id: "20260804090000_pcp030_enquiry_notifications", description: "Dealer enquiry notification delivery attempts and retry state" },
+  { id: "20260804100000_pcp030_recoverable_unconfigured", description: "Unconfigured notifications become due once a provider is set" },
 ] as const;
 
 /** The migration this build expects to be the most recent one applied. */
@@ -58,6 +60,7 @@ export const REQUIRED_TABLES: readonly string[] = [
   "lead_timeline",
   "editorial_slots",
   "editorial_placements",
+  "enquiry_notifications",
 ] as const;
 
 /** Storage buckets the media pipeline expects to exist. */
