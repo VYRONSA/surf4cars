@@ -14,6 +14,9 @@ export interface SearchResultsFrameworkProps {
   readonly emptySlot?: ReactNode;
   readonly className?: string;
   readonly resultsCount?: number;
+  readonly currentPage?: number;
+  readonly totalPages?: number;
+  readonly pageSize?: number;
   /** Composed from the active filters by the server component. */
   readonly heading?: string;
   readonly subheading?: string;
@@ -51,6 +54,9 @@ function SearchResultsFrameworkInner({
   emptySlot,
   className,
   resultsCount,
+  currentPage,
+  totalPages,
+  pageSize,
   heading = "Every vehicle",
   subheading,
   emptySubject,
@@ -60,7 +66,7 @@ function SearchResultsFrameworkInner({
      rather than as generosity. */
   return (
     <div className={cn("pb-14 lg:pb-16", className)}>
-      <div className="mx-auto max-w-[var(--container-2xl)] px-5 lg:px-8">
+      <div className="mx-auto max-w-[var(--container-2xl)] px-6 sm:px-8 lg:px-10">
         <SearchCatalogueHeader
           resultsCount={resultsCount}
           heading={heading}
@@ -92,7 +98,13 @@ function SearchResultsFrameworkInner({
             which is a control offering to page through zero vehicles. */}
         {resultsSlot && (
           <div className="mt-16">
-            <PublicPagination showInfo={false} />
+            <PublicPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              pageSize={pageSize}
+              totalItems={resultsCount}
+              showInfo
+            />
           </div>
         )}
       </div>

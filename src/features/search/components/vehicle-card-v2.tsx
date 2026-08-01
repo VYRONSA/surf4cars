@@ -81,15 +81,30 @@ export function VehicleCardV2({
           page was rendered mid-name — "Sunward …", "Crown Motor Comp…". Giving the wrapper a definite
           band and letting the pill fill it removes the circularity, and most names now fit whole.
         */}
+        {/* A short scrim under the badge. The pill carries its own background, but on a photograph
+            with a bright forecourt at the base — which is most of them — a dark pill on light tarmac
+            still reads as a sticker rather than as part of the image. */}
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(to_top,rgba(8,8,8,0.55)_0%,rgba(8,8,8,0.18)_45%,transparent_100%)]"
+        />
         <div className="absolute inset-x-3 bottom-3 z-10 flex">
           {dealerBadgeSlot ?? <DealerBadgePlaceholder />}
         </div>
       </div>
 
-      <div className="space-y-2 pt-4">
+      {/*
+        Grouped, not evenly spaced.
+        ==========================
+        Every element sat 8px from the next, so the name, the price, the specification and the town
+        read as four items of equal importance. They are not: the name and the price are one thought,
+        and the specification is a second. Spacing is the only thing that says so.
+      */}
+      <div className="pt-5">
         {aiMatchSlot}
         {titleSlot ?? <TextPlaceholder className="h-5 w-3/4" />}
-        {priceSlot ?? <TextPlaceholder className="h-6 w-1/3" />}
+        <div className="mt-1.5">{priceSlot ?? <TextPlaceholder className="h-6 w-1/3" />}</div>
+        <div className="mt-4 space-y-2">
         <SpecRow
           yearSlot={yearSlot}
           mileageSlot={mileageSlot}
@@ -102,6 +117,7 @@ export function VehicleCardV2({
             <TextPlaceholder className="h-3 w-1/2" />
           </div>
         )}
+        </div>
       </div>
     </article>
   );

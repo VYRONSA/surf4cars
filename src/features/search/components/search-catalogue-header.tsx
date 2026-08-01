@@ -65,14 +65,29 @@ export function SearchCatalogueHeader({
   );
 
   return (
-    <header className={cn("pt-10 lg:pt-16", className)}>
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-        <div className="max-w-2xl">
-          <h1 className="text-balance text-[length:var(--text-h1)] font-semibold leading-[1.06] tracking-[-0.02em] text-[var(--color-foreground)]">
+    /*
+      The marketplace opens like the homepage, in the same voice.
+      ==========================================================
+      A visitor arriving here from the hero met a 40px heading on flat graphite and knew immediately
+      they had crossed into a different product. The photography changes — that is the nature of a
+      catalogue — so the continuity has to come from the typography and the rhythm instead.
+
+      Three devices carry it, all borrowed from the hero rather than invented: a tracked-out eyebrow,
+      a display-scale statement, and the red hairline rule beneath it. Nothing else about the page's
+      structure changed; this is the same header doing the same job at the brand's actual scale.
+    */
+    <header className={cn("pt-14 lg:pt-20", className)}>
+      <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+        <div className="max-w-3xl">
+          <p className="text-[length:var(--text-caption)] font-medium uppercase tracking-[0.22em] text-[var(--color-muted)]">
+            Marketplace
+          </p>
+          <h1 className="mt-4 text-balance text-[length:var(--text-h1)] font-semibold leading-[1.02] tracking-[-0.025em] text-[var(--color-foreground)] lg:text-[length:var(--text-display-md)]">
             {heading}
           </h1>
+          <div aria-hidden className="mt-6 h-[3px] w-16 rounded-full bg-[var(--color-primary)]" />
           {subheading && (
-            <p className="mt-3 text-[length:var(--text-body-lg)] leading-relaxed text-[var(--color-muted-foreground)]">
+            <p className="mt-6 max-w-xl text-[length:var(--text-body-lg)] leading-relaxed text-[var(--color-muted-foreground)]">
               {subheading}
             </p>
           )}
@@ -125,7 +140,7 @@ export function SearchCatalogueHeader({
       {/* Collections, as links. Each is a real query and a real URL. */}
       <nav
         aria-label="Browse collections"
-        className="mt-8 flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="mt-10 flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {COLLECTION_LINKS.map((link) => {
           const active = activeCollection?.id === link.id;

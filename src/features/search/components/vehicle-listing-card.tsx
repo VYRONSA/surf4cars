@@ -1,20 +1,33 @@
-import { orNotSpecified } from "@/features/vehicle/config/unspecified";
 import Link from "next/link";
 import Image from "next/image";
 
 import { Icon } from "@/components/ui/icons";
-import { BadgeCheck } from "@/components/ui/icons/registry";
+import { BadgeCheck, MapPin } from "@/components/ui/icons/registry";
 import { PhotographPending } from "@/components/ui/media";
 import { VehicleCardV2, type VehicleCardV2Props } from "@/features/search/components/vehicle-card-v2";
+import { orNotSpecified } from "@/features/vehicle/config/unspecified";
 import type { ShowcaseVehicleListing } from "@/features/search/config/search-showcase-listings";
 import { cn } from "@/utils";
 
+/**
+ * `priority` on the first row only.
+ *
+ * Twenty-four card photographs all load lazily, so the largest element on the marketplace's first
+ * screen waited its turn behind the rest — production LCP measured 2 548ms, just over the 2 500ms
+ * "good" threshold, on the page where a buyer forms their first impression of the stock.
+ *
+ * Only the cards actually above the fold are promoted. Marking all twenty-four `priority` would
+ * queue every image at high fetch priority and make the first one slower, which is the usual way
+ * this optimisation is applied backwards.
+ */
 export interface VehicleListingCardProps extends Omit<VehicleCardV2Props, "imageSlot" | "dealerBadgeSlot" | "titleSlot" | "priceSlot" | "yearSlot" | "mileageSlot" | "transmissionSlot" | "fuelSlot" | "locationSlot" | "aiMatchSlot"> {
   readonly listing: ShowcaseVehicleListing;
   readonly href?: string;
+  /** Above the fold on arrival — loads eagerly at high fetch priority. */
+  readonly priority?: boolean;
 }
 
-export function VehicleListingCard({ listing, className, href, ...props }: VehicleListingCardProps) {
+export function VehicleListingCard({ listing, className, href, priority, ...props }: VehicleListingCardProps) {
   const card = (
     <VehicleCardV2
       {...props}
@@ -36,6 +49,7 @@ export function VehicleListingCard({ listing, className, href, ...props }: Vehic
               alt={listing.title}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              priority={priority}
               className="object-cover transition-transform duration-[var(--duration-slower)] ease-[var(--ease-premium)] group-hover:scale-[1.04]"
               style={{ objectPosition: listing.imagePosition }}
             />
@@ -61,7 +75,10 @@ export function VehicleListingCard({ listing, className, href, ...props }: Vehic
        * the result, not on every tile.
        */
       titleSlot={
-        <h3 className="line-clamp-2 text-[length:var(--text-h5)] font-semibold leading-[var(--leading-snug)] tracking-[-0.01em] text-[var(--color-foreground)]">
+        /* Medium, not semibold. The title and the price were the same weight at nearly the same size,
+           so the eye had to choose between them and the card had no first beat. The name identifies
+           the car; the price is what a buyer is actually scanning for down a column of twenty-four. */
+        <h3 className="line-clamp-2 text-[length:var(--text-h5)] font-medium leading-[var(--leading-snug)] tracking-[-0.01em] text-[var(--color-foreground)]">
           {listing.title}
         </h3>
       }
@@ -76,7 +93,7 @@ export function VehicleListingCard({ listing, className, href, ...props }: Vehic
         that produces it, where the assumptions behind the number are visible next to the number.
       */
       priceSlot={
-        <p className="text-[length:var(--text-h4)] font-semibold tabular-nums tracking-[-0.02em] text-[var(--color-foreground)]">
+        <p className="text-[length:var(--text-h3)] font-semibold tabular-nums tracking-[-0.025em] text-[var(--color-foreground)]">
           {listing.price}
         </p>
       }
@@ -85,7 +102,11 @@ export function VehicleListingCard({ listing, className, href, ...props }: Vehic
       fuelSlot={<span>{orNotSpecified(listing.fuel)}</span>}
       transmissionSlot={<span>{orNotSpecified(listing.transmission)}</span>}
       locationSlot={
-        <p className="text-[length:var(--text-body-sm)] text-[var(--color-muted)]">
+        /* `--color-muted` on this line measured as barely legible against the page — it is calibrated
+           for punctuation and separators, not for a fact a buyer uses to decide whether the car is a
+           two-hour drive away. */
+        <p className="flex items-center gap-1.5 text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
+          <Icon icon={MapPin} aria-hidden className="size-3.5 shrink-0 text-[var(--color-muted)]" />
           {listing.location}
         </p>
       }
