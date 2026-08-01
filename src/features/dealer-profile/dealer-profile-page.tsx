@@ -14,8 +14,8 @@ import {
   ExternalLink,
 } from "@/components/ui/icons/registry";
 import { ProvenanceNote } from "@/components/ui/shared";
+import { cn } from "@/utils";
 import { MediaAttribution } from "@/components/ui/media";
-import { PREMIUM_IMAGES } from "@/config/images/premium-images";
 import { HomeEditorialVehicleCard } from "@/features/marketplace/homepage/components/home-editorial-vehicle-card";
 import { VehicleUnavailable } from "@/features/vehicle/components/vehicle-unavailable";
 import type { DealerPublicProfile } from "@/features/dealer-profile/server/dealer-profile";
@@ -39,8 +39,8 @@ import type { DealerPublicProfile } from "@/features/dealer-profile/server/deale
  * to supply. The page is already shaped to receive them the moment the portal can write them — which is
  * the Phase 4 foundation, built by making the absence explicit rather than by building a portal.
  *
- * Photography comes from the premium media library's dealer slot, so approving a candidate on the creative
- * review board re-dresses every dealership at once, with no code change.
+ * Photography is the dealership's own or none at all — see the note on the hero. The shared media
+ * library slot that used to dress every profile identically was removed in PCP-033.
  */
 
 export interface DealerProfilePageProps {
@@ -116,20 +116,52 @@ export function DealerProfilePage({ dealer }: DealerProfilePageProps) {
     <>
       {/* ── Hero ─────────────────────────────────────────────────────────────────────────────── */}
       <section className="relative isolate overflow-hidden">
-        <div className="relative aspect-[21/9] max-h-[30rem] w-full">
-          <Image
-            src={PREMIUM_IMAGES.dealers.profile}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-[linear-gradient(to_top,rgba(8,8,8,0.96)_0%,rgba(8,8,8,0.62)_38%,rgba(8,8,8,0.18)_78%)]"
-          />
-          <MediaAttribution mediaId="dealer-cover" />
+        {/*
+          Their premises, or nobody's.
+          ============================
+          This rendered `PREMIUM_IMAGES.dealers.profile` — one stock showroom — as the hero of all 128
+          dealer profiles. A visitor reads a photograph at the top of a business's page as that
+          business's building, so the platform was showing them somewhere else's forecourt and letting
+          them believe it. Same class of fabrication as the 4.8-star rating, in the largest element on
+          the page.
+
+          When a dealership supplies a real cover it is used. When none exists the header is drawn
+          rather than photographed — a graphite field with the marque's own accent, which is honest
+          and, at this scale, reads more bespoke than a stock image every competitor also uses.
+        */}
+        {/*
+          A photograph needs room; a drawn field does not.
+          ===============================================
+          Keeping the 21:9 band when there is no cover left a 300px empty gradient above the
+          dealership's name — honest, and a void. The drawn version is sized to sit *behind* the
+          identity block rather than above it, so the header reads as one composed unit at every
+          dealership whether or not they have supplied a photograph.
+        */}
+        <div
+          className={cn(
+            "relative w-full",
+            dealer.coverImage ? "aspect-[21/9] max-h-[26rem]" : "h-56 lg:h-64",
+          )}
+        >
+          {dealer.coverImage ? (
+            <>
+              <Image src={dealer.coverImage} alt="" fill priority sizes="100vw" className="object-cover" />
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-[linear-gradient(to_top,rgba(8,8,8,0.96)_0%,rgba(8,8,8,0.62)_38%,rgba(8,8,8,0.18)_78%)]"
+              />
+              <MediaAttribution mediaId="dealer-cover" />
+            </>
+          ) : (
+            <div
+              aria-hidden
+              className="absolute inset-0 bg-[radial-gradient(120%_140%_at_12%_0%,var(--color-primary-muted)_0%,transparent_58%),linear-gradient(160deg,var(--color-surface-raised)_0%,var(--color-background)_78%)]"
+            >
+              {/* A single hairline of the brand accent along the base, so the drawn header still
+                  belongs to the same product as the photographed ones. */}
+              <span className="absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(to_right,transparent,var(--color-primary),transparent)] opacity-60" />
+            </div>
+          )}
         </div>
 
         <div className="relative mx-auto -mt-28 w-full max-w-[var(--container-2xl)] px-6 pb-10 sm:px-8 lg:-mt-32 lg:px-10">
@@ -226,9 +258,9 @@ export function DealerProfilePage({ dealer }: DealerProfilePageProps) {
             <Stat
               value={describeVerificationForCustomerProfile(dealer.verificationStatus)}
               label="SURF4CARS verification"
-              provenance={isVerifiedDealer(dealer.verificationStatus) ? "verified" : "platform"}
+              provenance={isVerifiedDealer(dealer.verificationStatus) ? "verified" : "recorded"}
             />
-            <Stat value={dealer.listedSince ?? "—"} label="On SURF4CARS since" provenance="platform" />
+            <Stat value={dealer.listedSince ?? "—"} label="On SURF4CARS since" provenance="recorded" />
             <Stat
               value={dealer.businessType ? dealer.businessType.replace(/^\w/, (c) => c.toUpperCase()) : "—"}
               label="Business type"

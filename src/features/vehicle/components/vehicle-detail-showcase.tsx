@@ -64,7 +64,7 @@ export function VehicleDetailShowcase({
   if (!lead) {
     return (
       <section className="border-b border-[var(--color-border-subtle)]">
-        <div className="mx-auto max-w-[var(--container-2xl)] px-5 py-20 lg:px-8 lg:py-28">
+        <div className="mx-auto max-w-[var(--container-2xl)] px-6 py-20 sm:px-8 lg:px-10 lg:py-28">
           <p className="text-[length:var(--text-overline)] font-semibold uppercase tracking-[0.22em] text-[var(--color-muted)]">
             {subtitle}
           </p>
@@ -140,7 +140,7 @@ export function VehicleDetailShowcase({
         </p>
       )}
 
-      <div className="relative mx-auto w-full max-w-[var(--container-2xl)] px-5 pb-12 pt-40 lg:px-8 lg:pb-16">
+      <div className="relative mx-auto w-full max-w-[var(--container-2xl)] px-6 pb-12 pt-40 sm:px-8 lg:px-10 lg:pb-16">
         <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
           <p className="text-[length:var(--text-overline)] font-semibold uppercase tracking-[0.22em] text-white/70">
             {subtitle}
@@ -164,9 +164,23 @@ export function VehicleDetailShowcase({
           <p className="text-[length:var(--text-h1)] font-semibold tabular-nums tracking-[-0.03em] text-white">
             {price}
           </p>
-          <p className="text-[length:var(--text-body-md)] text-white/65">
-            {monthlyRepayment} / month
-          </p>
+          {/*
+            Rendered only when there is a figure, which today there never is.
+            ================================================================
+            PCP-032 made `monthlyRepayment` nullable and removed the invented `price / 72 * 1.18`
+            behind it. This line kept its "/ month" suffix, so the largest number on the page read
+
+                R 445 000 / month
+
+            for every vehicle on the marketplace. A dangling unit is the worst possible residue of a
+            removed value: it does not look absent, it looks like a monthly instalment forty times the
+            real one, directly beneath the asking price.
+          */}
+          {monthlyRepayment && (
+            <p className="text-[length:var(--text-body-md)] text-white/65">
+              {monthlyRepayment} / month
+            </p>
+          )}
         </div>
 
         {/* Four facts, as one line. The full specification is a scroll away; this is what a buyer

@@ -73,13 +73,13 @@ export function VehicleDetailPage({
       {/* The description and the gallery run the full width of the page, above the grid. The gallery
           is the reason: inside a 62% content column it lost its fourth photograph to the column edge,
           and no breakout idiom survives an asymmetric grid cleanly. See the note in the strip. */}
-      <div className="mx-auto max-w-[var(--container-2xl)] px-5 pt-16 lg:px-8 lg:pt-24">
+      <div className="mx-auto max-w-[var(--container-2xl)] px-6 pt-16 sm:px-8 lg:px-10 lg:pt-24">
         <VehicleDetailDescription sections={vehicle.description} />
       </div>
 
       <VehicleDetailGalleryStrip title={vehicle.title} className="mt-10 lg:mt-14" />
 
-      <div className="mx-auto max-w-[var(--container-2xl)] px-5 pb-28 pt-16 lg:px-8 lg:pb-32 lg:pt-24">
+      <div className="mx-auto max-w-[var(--container-2xl)] px-6 pb-28 pt-16 sm:px-8 lg:px-10 lg:pb-32 lg:pt-24">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-16 xl:grid-cols-[minmax(0,1fr)_360px]">
           <div className="order-2 min-w-0 space-y-16 lg:order-none lg:space-y-20">
             <VehicleDetailHighlights vehicle={vehicle} insight={marketInsight} />

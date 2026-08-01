@@ -27,13 +27,22 @@ export type ProvenanceKind =
   /** Supplied by the dealership. True as far as we know; we did not witness it. */
   | "dealer"
   /** Checked by SURF4CARS during onboarding. */
-  | "verified";
+  | "verified"
+  /**
+   * A fact the platform holds but did not count — a registration date, a verification state.
+   *
+   * Added because "Counted by SURF4CARS" was sitting under "Not yet assessed" and under a
+   * registration year on the dealer profile. Neither is a count, and a provenance label that is
+   * itself inaccurate undermines the one thing the whole device exists to do.
+   */
+  | "recorded";
 
 const PROVENANCE: Record<ProvenanceKind, { readonly label: string; readonly icon: typeof Layers }> = {
   platform: { label: "Counted by SURF4CARS", icon: Layers },
   calculated: { label: "Calculated — indicative", icon: Calculator },
   dealer: { label: "Provided by the dealer", icon: Building2 },
   verified: { label: "Verified by SURF4CARS", icon: BadgeCheck },
+  recorded: { label: "Recorded by SURF4CARS", icon: Layers },
 };
 
 export interface ProvenanceNoteProps {

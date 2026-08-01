@@ -64,6 +64,15 @@ export interface DealerPublicProfile {
   readonly businessType: string | null;
   readonly verificationStatus: DealerVerificationStatus;
   /**
+   * The dealership's own photograph of its premises, or null.
+   *
+   * Null is the answer for all 128 rows today: every `cover_data_url` in the database points at the
+   * same shared file, `/images/dealers/dealer-profile-hero.webp`. Rendering that as a page hero told
+   * every visitor they were looking at *this* dealership's showroom, 128 times over, with one stock
+   * photograph — the same class of fabrication as the 4.8 rating, in the largest element on the page.
+   */
+  readonly coverImage: string | null;
+  /**
    * True where this record exists to demonstrate the product.
    *
    * Surfaced to the customer rather than kept internal. Demonstration contact details are platform-owned and
@@ -186,8 +195,25 @@ interface DealershipRow {
   website: string | null;
   onboarding_status: string | null;
   verification_status: string | null;
+  cover_data_url: string | null;
   created_at: string | null;
 }
+
+/*
+  A cover counts as the dealership's only if it is not one of the platform's shared placeholders.
+  Seeded rows all carry the same hero file and the SURF4CARS logo, so "the column is populated" is
+  not the same question as "they gave us a photograph".
+*/
+const SHARED_PLACEHOLDER_MEDIA = [
+  "/images/dealers/dealer-profile-hero.webp",
+  "/images/branding/logo.png",
+];
+
+const genuineCover = (value: string | null): string | null => {
+  const trimmed = value?.trim();
+  if (!trimmed) return null;
+  return SHARED_PLACEHOLDER_MEDIA.includes(trimmed) ? null : trimmed;
+};
 
 const toNumber = (value: string | null): number | null => {
   const parsed = Number(value);
@@ -206,7 +232,7 @@ export async function loadDealerProfile(slug: string): Promise<DealerPublicProfi
     const { data, error } = await supabase
       .from("dealerships")
       .select(
-        "id,business_name,trading_name,business_type,physical_address,province,city,postal_code,gps_latitude,gps_longitude,telephone,whatsapp,email,website,onboarding_status,verification_status,created_at,is_demonstration",
+        "id,business_name,trading_name,business_type,physical_address,province,city,postal_code,gps_latitude,gps_longitude,telephone,whatsapp,email,website,onboarding_status,verification_status,cover_data_url,created_at,is_demonstration",
       )
       .limit(500);
 
@@ -266,6 +292,7 @@ export async function loadDealerProfile(slug: string): Promise<DealerPublicProfi
         made the platform vouch for 128 businesses it had never assessed.
       */
       verificationStatus: toDealerVerificationStatus(row.verification_status),
+      coverImage: genuineCover(row.cover_data_url),
       isDemonstration: row.is_demonstration === true,
       vehiclesInStock: theirs.length,
       listedSince: row.created_at ? new Date(row.created_at).getFullYear().toString() : null,
