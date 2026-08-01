@@ -30,6 +30,7 @@ export const MIGRATION_MANIFEST: readonly MigrationDescriptor[] = [
   { id: "20260804090000_pcp030_enquiry_notifications", description: "Dealer enquiry notification delivery attempts and retry state" },
   { id: "20260804100000_pcp030_recoverable_unconfigured", description: "Unconfigured notifications become due once a provider is set" },
   { id: "20260805090000_prp006_rate_limit_windows", description: "Durable rate limit windows for unauthenticated endpoints" },
+  { id: "20260806090000_pcp032_dealer_verification", description: "Real dealership verification state, replacing a hardcoded verified flag" },
 ] as const;
 
 /** The migration this build expects to be the most recent one applied. */

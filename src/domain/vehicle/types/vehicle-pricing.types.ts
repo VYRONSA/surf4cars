@@ -10,8 +10,15 @@ export interface VehiclePricingData {
   readonly sellingPriceDisplay: string;
   readonly previousPriceCents?: number;
   readonly reducedPrice: boolean;
-  readonly financeEstimateDisplay: string;
-  readonly monthlyRepaymentDisplay: string;
+  /*
+    Null until a finance partner supplies a rate.
+    ============================================
+    These carried "from R X p/m", computed as price / 72 * 1.18 — a multiplier that corresponds to
+    no interest rate, over a term nobody stated, for a product no lender had agreed to. Nullable so
+    the surfaces have to handle absence rather than print whatever arrives.
+  */
+  readonly financeEstimateDisplay: string | null;
+  readonly monthlyRepaymentDisplay: string | null;
   readonly interestRatePercent?: number;
   readonly termMonths?: number;
   readonly depositCents?: number;

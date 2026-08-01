@@ -8,6 +8,15 @@ export type {
 } from "./vehicle-core.types";
 
 export type { VehicleDealerData } from "./vehicle-dealer.types";
+export {
+  DEALER_VERIFICATION_STATUSES,
+  describeVerificationForCustomer,
+  describeVerificationForOperations,
+  isDealerVerificationStatus,
+  isVerifiedDealer,
+  toDealerVerificationStatus,
+} from "./dealer-verification.types";
+export type { DealerVerificationStatus } from "./dealer-verification.types";
 
 export type {
   VehiclePriceHistoryEntry,
