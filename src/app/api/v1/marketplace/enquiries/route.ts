@@ -5,7 +5,12 @@ import {
   AUTH_USER_TYPE_COOKIE,
 } from "@/features/authentication/constants";
 import { parseCreateDealerEnquiryRequest } from "@/features/enquiries/server/dealer-enquiry.request";
-import { createDealerEnquiry } from "@/features/enquiries/server/dealer-enquiry.service";
+import { assertEnquiryTargetIsContactable } from "@/features/enquiries/server/dealer-enquiry.service";
+import {
+  EnquiryPersistenceError,
+  persistEnquiry,
+} from "@/features/enquiries/server/enquiry-persistence";
+import { buildEnquiryFingerprint } from "@/features/enquiries/server/enquiry-fingerprint";
 
 function parseCookieHeader(cookieHeader: string | null): Map<string, string> {
   const cookies = new Map<string, string>();
@@ -29,14 +34,34 @@ export async function POST(request: Request) {
     const buyerId = cookies.get(ACTIVE_BUYER_COOKIE)?.trim() || null;
     const userType = cookies.get(AUTH_USER_TYPE_COOKIE)?.trim() || null;
 
-    const result = await createDealerEnquiry({
+    /* The vehicle must still be for sale, and must belong to the dealership named. Checked before
+       anything is written so a stale listing produces a clear message rather than an orphan lead. */
+    await assertEnquiryTargetIsContactable(parsed);
+
+    const enquiry = await persistEnquiry({
       ...parsed,
       buyerId: userType === "buyer" ? buyerId : null,
+      fingerprint: buildEnquiryFingerprint(parsed),
+      sourcePage: request.headers.get("referer"),
     });
 
-    return NextResponse.json({ ok: true, duplicate: result.duplicate, enquiry: result.enquiry });
+    return NextResponse.json({
+      ok: true,
+      duplicate: enquiry.duplicate,
+      reference: enquiry.reference,
+    });
   } catch (error) {
+    /*
+      Two different failures, two different status codes.
+      =================================================
+      A persistence failure is ours: 503, because the request was valid and retrying may well work.
+      Anything else is a problem with the submission itself: 400, because retrying unchanged will
+      not. Collapsing both into 400 told a buyer their details were wrong when our database was down.
+    */
+    if (error instanceof EnquiryPersistenceError) {
+      return NextResponse.json({ error: error.message, retryable: true }, { status: 503 });
+    }
     const message = error instanceof Error ? error.message : "Failed to submit enquiry.";
-    return NextResponse.json({ error: message }, { status: 400 });
+    return NextResponse.json({ error: message, retryable: false }, { status: 400 });
   }
 }

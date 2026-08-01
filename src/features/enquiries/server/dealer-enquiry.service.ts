@@ -317,7 +317,7 @@ async function appendAnalytics(params: {
  * Resolution goes through the Unified Vehicle Intelligence Engine — the same source the
  * marketplace renders from — so enquiries can only target what a buyer can actually see.
  */
-async function assertEnquiryTargetIsContactable(input: CreateDealerEnquiryInput): Promise<void> {
+export async function assertEnquiryTargetIsContactable(input: CreateDealerEnquiryInput): Promise<void> {
   const record = await getVehicleEngine().getById(input.vehicleId);
 
   if (!record) {

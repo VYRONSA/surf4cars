@@ -4,7 +4,10 @@ import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { FormField, Input, Textarea } from "@/components/ui/form";
-import { submitVehicleEnquiry } from "@/features/vehicle/services/vehicle-enquiry.api";
+import {
+  EnquirySubmissionError,
+  submitVehicleEnquiry,
+} from "@/features/vehicle/services/vehicle-enquiry.api";
 import { cn } from "@/utils";
 
 export function VehicleEnquiryPanel(props: {
@@ -26,13 +29,14 @@ export function VehicleEnquiryPanel(props: {
   const [buyerPhone, setBuyerPhone] = useState("");
   const [message, setMessage] = useState("I’m interested in this vehicle.");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [status, setStatus] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  /* The reference, not a boolean. A confirmation that cannot be quoted back to the dealership is
+     just a colour change. */
+  const [sent, setSent] = useState<{ reference: string; duplicate: boolean } | null>(null);
+  const [error, setError] = useState<{ message: string; retryable: boolean } | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
 
   async function submit() {
     setError(null);
-    setStatus(null);
 
     const formElement = formRef.current;
     const formData = formElement ? new FormData(formElement) : null;
@@ -84,14 +88,17 @@ export function VehicleEnquiryPanel(props: {
     ).trim();
 
     if (!resolvedBuyerName || !resolvedBuyerPhone || !resolvedBuyerEmail) {
-      setError("Please complete your name, phone, and email before sending an enquiry.");
+      setError({
+        message: "Please complete your name, phone and email before sending.",
+        retryable: false,
+      });
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      await submitVehicleEnquiry({
+      const result = await submitVehicleEnquiry({
         vehicleId: props.vehicleId,
         dealershipId: props.dealershipId,
         buyerName: resolvedBuyerName,
@@ -100,12 +107,48 @@ export function VehicleEnquiryPanel(props: {
         message: resolvedMessage || "I’m interested in this vehicle.",
         enquiryType: mode,
       });
-      setStatus("Enquiry sent to the dealer.");
+      /* Only reached when the server has committed the row — `persistEnquiry` throws otherwise, so
+         there is no path where a buyer is told this and nothing was recorded. */
+      setSent(result);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to submit enquiry.");
+      setError(
+        err instanceof EnquirySubmissionError
+          ? { message: err.message, retryable: err.retryable }
+          : { message: "We could not send your enquiry.", retryable: true },
+      );
     } finally {
       setIsSubmitting(false);
     }
+  }
+
+  /*
+    Once it is in, the form goes.
+    ============================
+    A confirmation line under a still-editable form invites a second submission and leaves the buyer
+    unsure whether the first one counted. Replacing the form with the reference is unambiguous, and
+    the reference is the thing they will be asked for when they ring.
+  */
+  if (sent) {
+    return (
+      <div className="max-w-2xl rounded-[var(--radius-2xl)] border border-[var(--color-success)]/30 bg-[var(--color-success-muted)] p-6 lg:p-8">
+        <p className="text-[length:var(--text-h5)] font-semibold text-[var(--color-foreground)]">
+          {sent.duplicate ? "You have already sent this one." : "Your enquiry is in."}
+        </p>
+        <p className="mt-2 text-[length:var(--text-body-md)] leading-relaxed text-[var(--color-muted-foreground)]">
+          The dealership has it and will be in touch. Quote this reference if you call them first.
+        </p>
+        <p className="mt-5 font-mono text-[length:var(--text-h4)] font-semibold tracking-[0.08em] text-[var(--color-foreground)]">
+          {sent.reference}
+        </p>
+        <p className="mt-5 text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
+          Prefer to speak now?{" "}
+          <a href={`tel:${props.dealerPhone}`} className="motion-nav underline underline-offset-4 hover:text-[var(--color-foreground)]">
+            Call the dealership
+          </a>
+          .
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -194,8 +237,27 @@ export function VehicleEnquiryPanel(props: {
         </p>
       </div>
 
-      {status && <p className="text-[length:var(--text-body-sm)] text-[var(--color-success)]">{status}</p>}
-      {error && <p className="text-[length:var(--text-body-sm)] text-[var(--color-danger)]">{error}</p>}
+      {error && (
+        <div
+          role="alert"
+          className="rounded-[var(--radius-lg)] border border-[var(--color-danger)]/30 bg-[var(--color-danger)]/10 px-4 py-3"
+        >
+          <p className="text-[length:var(--text-body-sm)] text-[var(--color-danger)]">
+            {error.message}
+          </p>
+          {/*
+            The buyer's typing is still in the form — nothing is cleared on failure — so "try again"
+            means pressing the button, not filling it in a second time. Saying so removes the doubt
+            that makes people abandon.
+          */}
+          {error.retryable && (
+            <p className="mt-1 text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">
+              Your details are still here. Press Send enquiry to try again, or call the dealership
+              on the number above.
+            </p>
+          )}
+        </div>
+      )}
     </form>
   );
 }

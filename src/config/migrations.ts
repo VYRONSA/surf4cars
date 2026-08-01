@@ -25,6 +25,8 @@ export const MIGRATION_MANIFEST: readonly MigrationDescriptor[] = [
   { id: "20260729093000_pcp001j1_storage_buckets", description: "Storage buckets and access policies" },
   { id: "20260729094000_pcp001j2_rls_recursion_and_staff_access", description: "RLS recursion fix and dealer staff access" },
   { id: "20260802090000_pcp017_editorial_console", description: "Editorial slots and placements for the Founder Editorial Console" },
+  { id: "20260803090000_pcp029_enquiry_persistence", description: "Enquiry reference and source page on leads" },
+  { id: "20260803100000_pcp029_leads_id_default", description: "Database-generated ids for leads and lead timeline" },
 ] as const;
 
 /** The migration this build expects to be the most recent one applied. */
@@ -54,6 +56,8 @@ export const REQUIRED_TABLES: readonly string[] = [
   "buyer_alert_subscriptions",
   "leads",
   "lead_timeline",
+  "editorial_slots",
+  "editorial_placements",
 ] as const;
 
 /** Storage buckets the media pipeline expects to exist. */
