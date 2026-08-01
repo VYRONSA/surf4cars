@@ -1,3 +1,4 @@
+export { SurfMarque, type SurfMarqueProps, type SurfMarqueSize } from "./surf-marque";
 export { SurfLogo, SurfLogoLink, type SurfLogoProps, type SurfLogoVariant } from "./surf-logo";
 export {
   SurfWordmark,

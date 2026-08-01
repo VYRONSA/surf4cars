@@ -133,3 +133,92 @@
     filter: none;
   }
 }
+
+/* ── The SURF4CARS marque ────────────────────────────────────────────────────────────────────────
+   Surface treatment for `SurfMarque`. Kept here rather than in the component because a brand mark's
+   finish should be defined once and inherited by every place it appears — a wordmark that is subtly
+   different in the footer from the header is the kind of thing nobody can name and everybody feels.
+   ──────────────────────────────────────────────────────────────────────────────────────────────── */
+
+.surf-marque {
+  line-height: 1;
+  white-space: nowrap;
+  font-feature-settings: "kern" 1, "liga" 1;
+  /* Optical, not metric. At display weight the default kerning closes the counters of U and R. */
+  font-kerning: normal;
+}
+
+/*
+  Brushed metal.
+  =============
+  Bright at the crown, a soft dip through the optical centre, lift again at the base — how light
+  falls on a horizontal brushed panel. The single narrow highlight at 46–52% is the only specular
+  band; real chrome has exactly one, and a second destroys it.
+
+  Stops are close together on purpose. Spread them and this stops being metal and becomes a grey
+  fade, which is the failure mode the brief names as a "cheap gradient".
+*/
+.surf-marque__metal {
+  background-image: linear-gradient(
+    177deg,
+    #ffffff 0%,
+    #f2f4f7 22%,
+    #c8ced6 40%,
+    #ffffff 48%,
+    #cfd5dd 56%,
+    #eef1f5 78%,
+    #ffffff 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* Depth, at the threshold of visibility. A single hairline shadow under the glyph edge is what
+     separates a mark sitting *on* a photograph from one floating above it. Any heavier and it
+     becomes an emboss. */
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.28)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.24));
+}
+
+.surf-marque__accent {
+  color: var(--color-primary);
+  /* The accent gets the same hairline, and nothing else. No glow — the brief is explicit, and a
+     glowing numeral is the single fastest way to make a marque look like a sticker. */
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.3)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.22));
+}
+
+.surf-marque__swoosh {
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35));
+}
+
+.surf-marque__locality {
+  /*
+    Centring a tracked-out line lands it left of true centre.
+    ========================================================
+    `letter-spacing` adds its gap *after* every character including the last, so the browser centres
+    a box that is one gap wider than the visible text and the line sits half a gap too far left. Half
+    the tracking, added back as an indent, puts it where the eye expects. Set to a full gap first,
+    which over-corrected and pushed it visibly right — the failure was symmetrical and just as wrong.
+  */
+  text-indent: 0.22em;
+}
+
+/* The mark is a link in the masthead. The response is a lift of the specular band, not a colour
+   change — metal catches more light when it moves, it does not change hue. */
+a:hover .surf-marque__metal,
+a:focus-visible .surf-marque__metal {
+  background-image: linear-gradient(
+    177deg,
+    #ffffff 0%,
+    #ffffff 24%,
+    #d8dde4 38%,
+    #ffffff 46%,
+    #dde2e9 54%,
+    #f5f7f9 78%,
+    #ffffff 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .surf-marque__metal {
+    transition: none;
+  }
+}
