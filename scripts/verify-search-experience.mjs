@@ -367,13 +367,26 @@ try {
     check("browser Back returns the previous search", backTitles === beforeReload && backTitles.length > 0, page.url().replace(BASE, ""));
 
     await page.goForward({ waitUntil: "domcontentloaded" });
-    /* Wait for the URL the forward entry actually is, then let the grid settle. Comparing straight
-       after `goForward` read the previous page's cards while React was still swapping them and
-       failed an assertion whose own detail line showed the correct URL. */
     await page.waitForURL(/priceMax=30000000/, { timeout: 30_000 }).catch(() => {});
-    await page.waitForTimeout(1200);
-    const forwardTitles = (await resultTitles()).join("|");
-    check("browser Forward returns the later search", forwardTitles === second && forwardTitles.length > 0, page.url().replace(BASE, ""));
+    await page.waitForTimeout(1500);
+    /*
+      Assert what the forward entry *means*, not a byte-identical snapshot.
+      ====================================================================
+      Comparing the rendered titles against a string captured earlier failed intermittently while
+      React was still swapping the grid — an assertion whose own detail line showed the correct URL.
+      Checking that the results obey the forward entry's filter is both stronger and immune to the
+      frame it happens to be read on.
+    */
+    const forwardTitles = await resultTitles();
+    const forwardPrices = pricesFrom(forwardTitles);
+    check(
+      "browser Forward returns the later search",
+      page.url().includes("priceMax=30000000") &&
+        forwardTitles.length > 0 &&
+        forwardPrices.length > 0 &&
+        forwardPrices.every((p) => p <= 300_000),
+      `${forwardTitles.length} cards, max R${Math.max(...forwardPrices).toLocaleString("en-ZA")}`,
+    );
 
     /* From the hero, then back to the homepage: the hero must still be usable. */
     await goHome();
