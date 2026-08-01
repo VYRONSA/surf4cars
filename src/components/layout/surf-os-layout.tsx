@@ -44,3 +44,7 @@ export function AdminShellLayout({ children }: { readonly children: ReactNode })
 export function DeveloperShellLayout({ children }: { readonly children: ReactNode }) {
   return <SurfOsLayout portal="developer">{children}</SurfOsLayout>;
 }
+
+export function OperationsShellLayout({ children }: { readonly children: ReactNode }) {
+  return <SurfOsLayout portal="operations" pageVariant="analytics">{children}</SurfOsLayout>;
+}

@@ -37,3 +37,99 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/**
+ * SURF4CARS wordmark
+ * ==================
+ *
+ * The primary brand identifier. Set in type rather than shipped as an image, deliberately: a wordmark
+ * that is text stays crisp at every size and pixel density, scales with the type ramp, inherits the
+ * palette, remains selectable and readable by assistive technology, and costs no bytes. The previous
+ * treatment was a 220px raster with the wordmark and two taglines baked into the pixels, which could
+ * be none of those things.
+ *
+ * Composition is SURF · 4 · CARS. The "4" carries the performance red and nothing else does, so the
+ * brand has exactly one accent and the eye lands on it.
+ *
+ * Interaction is two effects, both restrained, both hover-only:
+ *
+ *   the sheen  — a narrow highlight travelling once across the lettering. Implemented as a gradient
+ *                clipped to the glyphs, so it lights the letterforms themselves rather than sliding a
+ *                white bar over them.
+ *   the glow   — the red "4" blooms slightly. A drop-shadow in the brand's own glow red, at a radius
+ *                small enough to read as depth rather than as neon.
+ *
+ * Confidence is the point. Nothing translates, nothing bounces, nothing repeats on a loop.
+ */
+.brand-wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.06em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  white-space: nowrap;
+  /* Optical sizing: a wordmark is read as a shape, so the glyphs are tightened, not the word spacing. */
+  font-feature-settings: "kern" 1, "liga" 1;
+}
+
+.brand-wordmark__word {
+  /* The sheen lives in the background and is clipped to the glyphs. 300% wide so the highlight can
+     start fully off the left edge and finish fully off the right. */
+  background-image: linear-gradient(
+    100deg,
+    var(--color-foreground) 0%,
+    var(--color-foreground) 38%,
+    color-mix(in srgb, white 100%, transparent) 46%,
+    #ffffff 50%,
+    color-mix(in srgb, white 100%, transparent) 54%,
+    var(--color-foreground) 62%,
+    var(--color-foreground) 100%
+  );
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: background-position var(--duration-slower) var(--ease-premium);
+}
+
+.brand-wordmark__accent {
+  color: var(--color-primary);
+  transition:
+    color var(--motion-button),
+    filter var(--motion-button);
+}
+
+.brand-wordmark:hover .brand-wordmark__word,
+.brand-wordmark:focus-visible .brand-wordmark__word {
+  background-position: 0 0;
+}
+
+.brand-wordmark:hover .brand-wordmark__accent,
+.brand-wordmark:focus-visible .brand-wordmark__accent {
+  color: var(--color-primary-glow);
+  filter: drop-shadow(0 0 0.32em color-mix(in srgb, var(--color-primary-glow) 62%, transparent));
+}
+
+/**
+ * Reduced motion and reduced transparency both land here.
+ *
+ * The sheen is decorative and travels across a large glyph run, so it is removed outright rather than
+ * shortened — a highlight that snaps between two positions reads as a flicker. The glyphs fall back to
+ * a flat foreground fill, which is what the wordmark looks like at rest anyway.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .brand-wordmark__word {
+    background-image: none;
+    background-clip: border-box;
+    -webkit-background-clip: border-box;
+    color: var(--color-foreground);
+    transition: none;
+  }
+
+  .brand-wordmark:hover .brand-wordmark__accent,
+  .brand-wordmark:focus-visible .brand-wordmark__accent {
+    filter: none;
+  }
+}

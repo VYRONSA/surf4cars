@@ -16,8 +16,8 @@ import type { OnboardingStepId } from "@/features/dealer-onboarding/types/onboar
 import { cn } from "@/utils";
 
 export function StepReview() {
-  const { data, goToStep, completeOnboarding } = useOnboarding();
-  const { dealership, branch, team, subscriptionPackage } = data;
+  const { data, goToStep, completeOnboarding, errorMessage, isSubmitting } = useOnboarding();
+  const { dealership, branches, ownerAccount, staffInvites, subscriptionPackage } = data;
 
   const businessTypeLabel =
     BUSINESS_TYPES.find((t) => t.id === dealership.businessType)?.label ?? "—";
@@ -25,9 +25,10 @@ export function StepReview() {
   const packageLabel =
     SUBSCRIPTION_PACKAGES.find((p) => p.id === subscriptionPackage)?.name ?? "—";
 
-  function handleComplete() {
-    completeOnboarding();
-    return false;
+  async function handleComplete() {
+    const completed = await completeOnboarding();
+    if (!completed) return false;
+    return true;
   }
 
   return (
@@ -43,20 +44,19 @@ export function StepReview() {
 
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
         <ReviewSection title="Dealership" stepId="dealership" onEdit={goToStep}>
-          <ReviewRow label="Dealership Name" value={dealership.dealershipName} />
+          <ReviewRow label="Business Name" value={dealership.businessName} />
           <ReviewRow label="Trading Name" value={dealership.tradingName} />
+          <ReviewRow label="Registration Number" value={dealership.registrationNumber} />
+          <ReviewRow label="VAT Number" value={dealership.vatNumber} />
+          <ReviewRow label="Dealer Licence" value={dealership.dealerLicenceNumber || "—"} />
           <ReviewRow label="Business Type" value={businessTypeLabel} />
-          <ReviewRow
-            label="Location"
-            value={
-              dealership.city && dealership.province
-                ? `${dealership.city}, ${dealership.province}`
-                : "—"
-            }
-          />
-          {dealership.website && (
-            <ReviewRow label="Website" value={dealership.website} />
-          )}
+          <ReviewRow label="Address" value={dealership.physicalAddress} />
+          <ReviewRow label="Location" value={`${dealership.city}, ${dealership.province} ${dealership.postalCode}`} />
+          <ReviewRow label="GPS" value={`${dealership.gps.latitude}, ${dealership.gps.longitude}`} />
+          <ReviewRow label="Telephone" value={dealership.telephone} />
+          <ReviewRow label="WhatsApp" value={dealership.whatsapp} />
+          <ReviewRow label="Email" value={dealership.email} />
+          <ReviewRow label="Website" value={dealership.website || "—"} />
         </ReviewSection>
 
         <ReviewSection title="Branding" stepId="branding" onEdit={goToStep}>
@@ -64,17 +64,28 @@ export function StepReview() {
         </ReviewSection>
 
         <ReviewSection title="Branch" stepId="branch" onEdit={goToStep}>
-          <ReviewRow label="Branch Name" value={branch.branchName} />
-          <ReviewRow label="Address" value={branch.physicalAddress} />
-          <ReviewRow label="Contact" value={branch.contactNumber} />
-          <ReviewRow label="Business Hours" value={branch.businessHours} />
+          <ReviewRow label="Total Branches" value={String(branches.length)} />
+          {branches.map((branch, index) => (
+            <ReviewRow
+              key={branch.id}
+              label={`Branch ${index + 1}`}
+              value={`${branch.branchName} (${branch.city}, ${branch.province})`}
+            />
+          ))}
         </ReviewSection>
 
         <ReviewSection title="Team" stepId="team" onEdit={goToStep}>
-          <ReviewRow label="Full Name" value={team.fullName} />
-          <ReviewRow label="Position" value={team.position} />
-          <ReviewRow label="Email" value={team.email} />
+          <ReviewRow label="Owner" value={ownerAccount.fullName} />
+          <ReviewRow label="Owner Email" value={ownerAccount.email} />
           <ReviewRow label="Password" value="••••••••" />
+          <ReviewRow label="Staff Invites" value={String(staffInvites.length)} />
+          {staffInvites.map((invite, index) => (
+            <ReviewRow
+              key={invite.id}
+              label={`Invite ${index + 1}`}
+              value={`${invite.fullName} (${invite.role})`}
+            />
+          ))}
         </ReviewSection>
 
         <ReviewSection
@@ -87,10 +98,16 @@ export function StepReview() {
         </ReviewSection>
       </div>
 
+      {errorMessage && (
+        <Text variant="body-sm" tone="danger" className="mt-6" role="alert">
+          {errorMessage}
+        </Text>
+      )}
+
       <div className="mt-10">
         <OnboardingNavigation
           onContinue={handleComplete}
-          continueLabel="Complete Setup"
+          continueLabel={isSubmitting ? "Completing..." : "Complete Setup"}
         />
       </div>
     </div>

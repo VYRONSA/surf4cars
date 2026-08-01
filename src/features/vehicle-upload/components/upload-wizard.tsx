@@ -5,7 +5,6 @@ import { StepFeatures } from "@/features/vehicle-upload/components/steps/step-fe
 import { StepIdentification } from "@/features/vehicle-upload/components/steps/step-identification";
 import { StepMedia } from "@/features/vehicle-upload/components/steps/step-media";
 import { StepPricing } from "@/features/vehicle-upload/components/steps/step-pricing";
-import { StepPublishing } from "@/features/vehicle-upload/components/steps/step-publishing";
 import { StepReview } from "@/features/vehicle-upload/components/steps/step-review";
 import { StepSpecifications } from "@/features/vehicle-upload/components/steps/step-specifications";
 import { StepSuccess } from "@/features/vehicle-upload/components/steps/step-success";
@@ -15,13 +14,12 @@ import type { UploadStepId } from "@/features/vehicle-upload/types/upload.types"
 import { cn } from "@/utils";
 
 const STEP_COMPONENTS: Record<UploadStepId, React.ComponentType> = {
+  media: StepMedia,
+  specifications: StepSpecifications,
   identification: StepIdentification,
   pricing: StepPricing,
-  specifications: StepSpecifications,
   features: StepFeatures,
-  media: StepMedia,
   description: StepDescription,
-  publishing: StepPublishing,
   review: StepReview,
 };
 
@@ -40,7 +38,6 @@ export function UploadWizard() {
 
   return (
     <div
-      key={currentStep}
       className={cn("flex flex-1 flex-col", uploadPolish.stepTransition)}
       role="region"
       aria-live="polite"

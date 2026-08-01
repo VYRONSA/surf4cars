@@ -36,7 +36,7 @@ export const HEALTH_STYLES = {
     badge: "info",
     ring: "ring-[var(--color-primary)]/30",
     bg: "bg-[var(--color-primary-muted)]",
-    text: "text-[var(--color-primary)]",
+    text: "text-[var(--color-primary-text)]",
   },
   "needs-attention": {
     label: "Needs Attention",

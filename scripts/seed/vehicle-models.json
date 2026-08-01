@@ -1,0 +1,237 @@
+[
+  {
+    "make": "Lexus",
+    "model": "NX",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Volvo",
+    "model": "XC90",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Volvo",
+    "model": "XC60",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "BMW",
+    "model": "X5",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Jaguar",
+    "model": "E-Pace",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Jaguar",
+    "model": "F-Pace",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Porsche",
+    "model": "Macan",
+    "bodyType": "Coupe"
+  },
+  {
+    "make": "Hyundai",
+    "model": "i20",
+    "bodyType": "Hatch"
+  },
+  {
+    "make": "Toyota",
+    "model": "Fortuner",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Toyota",
+    "model": "Corolla Cross",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Mazda",
+    "model": "CX-5",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Isuzu",
+    "model": "D-Max",
+    "bodyType": "Double Cab"
+  },
+  {
+    "make": "Volkswagen",
+    "model": "Polo Vivo",
+    "bodyType": "Hatch"
+  },
+  {
+    "make": "Toyota",
+    "model": "Hilux",
+    "bodyType": "Double Cab"
+  },
+  {
+    "make": "Peugeot",
+    "model": "2008",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Volkswagen",
+    "model": "Caddy",
+    "bodyType": "Panel Van"
+  },
+  {
+    "make": "Toyota",
+    "model": "Land Cruiser",
+    "bodyType": "Double Cab"
+  },
+  {
+    "make": "Volkswagen",
+    "model": "Amarok",
+    "bodyType": "Double Cab"
+  },
+  {
+    "make": "Mahindra",
+    "model": "Pik Up",
+    "bodyType": "Double Cab"
+  },
+  {
+    "make": "BMW",
+    "model": "320i",
+    "bodyType": "Sedan"
+  },
+  {
+    "make": "Suzuki",
+    "model": "Swift",
+    "bodyType": "Hatch"
+  },
+  {
+    "make": "Nissan",
+    "model": "Navara",
+    "bodyType": "Double Cab"
+  },
+  {
+    "make": "Ford",
+    "model": "Ranger",
+    "bodyType": "Double Cab"
+  },
+  {
+    "make": "Volkswagen",
+    "model": "Polo",
+    "bodyType": "Hatch"
+  },
+  {
+    "make": "Audi",
+    "model": "A3",
+    "bodyType": "Hatch"
+  },
+  {
+    "make": "Kia",
+    "model": "Sportage",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Ford",
+    "model": "Everest",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Suzuki",
+    "model": "Jimny",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Mitsubishi",
+    "model": "Triton",
+    "bodyType": "Double Cab"
+  },
+  {
+    "make": "Toyota",
+    "model": "Prado",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "BMW",
+    "model": "X1",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Audi",
+    "model": "Q3",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Mercedes-Benz",
+    "model": "GLE",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "BMW",
+    "model": "M340i",
+    "bodyType": "Sedan"
+  },
+  {
+    "make": "BMW",
+    "model": "X3",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Mercedes-Benz",
+    "model": "V-Class",
+    "bodyType": "MPV"
+  },
+  {
+    "make": "Mahindra",
+    "model": "Scorpio",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Suzuki",
+    "model": "Fronx",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Nissan",
+    "model": "Magnite",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Honda",
+    "model": "Fit",
+    "bodyType": "Hatch"
+  },
+  {
+    "make": "Mercedes-Benz",
+    "model": "C-Class",
+    "bodyType": "Sedan"
+  },
+  {
+    "make": "Toyota",
+    "model": "Corolla",
+    "bodyType": "Sedan"
+  },
+  {
+    "make": "Renault",
+    "model": "Kiger",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Hyundai",
+    "model": "Tucson",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Audi",
+    "model": "Q5",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Volkswagen",
+    "model": "Tiguan",
+    "bodyType": "SUV"
+  },
+  {
+    "make": "Kia",
+    "model": "Sonet",
+    "bodyType": "SUV"
+  }
+]

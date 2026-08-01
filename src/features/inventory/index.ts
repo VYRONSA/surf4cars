@@ -4,6 +4,13 @@ export type {
   InventoryVehicle,
   InventoryHealthLevel,
 } from "./types/inventory.types";
+export type {
+  InventoryDashboardPayload,
+  InventoryLifecycleStatus,
+  InventoryListPayload,
+  InventoryVehicleListItem,
+  VehicleWorkspacePayload,
+} from "./types/inventory-intelligence.types";
 export {
   getInventoryShowcase,
   getInventoryVehicleById,

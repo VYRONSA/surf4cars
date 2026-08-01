@@ -3,6 +3,7 @@ import { authRoutes, systemRoutes } from "./auth.routes";
 import { buyerRoutes } from "./buyer.routes";
 import { apiRoutes, developerRoutes } from "./developer.routes";
 import { dealerRoutes } from "./dealer.routes";
+import { operationsRoutes } from "./operations.routes";
 import { publicRoutes } from "./public.routes";
 import type { RouteDefinition, RouteManifest } from "./types";
 
@@ -10,6 +11,7 @@ export const ROUTE_MANIFESTS: readonly RouteManifest[] = [
   publicRoutes,
   buyerRoutes,
   dealerRoutes,
+  operationsRoutes,
   adminRoutes,
   developerRoutes,
   apiRoutes,
@@ -71,6 +73,7 @@ export {
   authRoutes,
   buyerRoutes,
   dealerRoutes,
+  operationsRoutes,
   developerRoutes,
   publicRoutes,
   systemRoutes,

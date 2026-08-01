@@ -1,7 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import type { ReactNode } from "react";
 import Image from "next/image";
+
+import { PhotographPending } from "@/components/ui/media";
 import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -76,14 +79,20 @@ export function InventoryDetailDrawer({ vehicle, open, onClose }: InventoryDetai
 
         <div className="flex-1 overflow-y-auto p-5 space-y-6">
           <div className="relative aspect-[16/10] overflow-hidden rounded-[var(--radius-2xl)] bg-[var(--color-surface-sunken)]">
-            <Image
-              src={vehicle.imageSrc}
-              alt={vehicle.title}
-              fill
-              sizes="480px"
-              className="object-cover"
-              style={{ objectPosition: vehicle.imagePosition }}
-            />
+            {/* A dealer's own inventory is exactly where an unphotographed listing must be visible
+                rather than dressed up — this is the screen they fix it from. */}
+            {vehicle.imageSrc ? (
+              <Image
+                src={vehicle.imageSrc}
+                alt={vehicle.title}
+                fill
+                sizes="480px"
+                className="object-cover"
+                style={{ objectPosition: vehicle.imagePosition }}
+              />
+            ) : (
+              <PhotographPending vehicleTitle={vehicle.title} />
+            )}
           </div>
 
           <div className="flex items-center justify-between gap-4">
@@ -180,7 +189,7 @@ export function InventoryDetailDrawer({ vehicle, open, onClose }: InventoryDetai
             Quick Actions
           </p>
           <div className="grid grid-cols-2 gap-2">
-            <DrawerAction icon={Edit} label="Edit Listing" />
+            <DrawerAction icon={Edit} label="Edit Listing" href={`/dealer/inventory/new?vehicleId=${vehicle.id}`} />
             <DrawerAction icon={ImageIcon} label="Replace Photos" />
             <DrawerAction icon={Tag} label="Adjust Price" />
             <DrawerAction icon={Megaphone} label="Promote" />
@@ -209,10 +218,24 @@ function DrawerSection({ title, children }: { readonly title: string; readonly c
 function DrawerAction({
   icon,
   label,
+  href,
 }: {
   readonly icon: typeof Edit;
   readonly label: string;
+  readonly href?: string;
 }) {
+  if (href) {
+    return (
+      <Link
+        href={href}
+        className="inline-flex h-10 items-center justify-start gap-2 rounded-[var(--radius-md)] border border-[var(--color-border)] px-3 text-[length:var(--text-body-sm)] text-[var(--color-foreground)] transition-colors hover:bg-[var(--color-hover)]"
+      >
+        <Icon icon={icon} size="xs" tone="muted" aria-hidden />
+        {label}
+      </Link>
+    );
+  }
+
   return (
     <Button variant="outline" size="sm" disabled className="h-10 justify-start gap-2">
       <Icon icon={icon} size="xs" tone="muted" aria-hidden />

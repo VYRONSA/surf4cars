@@ -7,7 +7,16 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "type-check": "tsc --noEmit"
+    "pcp001b:onboarding:verify": "node scripts/pcp001b-onboarding-verify.mjs",
+    "type-check": "tsc --noEmit",
+    "capture:pack": "node scripts/capture-public-pack.mjs",
+    "media:scaffold": "node scripts/media/scaffold-library.mjs",
+    "media:shortlist": "node scripts/media/shortlist-candidates.mjs",
+    "media:inhouse": "node scripts/media/generate-inhouse-candidates.mjs",
+    "media:review": "node scripts/media/build-review-board.mjs",
+    "media:approve": "node scripts/media/approve-selection.mjs",
+    "media:score": "node scripts/media/score-vehicle-photos.mjs",
+    "audit:data": "node scripts/audit-data-quality.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.2",
@@ -16,6 +25,7 @@
     "next": "16.2.9",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "simple-icons": "16.27.1",
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
@@ -25,6 +35,8 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
+    "playwright": "1.52.0",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

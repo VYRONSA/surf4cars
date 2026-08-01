@@ -7,3 +7,4 @@ export {
   type Size,
   type Variant,
 } from "./types";
+export { ProvenanceNote, type ProvenanceKind, type ProvenanceNoteProps } from "./provenance";

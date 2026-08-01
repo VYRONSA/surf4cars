@@ -27,7 +27,18 @@ export function PublicExperienceLayout({
   className,
 }: PublicExperienceLayoutProps) {
   return (
-    <div className={cn("flex min-h-dvh flex-col bg-[var(--color-background)]", className)}>
+    /*
+      Deliberately unfilled.
+      ======================
+      This wrapper used to set `bg-[var(--color-background)]`, which made it an opaque full-height pane
+      sitting directly on top of the page wash in `globals.css` — the wash was rendering correctly and was
+      simply never visible. The base colour already comes from `body`, so painting it again here bought
+      nothing and cost the depth.
+
+      Do not reinstate a background on this element. Sections that need their own surface should set it on
+      themselves, translucently, so the wash still reads underneath.
+    */
+    <div className={cn("flex min-h-dvh flex-col", className)}>
       <PublicHeader />
       <main
         id="main-content"

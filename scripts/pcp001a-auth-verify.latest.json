@@ -1,0 +1,107 @@
+{
+  "baseUrl": "http://localhost:3003",
+  "generatedAt": "2026-07-05T19:37:44.912Z",
+  "checks": [
+    {
+      "name": "viewport-desktop-unauthorized-redirect",
+      "ok": true,
+      "pathname": "/auth/sign-in",
+      "search": "?portal=dealer&redirect=%2Fdealer"
+    },
+    {
+      "name": "viewport-desktop-sign-in-render",
+      "ok": true
+    },
+    {
+      "name": "viewport-tablet-unauthorized-redirect",
+      "ok": true,
+      "pathname": "/auth/sign-in",
+      "search": "?portal=dealer&redirect=%2Fdealer"
+    },
+    {
+      "name": "viewport-tablet-sign-in-render",
+      "ok": true
+    },
+    {
+      "name": "viewport-mobile-unauthorized-redirect",
+      "ok": true,
+      "pathname": "/auth/sign-in",
+      "search": "?portal=dealer&redirect=%2Fdealer"
+    },
+    {
+      "name": "viewport-mobile-sign-in-render",
+      "ok": true
+    },
+    {
+      "name": "dealer-registration-entry",
+      "ok": true,
+      "url": "http://localhost:3003/auth/sign-up/dealer"
+    },
+    {
+      "name": "forgot-password",
+      "ok": true,
+      "url": "http://localhost:3003/auth/forgot-password?portal=dealer"
+    },
+    {
+      "name": "dealer-login",
+      "ok": true,
+      "url": "http://localhost:3003/dealer/dashboard"
+    },
+    {
+      "name": "session-persistence",
+      "ok": true,
+      "url": "http://localhost:3003/dealer/dashboard"
+    },
+    {
+      "name": "browser-refresh",
+      "ok": true,
+      "url": "http://localhost:3003/dealer/dashboard"
+    },
+    {
+      "name": "deep-link-recovery",
+      "ok": true,
+      "url": "http://localhost:3003/dealer/inventory?view=grid",
+      "redirect": "/dealer"
+    },
+    {
+      "name": "return-to-origin",
+      "ok": true,
+      "url": "http://localhost:3003/dealer/settings?section=account"
+    },
+    {
+      "name": "cross-tab-logout",
+      "ok": true,
+      "tabBUrl": "http://localhost:3003/auth/sign-in?portal=dealer&redirect=%2Fdealer%2Fdashboard"
+    },
+    {
+      "name": "dealer-logout",
+      "ok": true,
+      "url": "http://localhost:3003/auth/sign-in?portal=dealer&redirect=%2Fdealer"
+    },
+    {
+      "name": "reset-password",
+      "ok": true,
+      "url": "http://localhost:3003/dealer/dashboard"
+    },
+    {
+      "name": "verify-email-or-pending",
+      "ok": true,
+      "snippet": "EMAIL VERIFICATION\n\nVerify your account\n\nYour email is still pending verification. Use the link in your inbox.\n\nBack to sign in",
+      "url": "http://localhost:3003/auth/verify-email?portal=dealer"
+    },
+    {
+      "name": "session-expiry",
+      "ok": true,
+      "url": "http://localhost:3003/auth/sign-in?portal=dealer&redirect=%2Fdealer"
+    },
+    {
+      "name": "unauthorized-route-protection",
+      "ok": true,
+      "url": "http://localhost:3003/unauthorized"
+    }
+  ],
+  "summary": {
+    "passed": 19,
+    "failed": 0
+  }
+}

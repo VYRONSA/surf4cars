@@ -1,105 +1,205 @@
 /**
- * SURF FOR CARS — Colour System
- * Automotive-inspired palette. Elegant, restrained, premium.
+ * SURF4CARS — Design System V2 Colour System
+ *
+ * Permanent dark identity. There is no light application shell: dark is the brand, not a user
+ * preference. The `prefers-color-scheme: light` override that previously lived here has been
+ * removed deliberately — reinstating it would break the visual identity this system guarantees.
+ *
+ * Red is the primary action colour. Blue is retained only as a secondary/informational accent and
+ * must never be used for a primary action or a brand surface.
+ *
+ * Contrast is verified by scripts/audit-design-contrast.mjs. Two rules follow from that audit:
+ *   1. --color-primary on a dark surface measures 4.0:1 — valid for large text and UI components,
+ *      never for body text. Use --color-primary-text for small red text on dark.
+ *   2. Text on a primary-filled surface must be --color-primary-foreground (5.0:1).
  */
 
 :root {
-  /* ── Primary ── */
-  --color-primary: #0066ff;
-  --color-primary-hover: #0052cc;
-  --color-primary-active: #004099;
-  --color-primary-muted: rgba(0, 102, 255, 0.12);
-  --color-primary-foreground: #ffffff;
+  color-scheme: dark;
 
-  /* ── Secondary ── */
-  --color-secondary: #6366f1;
-  --color-secondary-hover: #4f46e5;
-  --color-secondary-active: #4338ca;
-  --color-secondary-muted: rgba(99, 102, 241, 0.12);
+  /* ── Primary (SURF red) ── */
+  --color-primary: #e10600;
+  /* Fill stays at a red where the white label holds 4.5:1; #ff2b2b is reserved for the hover glow
+     and border, so the specified hover colour remains part of the language without failing AA. */
+  --color-primary-hover: #d40500;
+  --color-primary-glow: #ff2b2b;
+  --color-primary-active: #b30500;
+  --color-primary-muted: rgba(225, 6, 0, 0.14);
+  --color-primary-foreground: #ffffff;
+  /* Lightened red for small text on dark, where #e10600 falls below 4.5:1. */
+  --color-primary-text: #ff6b66;
+
+  /* ── Secondary (informational only — never a primary action) ── */
+  --color-secondary: #2f6fed;
+  --color-secondary-hover: #4b83f0;
+  --color-secondary-active: #2559c4;
+  --color-secondary-muted: rgba(47, 111, 237, 0.14);
   --color-secondary-foreground: #ffffff;
 
-  /* ── Accent (automotive gold) ── */
+  /* ── Accent (precision metal) ── */
   --color-accent: #c8a96e;
-  --color-accent-hover: #b8993d;
-  --color-accent-active: #9a7d2e;
-  --color-accent-muted: rgba(200, 169, 110, 0.12);
-  --color-accent-foreground: #09090b;
+  --color-accent-hover: #d9bd85;
+  --color-accent-active: #a98d55;
+  --color-accent-muted: rgba(200, 169, 110, 0.14);
+  --color-accent-foreground: #080808;
 
-  /* ── Neutral ── */
+  /* ── Neutral ramp (graphite, not grey-blue) ── */
   --color-neutral-0: #ffffff;
-  --color-neutral-50: #fafafa;
-  --color-neutral-100: #f4f4f5;
-  --color-neutral-200: #e4e4e7;
-  --color-neutral-300: #d4d4d8;
-  --color-neutral-400: #a1a1aa;
-  --color-neutral-500: #71717a;
-  --color-neutral-600: #52525b;
-  --color-neutral-700: #3f3f46;
-  --color-neutral-800: #27272a;
-  --color-neutral-900: #18181b;
-  --color-neutral-950: #09090b;
+  --color-neutral-50: #f7f7f7;
+  --color-neutral-100: #e8e8e8;
+  --color-neutral-200: #cfcfcf;
+  --color-neutral-300: #b3b3b3;
+  --color-neutral-400: #8a8a8a;
+  --color-neutral-500: #6b6b6b;
+  --color-neutral-600: #4d4d4d;
+  --color-neutral-700: #2a2a2a;
+  --color-neutral-800: #171717;
+  --color-neutral-900: #111111;
+  --color-neutral-950: #080808;
 
   /* ── Status ── */
-  --color-success: #10b981;
-  --color-success-hover: #059669;
-  --color-success-muted: rgba(16, 185, 129, 0.12);
-  --color-success-foreground: #ffffff;
+  --color-success: #2ecc71;
+  --color-success-hover: #4fd98a;
+  --color-success-muted: rgba(46, 204, 113, 0.14);
+  --color-success-foreground: #080808;
 
-  --color-warning: #f59e0b;
-  --color-warning-hover: #d97706;
-  --color-warning-muted: rgba(245, 158, 11, 0.12);
-  --color-warning-foreground: #09090b;
+  --color-warning: #f5a623;
+  --color-warning-hover: #ffb845;
+  --color-warning-muted: rgba(245, 166, 35, 0.14);
+  --color-warning-foreground: #080808;
 
-  --color-danger: #ef4444;
-  --color-danger-hover: #dc2626;
-  --color-danger-muted: rgba(239, 68, 68, 0.12);
-  --color-danger-foreground: #ffffff;
+  /* Lifted with the page. #ff3b30 as body text measured 4.19:1 on the brightened background — the same
+     problem the brand red has, and the same fix. The dark label on the fill gains contrast rather than
+     losing it, so the fill is unaffected. */
+  --color-danger: #ff6259;
+  --color-danger-hover: #ff8079;
+  --color-danger-muted: rgba(255, 59, 48, 0.14);
+  /* Dark label on the danger fill: white measured 3.55:1 against #ff3b30 and failed AA. */
+  --color-danger-foreground: #080808;
 
-  --color-info: #3b82f6;
-  --color-info-hover: #2563eb;
-  --color-info-muted: rgba(59, 130, 246, 0.12);
+  --color-info: #2f6fed;
+  --color-info-hover: #4b83f0;
+  --color-info-muted: rgba(47, 111, 237, 0.14);
   --color-info-foreground: #ffffff;
 
-  /* ── Background & Surface ── */
-  --color-background: #09090b;
-  --color-surface: #111113;
-  --color-surface-raised: #18181b;
-  --color-surface-sunken: #050506;
-  --color-surface-overlay: #1c1c1f;
+  /* ── Background & surface: four deliberate elevation steps ──
+     Premium blue hour, not premium night.
+     =====================================
+     These were neutral near-blacks (#080808 through #1d1d1d). Rendered full-screen they read as an
+     absence rather than as a surface: the interface disappeared and the photography sat in a void, which
+     is the difference between porsche.com and a cinema.
 
-  /* ── Glass ── */
-  --color-glass: rgba(17, 17, 19, 0.72);
-  --color-glass-strong: rgba(17, 17, 19, 0.88);
-  --color-glass-subtle: rgba(17, 17, 19, 0.48);
-  --color-glass-border: rgba(255, 255, 255, 0.08);
+     They are now deep slate — the same luminance ladder, lifted, with a slight blue-grey cast. Two
+     consequences worth knowing before changing them again:
+
+       the cast is what makes them read as charcoal rather than as "grey black". Neutralising it returns
+       the flatness even at the same lightness;
+
+       every step up eats contrast margin against `--color-border-interactive` and `--color-chart-1`.
+       Verified by scripts/audit-design-contrast.mjs, which must be re-run after any change here.
+
+     THE CEILING ON LIGHTENING THIS
+     ==============================
+     Founder direction has been "brighter" three times, so it is worth recording where the limit actually is
+     rather than rediscovering it a fourth time. Lightening the page *reduces* contrast for everything light
+     drawn on it, and the binding constraint is the brand red `#e10600` as a control boundary on bare
+     background, which needs 3:1 and caps the washed background at a relative luminance of roughly 0.021.
+
+     Going brighter than that is still possible, but not by changing these values — it means changing what
+     sits on the page rather than the page itself: the text ramp would have to darken, which is a light
+     theme. That is a founder decision, not an engineering one. */
+  --color-background: #1a1f28;
+  --color-surface: #1f2530;
+  --color-surface-raised: #2c3543;
+  /* Lifted from #171c24 (L=0.0114), which was *darker than the page it sat on* (L=0.0135).
+     This is the fill behind inputs, skeletons, filmstrip frames and the "photographs to follow"
+     state — so the places that read as holes punched in the page were precisely the places the
+     Founder described as "too dark". It now sits just above the background instead of below it,
+     which is what a recessed surface in a lit room actually does.
+
+     Deliberately not part of the page-brightness question: nothing draws the brand red as a control
+     boundary on this surface, so the 3:1 ceiling documented above does not bind here. */
+  --color-surface-sunken: #232a36;
+  --color-surface-overlay: #3a4557;
+
+  /* Scrim base. Photography overlays tint toward the background rather than to pure black, so a
+     darkened photograph and the page it sits on belong to the same palette. */
+  --color-scrim-rgb: 33, 40, 50;
+
+  /**
+   * The light lift.
+   *
+   * A flat background of any single value reads as a wall — the page had no depth regardless of how far
+   * it was lightened, because nothing on it varied. This is the top of a soft wash applied over the base
+   * in `globals.css`, so the page brightens toward the light rather than sitting at one level.
+   *
+   * It is a *lift*, not a light theme: the identity stays dark, and everything drawn on top — cards,
+   * glass, photography scrims, the red accent — is unchanged.
+   */
+  --color-background-lift: #2f3949;
+
+  /* ── Glass ──
+     Tinted to the same slate as the surfaces. Left at the old near-blacks these read as holes punched in
+     the page rather than as panels floating above it — the darker the glass is than what surrounds it,
+     the less it behaves like glass. */
+  --color-glass: rgba(41, 49, 61, 0.72);
+  --color-glass-strong: rgba(33, 40, 50, 0.86);
+  --color-glass-subtle: rgba(51, 60, 74, 0.46);
+  --color-glass-border: rgba(255, 255, 255, 0.09);
 
   /* ── Border ── */
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-strong: rgba(255, 255, 255, 0.16);
-  --color-border-subtle: rgba(255, 255, 255, 0.04);
+  /* Structural borders are decorative separators and are exempt from WCAG 1.4.11. Controls whose
+     boundary conveys the control itself (inputs, selects, checkboxes) must use
+     --color-border-interactive, which clears 3:1 against every surface.
+     Lifted with the surfaces: a #2a2a2a rule on a #1b1f24 card is nearly invisible, and section
+     separation was the specific thing that needed improving. */
+  --color-border: #4a5464;
+  --color-border-strong: #616c7d;
+  --color-border-subtle: rgba(255, 255, 255, 0.07);
+  /* Lifted from #6b6b6b. Control boundaries must clear 3:1 against every surface, and on the brighter
+     card (#242b36) the old value measured 2.8:1 — the lift is required by the palette, not cosmetic. */
+  --color-border-interactive: #98a1af;
 
-  /* ── Text ── */
-  --color-foreground: #fafafa;
-  --color-muted: #71717a;
-  --color-muted-foreground: #a1a1aa;
+  /* ── Text ──
+     Warm white, and a graphite ramp.
+     ================================
+     These were #ffffff and two neutral greys. Pure white is the colour of a screen, not of light: on
+     a slate page it reads clinical, and it is the single largest reason the interface felt like a
+     dark-themed application rather than a room. Showroom lighting is warm, and every premium
+     automotive interior photographed at dusk has warm highlights against cool metal.
+
+     So the text ramp now carries a slight warm cast against the cool slate surfaces. The contrast
+     *between* warm type and cool ground is what makes a palette feel lit rather than merely dark —
+     the same reason the surfaces carry a blue cast rather than being neutral grey.
+
+     Luminance is held almost exactly, so this costs no contrast: 16.5:1 → 15.9:1 for body text on
+     the background, against a 4.5:1 requirement. Verified by scripts/audit-design-contrast.mjs,
+     which must be re-run after any change here. */
+  --color-foreground: #fbf9f6;
+  --color-muted-foreground: #b8b3ab;
+  --color-muted: #8f8a82;
 
   /* ── Interactive states ── */
-  --color-hover: rgba(255, 255, 255, 0.04);
-  --color-active: rgba(255, 255, 255, 0.08);
+  --color-hover: rgba(255, 255, 255, 0.05);
+  --color-active: rgba(255, 255, 255, 0.09);
   --color-disabled: rgba(255, 255, 255, 0.32);
   --color-disabled-bg: rgba(255, 255, 255, 0.04);
-  --color-focus: #0066ff;
-  --color-focus-ring: rgba(0, 102, 255, 0.4);
+  --color-focus: #ff2b2b;
+  --color-focus-ring: rgba(255, 43, 43, 0.55);
 
-  /* ── Chart colours (refined, non-rainbow) ── */
-  --color-chart-1: #0066ff;
-  --color-chart-2: #6366f1;
+  /* ── Charts: red-led, restrained, separable by luminance as well as hue ──
+     `chart-1` is a lighter red than `--color-primary`, deliberately. It is a data-visualisation token,
+     not the action colour: a chart series has to clear 3:1 against the card it is drawn on, and the brand
+     red measures 2.87:1 on the brighter surface. Buttons and links keep #e10600 — this is the same hue at
+     a legible luminance, and diverging here is correct rather than a brand inconsistency. */
+  --color-chart-1: #ff5a4f;
+  --color-chart-2: #f5a623;
   --color-chart-3: #c8a96e;
-  --color-chart-4: #10b981;
-  --color-chart-5: #71717a;
-  --color-chart-6: #3b82f6;
+  --color-chart-4: #2ecc71;
+  --color-chart-5: #6b9dff;
+  --color-chart-6: #8a8a8a;
 
-  /* Legacy aliases */
+  /* Legacy aliases — retained so existing consumers keep resolving. */
   --background: var(--color-background);
   --foreground: var(--color-foreground);
   --color-brand-primary: var(--color-primary);
@@ -120,40 +220,4 @@
   --color-warning-500: var(--color-warning);
   --color-danger-500: var(--color-danger);
   --color-info-500: var(--color-info);
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --color-background: #ffffff;
-    --color-surface: #fafafa;
-    --color-surface-raised: #f4f4f5;
-    --color-surface-sunken: #f4f4f5;
-    --color-surface-overlay: #ffffff;
-
-    --color-glass: rgba(255, 255, 255, 0.72);
-    --color-glass-strong: rgba(255, 255, 255, 0.92);
-    --color-glass-subtle: rgba(255, 255, 255, 0.48);
-    --color-glass-border: rgba(0, 0, 0, 0.06);
-
-    --color-border: rgba(0, 0, 0, 0.08);
-    --color-border-strong: rgba(0, 0, 0, 0.16);
-    --color-border-subtle: rgba(0, 0, 0, 0.04);
-
-    --color-foreground: #09090b;
-    --color-muted: #71717a;
-    --color-muted-foreground: #52525b;
-
-    --color-hover: rgba(0, 0, 0, 0.04);
-    --color-active: rgba(0, 0, 0, 0.08);
-    --color-disabled: rgba(0, 0, 0, 0.32);
-    --color-disabled-bg: rgba(0, 0, 0, 0.04);
-
-    --color-primary-muted: rgba(0, 102, 255, 0.08);
-    --color-secondary-muted: rgba(99, 102, 241, 0.08);
-    --color-accent-muted: rgba(200, 169, 110, 0.08);
-    --color-success-muted: rgba(16, 185, 129, 0.08);
-    --color-warning-muted: rgba(245, 158, 11, 0.08);
-    --color-danger-muted: rgba(239, 68, 68, 0.08);
-    --color-info-muted: rgba(59, 130, 246, 0.08);
-  }
 }

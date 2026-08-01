@@ -14,7 +14,8 @@ export function VehicleDetailDescription({ sections, className }: VehicleDetailD
       <h2 id="vehicle-description-heading" className={vehiclePolish.sectionTitle}>
         Description
       </h2>
-      <div className={cn(vehiclePolish.glassCard, "space-y-8 p-6 lg:p-8")}>
+      {/* Prose, set as prose. It was in a bordered glass card, which is a container for controls. */}
+      <div className="max-w-2xl space-y-8">
         {sections.map((section, index) => (
           <div key={index} className="space-y-4">
             {section.heading && (
@@ -27,7 +28,7 @@ export function VehicleDetailDescription({ sections, className }: VehicleDetailD
                 key={pIndex}
                 variant="body-lg"
                 tone="muted"
-                className="max-w-3xl leading-[var(--leading-relaxed)]"
+                className="leading-[var(--leading-relaxed)]"
               >
                 {paragraph}
               </Text>

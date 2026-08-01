@@ -7,44 +7,39 @@ export interface UploadStepCopy {
 }
 
 export const UPLOAD_STEP_COPY: Record<UploadStepId, UploadStepCopy> = {
-  identification: {
-    title: "Let's identify your vehicle",
-    description: "We'll use this information throughout SURF4CARS — one record powers every channel.",
-    why: "Accurate identification prevents duplicate stock and enables VIN-based search across the marketplace.",
-  },
-  pricing: {
-    title: "Set your pricing strategy",
-    description: "Purchase and selling prices drive profit reporting, finance estimates, and AI market positioning.",
-    why: "Dealers who set clear pricing see faster enquiries — buyers filter and compare on list price first.",
+  media: {
+    title: "Upload vehicle photos",
+    description: "Drag and drop, upload from mobile, or capture directly from camera.",
+    why: "Photo quality and coverage are core inputs for SURF Intelligence scoring and buyer trust.",
   },
   specifications: {
-    title: "Complete the specifications",
-    description: "Buyers expect mileage, fuel type, and drivetrain before they enquire — completeness builds trust.",
-    why: "Listings with full specs rank higher in search and receive up to 34% more qualified leads.",
+    title: "Upload licence disc",
+    description: "Attach the licence disc image to prepare OCR extraction and validation.",
+    why: "Licence disc data improves registration confidence and reduces manual typing errors.",
+  },
+  identification: {
+    title: "AI vehicle identification",
+    description: "Run identification pipeline for make, model, variant, year, colour, fuel, transmission, VIN, and engine size.",
+    why: "All future AI enrichments depend on accurate identification metadata at listing creation time.",
   },
   features: {
-    title: "Highlight what makes it special",
-    description: "Buyers filter by leather, sunroof, tow bar, and more. Select everything that applies.",
-    why: "Feature-rich listings match more saved searches and appear in comparison tools automatically.",
-  },
-  media: {
-    title: "Showcase your vehicle",
-    description: "Professional photos are the single biggest driver of enquiries. Upload at least 10 images.",
-    why: "Listings with 10+ photos receive 2.7× more views on the SURF marketplace.",
+    title: "SURF Intelligence review",
+    description: "Run listing quality review, missing information checks, and improvement recommendations.",
+    why: "This step ensures every listing meets quality standards before description and pricing workflows.",
   },
   description: {
-    title: "Tell the vehicle's story",
-    description: "Describe condition, service history, and why this vehicle stands out in your stock.",
-    why: "Detailed descriptions improve AI listing scores and help buyers decide before they call.",
+    title: "Description builder",
+    description: "Prepare title, description, highlights, and SEO fields via SURF Intelligence provider interfaces.",
+    why: "Strong copy quality improves search performance and listing conversion without extra dealer effort.",
   },
-  publishing: {
-    title: "Choose where it goes live",
-    description: "Publish to the marketplace, your dealer website, or save as draft until you're ready.",
-    why: "One publish action syndicates your listing across every SURF4CARS channel you've enabled.",
+  pricing: {
+    title: "Pricing workspace",
+    description: "Review recommended price, confidence state, and market position from Pricing Intelligence.",
+    why: "Pricing decisions are most effective when informed by live demand, supply, and stock-turn signals.",
   },
   review: {
-    title: "Review before you publish",
-    description: "This is exactly how buyers will see your vehicle. Edit any section with one click.",
-    why: "A final review catches missing photos or pricing errors before they cost you enquiries.",
+    title: "Review and publish",
+    description: "Validate final data and publish directly into Inventory Intelligence.",
+    why: "This is the final quality gate before your listing becomes operational in dealer inventory workflows.",
   },
 };

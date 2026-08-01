@@ -6,7 +6,7 @@ import { cn } from "@/utils";
 
 const LOGO_SIZE_CLASS = {
   header:
-    "h-[3.125rem] w-auto max-h-[52px] sm:h-[3.25rem] sm:max-h-[52px] lg:h-[3.35rem] lg:max-h-[54px]",
+    "h-[4rem] w-auto max-h-[64px] sm:h-[4.125rem] sm:max-h-[66px] lg:h-[4.25rem] lg:max-h-[68px]",
   footer: "h-11 w-auto max-h-[44px] sm:h-12 sm:max-h-[48px]",
   shell: "h-9 w-auto max-h-[38px] lg:h-[46px] lg:max-h-[48px]",
   onboarding: "h-9 w-auto max-h-[38px] lg:h-10 lg:max-h-[40px]",

@@ -37,7 +37,7 @@ export function UploadStepLayout({
       aria-labelledby="upload-step-title"
     >
       <header className="border-b border-[var(--color-border-subtle)] pb-8">
-        <p className="text-[length:var(--text-overline)] uppercase tracking-[var(--tracking-wide)] text-[var(--color-primary)]">
+        <p className="text-[length:var(--text-overline)] uppercase tracking-[var(--tracking-wide)] text-[var(--color-primary-text)]">
           Step {currentStepIndex + 1} of {UPLOAD_STEPS.length}
         </p>
         <h2 id="upload-step-title" className={cn(uploadPolish.stepHero, "mt-2")}>
@@ -48,7 +48,7 @@ export function UploadStepLayout({
         )}
         {resolvedWhy && (
           <p className={uploadPolish.stepWhy}>
-            <span className="font-medium text-[var(--color-primary)]">Why this matters — </span>
+            <span className="font-medium text-[var(--color-primary-text)]">Why this matters — </span>
             {resolvedWhy}
           </p>
         )}

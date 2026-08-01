@@ -2,9 +2,9 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { Icon } from "@/components/ui/icons";
-import { BadgeCheck, Bot, MapPin, Store } from "@/components/ui/icons/registry";
+import { BadgeCheck } from "@/components/ui/icons/registry";
+import { PhotographPending } from "@/components/ui/media";
 import { VehicleCardV2, type VehicleCardV2Props } from "@/features/search/components/vehicle-card-v2";
-import { homePolish } from "@/features/marketplace/homepage/components/home-shared";
 import type { ShowcaseVehicleListing } from "@/features/search/config/search-showcase-listings";
 import { cn } from "@/utils";
 
@@ -19,66 +19,100 @@ export function VehicleListingCard({ listing, className, href, ...props }: Vehic
       {...props}
       featured={listing.featured}
       reducedPrice={listing.reducedPrice}
-      className={cn(homePolish.listingCard, href && "cursor-pointer", className)}
+      /* `homePolish.listingCard` came off with the border: it set a border colour, a raised surface
+         and a shadow on a card that now has none of the three, so it was painting a panel behind a
+         photograph that reads better against the page. */
+      className={cn(href && "cursor-pointer", className)}
+      /* An unphotographed listing says so. It used to lead with a stock Porsche — see
+         `PhotographPending`. Search keeps these cars because they are genuinely for sale and a buyer
+         searching the make should find them; the shop-window rails drop them on their own, because
+         `isEligibleForDisplay` already treats an empty `imageSrc` as unfit to represent the place. */
       imageSlot={
-        <>
-          <Image
-            src={listing.imageSrc}
-            alt={listing.title}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover motion-card group-hover:scale-[1.015]"
-            style={{ objectPosition: listing.imagePosition }}
-          />
-          <div
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/35 to-transparent"
-            aria-hidden
-          />
-        </>
+        listing.imageSrc ? (
+          <>
+            <Image
+              src={listing.imageSrc}
+              alt={listing.title}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover transition-transform duration-[var(--duration-slower)] ease-[var(--ease-premium)] group-hover:scale-[1.04]"
+              style={{ objectPosition: listing.imagePosition }}
+            />
+            <div
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/45 to-transparent"
+              aria-hidden
+            />
+          </>
+        ) : (
+          <PhotographPending vehicleTitle={listing.title} />
+        )
       }
-      aiMatchSlot={
-        <div className="inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border border-[var(--color-secondary)]/15 bg-[var(--color-secondary-muted)] px-2.5 py-1">
-          <Icon icon={Bot} size="xs" tone="primary" aria-hidden />
-          <span className="text-[length:var(--text-caption)] font-medium text-[var(--color-secondary)]">
-            AI Match {listing.aiMatchScore}%
-          </span>
-        </div>
-      }
+      /**
+       * The AI match chip is gone.
+       *
+       * It rendered on every card, in blue, above the vehicle's own name — and on the marketplace it
+       * read 82% on almost all of them, because the score is a listing-completeness proxy rather than a
+       * match against anything this buyer asked for. A number that never varies is not information, and
+       * it was the first thing the eye hit on a card whose job is to sell a photograph and a price. The
+       * blue also fought the brand's red, which is the one accent the design system allows.
+       *
+       * It returns when it means something — a real match against a real query, and then it belongs on
+       * the result, not on every tile.
+       */
       titleSlot={
-        <h3 className="line-clamp-2 text-[length:var(--text-body-md)] font-semibold leading-[var(--leading-snug)] tracking-[var(--tracking-heading)]">
+        <h3 className="line-clamp-2 text-[length:var(--text-h5)] font-semibold leading-[var(--leading-snug)] tracking-[-0.01em] text-[var(--color-foreground)]">
           {listing.title}
         </h3>
       }
+      /*
+        The finance estimate has come off the tile.
+        =========================================
+        "from R 7 269 p/m" under every price is a second number competing with the first, and it is
+        the softer of the two — an estimate at an assumed deposit, term and rate that no buyer on
+        this page has given us. Twenty-four of them turns a catalogue into a finance table.
+
+        It is not deleted, it is relocated: the vehicle page shows the estimate beside the calculator
+        that produces it, where the assumptions behind the number are visible next to the number.
+      */
       priceSlot={
-        <div className="space-y-0.5">
-          <p className="text-[length:var(--text-h4)] font-semibold tracking-[var(--tracking-heading)] text-[var(--color-foreground)]">
-            {listing.price}
-          </p>
-          <p className="text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">
-            {listing.financeEstimate}
-          </p>
-        </div>
+        <p className="text-[length:var(--text-h4)] font-semibold tabular-nums tracking-[-0.02em] text-[var(--color-foreground)]">
+          {listing.price}
+        </p>
       }
       yearSlot={<span className="tabular-nums">{listing.year}</span>}
       mileageSlot={<span className="tabular-nums">{listing.mileage}</span>}
       fuelSlot={<span>{listing.fuel}</span>}
       transmissionSlot={<span>{listing.transmission}</span>}
       locationSlot={
-        <div className="flex items-center gap-1.5 text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
-          <Icon icon={MapPin} size="xs" tone="muted" aria-hidden />
-          <span>{listing.location}</span>
-        </div>
+        <p className="text-[length:var(--text-body-sm)] text-[var(--color-muted)]">
+          {listing.location}
+        </p>
       }
+      /*
+        Verification, in white rather than in brand red.
+        ==============================================
+        The badge was `bg-primary` — the one accent the design system reserves — and it rendered on
+        essentially every card, because essentially every dealer is verified. Twenty-four red pills
+        on a results page do not make verification feel important; they make red mean nothing, and by
+        the time the eye reaches the genuine red on the page it has already learned to skip it.
+
+        A tick in the platform's green with the mark set in white says the same thing more quietly,
+        and gives the red back its scarcity.
+
+        The dealer's shopfront icon has gone with it: it sat in front of a dealership's name, which
+        is already unmistakably a dealership's name, and the pill had to truncate that name to
+        "Sunward …" to make room for the picture of a shop.
+      */
       dealerBadgeSlot={
-        <span className="inline-flex max-w-[calc(100%-0.5rem)] items-center gap-1.5 rounded-[var(--radius-pill)] border border-white/20 bg-black/45 px-2.5 py-1 text-[length:var(--text-caption)] text-white backdrop-blur-md">
-          <Icon icon={Store} size="xs" aria-hidden />
-          <span className="max-w-[110px] truncate font-medium">{listing.dealer}</span>
+        <span className="inline-flex min-w-0 items-center gap-2 rounded-[var(--radius-pill)] border border-white/15 bg-black/50 px-3 py-1.5 text-[length:var(--text-caption)] text-white backdrop-blur-md">
           {listing.verified && (
-            <span className="inline-flex items-center gap-0.5 rounded-[var(--radius-sm)] bg-[var(--color-primary)]/90 px-1.5 py-0.5 text-[length:var(--text-caption)] font-medium text-white">
-              <Icon icon={BadgeCheck} size="xs" aria-hidden />
-              Verified
-            </span>
+            <Icon
+              icon={BadgeCheck}
+              aria-label="Verified dealer"
+              className="size-3.5 shrink-0 text-[var(--color-success)]"
+            />
           )}
+          <span className="truncate font-medium">{listing.dealer}</span>
         </span>
       }
     />

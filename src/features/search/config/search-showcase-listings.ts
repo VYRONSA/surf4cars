@@ -15,12 +15,20 @@ export interface ShowcaseVehicleListing {
   readonly aiMatchScore: number;
   readonly imageSrc: string;
   readonly imagePosition: string;
+  /** Body style and marque, carried for editorial curation rather than for display. */
+  readonly bodyType?: string;
+  readonly make?: string;
   readonly featured?: boolean;
   readonly reducedPrice?: boolean;
   readonly verified?: boolean;
 }
 
-/** Marketplace search listings — projected from the Unified Vehicle Intelligence Engine. */
+/**
+ * Marketplace search listings — projected from the Unified Vehicle Intelligence Engine.
+ *
+ * Lead photography is curated at projection time by `resolvePrimaryImageUrl`, so an unpresentable frame
+ * is never served here — the vehicle keeps its place, the photograph is replaced.
+ */
 export const SHOWCASE_VEHICLE_LISTINGS: readonly ShowcaseVehicleListing[] = searchShowcaseListingsSync();
 
 export const HOME_SHOWCASE_LISTINGS = SHOWCASE_VEHICLE_LISTINGS.slice(0, 3);

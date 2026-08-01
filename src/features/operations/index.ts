@@ -1,0 +1,12 @@
+export { OperationsDashboardPage } from "./operations-dashboard-page";
+export { OperationsComingSoonPage } from "./operations-coming-soon-page";
+export { DealerManagementPage } from "./dealer-management-page";
+export { DealerIntelligencePage } from "./dealer-intelligence-page";
+export { ApplicationsCentrePage } from "./applications-centre-page";
+export { MarketplaceControlPage } from "./marketplace-control-page";
+export { RevenueCentrePage } from "./revenue-centre-page";
+export { PartnerCentrePage } from "./partner-centre-page";
+export { BusinessIntelligencePage } from "./business-intelligence-page";
+export { QualityCentrePage } from "./quality-centre-page";
+export { OnboardingCentrePage } from "./onboarding-centre-page";
+export { VerificationWorkspacePage } from "./verification-workspace-page";

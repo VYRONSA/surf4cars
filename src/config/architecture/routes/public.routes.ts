@@ -27,7 +27,7 @@ export const publicRoutes: RouteManifest = {
     },
     {
       id: "vehicle-details",
-      path: "/vehicles/[slug]",
+      path: "/vehicle/[slug]",
       label: "Vehicle Details",
       module: "marketplace",
       portal: "public",

@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import { ImagePicker } from "@/components/ui/form";
 import { FormField } from "@/components/ui/form";
 import { Text } from "@/components/ui/typography";
@@ -7,21 +9,43 @@ import { BrandingPreviewCard } from "@/features/dealer-onboarding/components/bra
 import { OnboardingNavigation } from "@/features/dealer-onboarding/components/onboarding-navigation";
 import { onboardingStyles } from "@/features/dealer-onboarding/components/onboarding-shared";
 import { useOnboarding } from "@/features/dealer-onboarding/context/onboarding-context";
+import { validateBranding } from "@/features/dealer-onboarding/utils/onboarding-validators";
 import { cn } from "@/utils";
 
-function readFilePreview(file: File, callback: (preview: string, name: string) => void) {
+function readFilePreview(
+  file: File,
+  onSuccess: (preview: string, name: string) => void,
+  onError?: () => void,
+) {
   const reader = new FileReader();
   reader.onload = () => {
     if (typeof reader.result === "string") {
-      callback(reader.result, file.name);
+      onSuccess(reader.result, file.name);
+      return;
     }
+
+    onError?.();
   };
+  reader.onerror = () => onError?.();
   reader.readAsDataURL(file);
 }
 
 export function StepBranding() {
-  const { data, updateBranding } = useOnboarding();
+  const { data, updateBranding, clearError } = useOnboarding();
   const { branding } = data;
+  const [validationError, setValidationError] = useState<string | null>(null);
+
+  function validate() {
+    const result = validateBranding(data);
+    setValidationError(result.valid ? null : (result.message ?? "Please complete this step."));
+    return result.valid;
+  }
+
+  function update(values: Parameters<typeof updateBranding>[0]) {
+    clearError();
+    setValidationError(null);
+    updateBranding(values);
+  }
 
   return (
     <div className={cn(onboardingStyles.widePanel, "animate-slide-up-sfc")}>
@@ -52,9 +76,16 @@ export function StepBranding() {
             onFilesSelected={(files) => {
               const file = files[0];
               if (file) {
-                readFilePreview(file, (preview, name) => {
-                  updateBranding({ logoPreview: preview, logoFileName: name });
-                });
+                readFilePreview(
+                  file,
+                  (preview, name) => {
+                    update({ logoPreview: preview, logoFileName: name });
+                  },
+                  () => {
+                    setValidationError("Logo upload was interrupted. Please retry.");
+                    update({ logoPreview: null, logoFileName: null });
+                  },
+                );
               }
             }}
           />
@@ -75,9 +106,16 @@ export function StepBranding() {
             onFilesSelected={(files) => {
               const file = files[0];
               if (file) {
-                readFilePreview(file, (preview, name) => {
-                  updateBranding({ coverPreview: preview, coverFileName: name });
-                });
+                readFilePreview(
+                  file,
+                  (preview, name) => {
+                    update({ coverPreview: preview, coverFileName: name });
+                  },
+                  () => {
+                    setValidationError("Cover image upload was interrupted. Please retry.");
+                    update({ coverPreview: null, coverFileName: null });
+                  },
+                );
               }
             }}
           />
@@ -87,13 +125,13 @@ export function StepBranding() {
               id="primary-color"
               label="Primary Brand Colour"
               value={branding.primaryColor}
-              onChange={(value) => updateBranding({ primaryColor: value })}
+              onChange={(value) => update({ primaryColor: value })}
             />
             <ColorField
               id="secondary-color"
               label="Secondary Brand Colour"
               value={branding.secondaryColor}
-              onChange={(value) => updateBranding({ secondaryColor: value })}
+              onChange={(value) => update({ secondaryColor: value })}
             />
           </div>
         </div>
@@ -106,8 +144,14 @@ export function StepBranding() {
         </div>
       </div>
 
+      {validationError && (
+        <Text variant="body-sm" tone="danger" className="mt-4" role="alert">
+          {validationError}
+        </Text>
+      )}
+
       <div className="mt-10">
-        <OnboardingNavigation />
+        <OnboardingNavigation onContinue={validate} />
       </div>
     </div>
   );

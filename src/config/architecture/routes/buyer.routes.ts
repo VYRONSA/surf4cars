@@ -17,6 +17,18 @@ export const buyerRoutes: RouteManifest = {
       mobileSupported: true,
     },
     {
+      id: "buyer-intelligence-platform",
+      path: "/buyer/intelligence",
+      label: "Buyer Intelligence",
+      module: "buyer-portal",
+      portal: "buyer",
+      routeGroup: "(buyer)",
+      feature: "buyer-portal",
+      permissions: ["buyer:dashboard:view"],
+      allowedRoles: ["buyer"],
+      mobileSupported: true,
+    },
+    {
       id: "buyer-saved-vehicles",
       path: "/buyer/saved",
       label: "Saved Vehicles",

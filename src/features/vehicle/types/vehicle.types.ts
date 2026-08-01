@@ -1,3 +1,4 @@
+import type { ShowcaseVehicleListing } from "@/features/search/config/search-showcase-listings";
 export type VehicleGalleryCategory =
   | "exterior"
   | "interior"
@@ -7,12 +8,23 @@ export type VehicleGalleryCategory =
   | "dashboard"
   | "rear-seats";
 
+/**
+ * Where a photograph came from.
+ *
+ * Only `dealer` may be shown without qualification, because only `dealer` depicts the vehicle being sold.
+ * The other two are legitimate images and illegitimate implications — the gallery labels them in the frame.
+ */
+export type VehicleImageProvenance = "dealer" | "library" | "manufacturer";
+
 export interface VehicleGalleryImage {
   readonly id: string;
   readonly src: string;
   readonly alt: string;
-  readonly category: VehicleGalleryCategory;
+  /** Absent when nobody has recorded what the photograph shows. Never inferred to "exterior". */
+  readonly category?: VehicleGalleryCategory;
   readonly objectPosition?: string;
+  /** Never optional: an image whose origin nobody decided is exactly what this field exists to prevent. */
+  readonly provenance: VehicleImageProvenance;
 }
 
 export interface VehicleFeature {
@@ -36,6 +48,7 @@ export interface VehicleAiInsight {
 }
 
 export interface VehicleDealerProfile {
+  readonly dealershipId: string;
   readonly name: string;
   readonly slug: string;
   readonly logoInitials: string;
@@ -60,6 +73,9 @@ export interface VehicleDetail {
   readonly id: string;
   readonly title: string;
   readonly subtitle: string;
+  /** Carried separately from the title so market comparison can match on them exactly. */
+  readonly make: string;
+  readonly model: string;
   readonly price: string;
   readonly priceNumeric: number;
   readonly financeEstimate: string;
@@ -85,6 +101,7 @@ export interface VehicleDetail {
   readonly aiInsights: readonly VehicleAiInsight[];
   readonly trustIndicators: readonly VehicleTrustIndicator[];
   readonly similarSlugs: readonly string[];
+  readonly similarListings: readonly ShowcaseVehicleListing[];
   readonly featured?: boolean;
   readonly reducedPrice?: boolean;
   readonly aiMatchScore: number;

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icons";
-import { RotateCcw, X } from "@/components/ui/icons/registry";
+import { X } from "@/components/ui/icons/registry";
 import { Text } from "@/components/ui/typography";
 import { SearchClassicFilters } from "@/features/search/components/search-classic-filters";
 import { useSearchUi } from "@/features/search/context/search-ui-context";
@@ -15,7 +15,7 @@ export function SearchMobileFiltersDrawer() {
 
   return (
     <div
-      className="fixed inset-0 z-50 lg:hidden"
+      className="fixed inset-0 z-50"
       role="dialog"
       aria-modal="true"
       aria-label="Search filters"
@@ -52,28 +52,14 @@ export function SearchMobileFiltersDrawer() {
           <SearchClassicFilters compact />
         </div>
 
-        <div className="flex gap-3 border-t border-[var(--color-border-subtle)] p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
-          <Button variant="outline" size="md" disabled className="flex-1 min-h-12">
-            Clear
-          </Button>
-          <Button
-            variant="ghost"
-            size="md"
-            disabled
-            leftIcon={<Icon icon={RotateCcw} size="sm" />}
-            className="flex-1 min-h-12"
-          >
-            Reset
-          </Button>
-          <Button
-            variant="primary"
-            size="md"
-            className="flex-1 min-h-12"
-            onClick={() => setMobileFiltersOpen(false)}
-          >
-            Apply
-          </Button>
-        </div>
+        {/*
+          No footer.
+          =========
+          It held Clear, Reset and Apply. Clear and Reset were both disabled — and would have been
+          two names for one action had they worked. Apply only closed the drawer; the filter form
+          inside carries its own working Apply Filters and Clear, so the footer's third button
+          discarded the buyer's changes while appearing to commit them.
+        */}
       </div>
     </div>
   );

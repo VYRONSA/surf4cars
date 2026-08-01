@@ -1,11 +1,11 @@
 import { ChartContainer } from "@/components/ui/dashboard";
 import { dashboardPolish } from "@/features/dealer-command-centre/config/dashboard-shared";
 import { DashboardMiniChart } from "@/features/dealer-command-centre/components/dashboard-mini-chart";
-import type { DashboardShowcaseData } from "@/features/dealer-command-centre/types/dashboard.types";
+import type { DealerDashboardData } from "@/features/dealer-command-centre/types/dashboard.types";
 import { cn } from "@/utils";
 
 export interface DashboardPerformanceProps {
-  readonly charts: DashboardShowcaseData["charts"];
+  readonly charts: DealerDashboardData["charts"];
 }
 
 export function DashboardPerformance({ charts }: DashboardPerformanceProps) {
@@ -33,9 +33,15 @@ export function DashboardPerformance({ charts }: DashboardPerformanceProps) {
             height={200}
             className={cn(dashboardPolish.glassCard, "border-0 shadow-[var(--shadow-sm)]")}
           >
-            <div className="flex size-full items-end p-3">
-              <DashboardMiniChart series={chart.series} variant={chart.variant} />
-            </div>
+            {chart.series.availability === "coming-soon" ? (
+              <div className="flex size-full items-center justify-center p-4 text-center text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
+                {chart.series.message ?? "Coming Soon"}
+              </div>
+            ) : (
+              <div className="flex size-full items-end p-3">
+                <DashboardMiniChart series={chart.series} variant={chart.variant} />
+              </div>
+            )}
           </ChartContainer>
         ))}
 
@@ -45,22 +51,28 @@ export function DashboardPerformance({ charts }: DashboardPerformanceProps) {
           height={200}
           className={cn(dashboardPolish.glassCard, "border-0 shadow-[var(--shadow-sm)] lg:col-span-2 xl:col-span-3")}
         >
-          <div className="flex size-full flex-col justify-center gap-3 p-4">
-            {charts.leadSources.map((source) => (
-              <div key={source.label} className="space-y-1">
-                <div className="flex items-center justify-between text-[length:var(--text-body-sm)]">
-                  <span>{source.label}</span>
-                  <span className="font-medium tabular-nums">{source.value}%</span>
+          {charts.leadSources.length === 0 || charts.leadSources.every((source) => source.availability === "coming-soon") ? (
+            <div className="flex size-full items-center justify-center p-4 text-center text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
+              {charts.leadSources[0]?.message ?? "Coming Soon"}
+            </div>
+          ) : (
+            <div className="flex size-full flex-col justify-center gap-3 p-4">
+              {charts.leadSources.map((source) => (
+                <div key={source.label} className="space-y-1">
+                  <div className="flex items-center justify-between text-[length:var(--text-body-sm)]">
+                    <span>{source.label}</span>
+                    <span className="font-medium tabular-nums">{source.value}%</span>
+                  </div>
+                  <div className="h-2 overflow-hidden rounded-[var(--radius-pill)] bg-[var(--color-surface-sunken)]">
+                    <div
+                      className="h-full rounded-[var(--radius-pill)] bg-[var(--color-primary)]"
+                      style={{ width: `${source.value}%` }}
+                    />
+                  </div>
                 </div>
-                <div className="h-2 overflow-hidden rounded-[var(--radius-pill)] bg-[var(--color-surface-sunken)]">
-                  <div
-                    className="h-full rounded-[var(--radius-pill)] bg-[var(--color-primary)]"
-                    style={{ width: `${source.value}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </ChartContainer>
       </div>
     </section>

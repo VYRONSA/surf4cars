@@ -9,6 +9,14 @@ export interface DashboardMiniChartProps {
 
 export function DashboardMiniChart({ series, variant = "line", className }: DashboardMiniChartProps) {
   const values = [...series.values];
+  if (values.length === 0) {
+    return (
+      <div className={cn("flex size-full items-center justify-center text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]", className)}>
+        {series.message ?? "No live data available yet."}
+      </div>
+    );
+  }
+
   const max = Math.max(...values, 1);
   const min = Math.min(...values, 0);
   const range = max - min || 1;

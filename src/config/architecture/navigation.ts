@@ -40,108 +40,41 @@ export interface NavigationConfig {
 const publicPrimaryNav: readonly NavItem[] = [
   { id: "home", label: "Home", path: "/" },
   { id: "search", label: "Search", path: "/search" },
-  { id: "dealers", label: "Dealers", path: "/dealers/featured" },
-  { id: "collections", label: "Collections", path: "/collections" },
-  { id: "guides", label: "Guides", path: "/guides" },
-  { id: "news", label: "News", path: "/news" },
+  { id: "dealer-sign-up", label: "Dealer Sign Up", path: "/auth/sign-up/dealer" },
 ];
 
 const buyerPrimaryNav: readonly NavItem[] = [
   { id: "dashboard", label: "Dashboard", path: "/buyer", icon: "LayoutDashboard" },
-  { id: "saved", label: "Saved Vehicles", path: "/buyer/saved", icon: "Car" },
-  { id: "collections", label: "Collections", path: "/buyer/collections", icon: "Layers" },
-  { id: "searches", label: "Saved Searches", path: "/buyer/searches", icon: "Search" },
-  { id: "recent", label: "Recently Viewed", path: "/buyer/recent", icon: "Clock" },
-  { id: "alerts", label: "Price Alerts", path: "/buyer/alerts", icon: "Bell" },
-  { id: "messages", label: "Messages", path: "/buyer/messages", icon: "MessageSquare" },
+  { id: "intelligence", label: "Buyer Intelligence", path: "/buyer/intelligence", icon: "Brain" },
+  { id: "search", label: "Search", path: "/search", icon: "Search" },
 ];
 
 const dealerPrimaryNav: readonly NavItem[] = [
   { id: "dashboard", label: "Dashboard", path: "/dealer", icon: "LayoutDashboard" },
   { id: "inventory", label: "Inventory", path: "/dealer/inventory", icon: "Car" },
-  { id: "media", label: "Media", path: "/dealer/media", icon: "Image" },
-  {
-    id: "marketing",
-    label: "Marketing Studio",
-    path: "/dealer/marketing",
-    icon: "Megaphone",
-    children: [
-      { id: "campaigns", label: "Campaigns", path: "/dealer/marketing/campaigns" },
-      { id: "social", label: "Social Posts", path: "/dealer/marketing/social" },
-      { id: "calendar", label: "Content Calendar", path: "/dealer/marketing/calendar" },
-      { id: "library", label: "Marketing Library", path: "/dealer/marketing/library" },
-    ],
-  },
-  {
-    id: "ai",
-    label: "AI Studio",
-    path: "/dealer/ai",
-    icon: "Bot",
-    children: [
-      { id: "ai-listings", label: "AI Listings", path: "/dealer/ai/listings" },
-      { id: "ai-insights", label: "AI Insights", path: "/dealer/ai/insights" },
-      { id: "ai-assistant", label: "AI Assistant", path: "/dealer/ai/assistant" },
-    ],
-  },
-  { id: "leads", label: "Lead Centre", path: "/dealer/leads", icon: "Users" },
-  { id: "crm", label: "CRM", path: "/dealer/crm", icon: "Building2" },
-  {
-    id: "analytics",
-    label: "Analytics",
-    path: "/dealer/analytics",
-    icon: "BarChart3",
-    children: [
-      { id: "performance", label: "Performance", path: "/dealer/analytics/performance" },
-      { id: "inventory-analytics", label: "Inventory", path: "/dealer/analytics/inventory" },
-      { id: "marketing-analytics", label: "Marketing", path: "/dealer/analytics/marketing" },
-      { id: "leads-analytics", label: "Leads", path: "/dealer/analytics/leads" },
-    ],
-  },
-  { id: "reports", label: "Reports", path: "/dealer/reports", icon: "FileText" },
-  { id: "seo", label: "SEO Centre", path: "/dealer/seo", icon: "Target" },
+  { id: "market", label: "Market Intelligence", path: "/dealer/market", icon: "LineChart" },
+  { id: "create-vehicle", label: "Create Vehicle", path: "/dealer/inventory/new", icon: "Plus" },
 ];
 
-const dealerSecondaryNav: readonly NavItem[] = [
-  { id: "team", label: "Team", path: "/dealer/team", icon: "Users" },
-  { id: "branches", label: "Branches", path: "/dealer/branches", icon: "Store" },
-  { id: "profile", label: "Dealer Profile", path: "/dealer/profile", icon: "BadgeCheck" },
-  { id: "brand", label: "Brand Assets", path: "/dealer/brand", icon: "Palette" },
-  { id: "documents", label: "Documents", path: "/dealer/documents", icon: "FileText" },
-  { id: "billing", label: "Billing", path: "/dealer/billing", icon: "CreditCard" },
-  { id: "website", label: "Website", path: "/dealer/website", icon: "Globe" },
-  { id: "audit", label: "Audit Logs", path: "/dealer/audit", icon: "Shield" },
-  { id: "settings", label: "Settings", path: "/dealer/settings", icon: "Settings" },
-];
+const dealerSecondaryNav: readonly NavItem[] = [];
 
-const adminPrimaryNav: readonly NavItem[] = [
-  { id: "dealers", label: "Dealers", path: "/admin/dealers", icon: "Store" },
-  { id: "users", label: "Users", path: "/admin/users", icon: "Users" },
-  { id: "subscriptions", label: "Subscriptions", path: "/admin/subscriptions", icon: "CreditCard" },
-  { id: "packages", label: "Packages", path: "/admin/packages", icon: "Layers" },
-  { id: "support", label: "Support", path: "/admin/support", icon: "MessageSquare" },
-  { id: "moderation", label: "Moderation", path: "/admin/moderation", icon: "Shield" },
-  { id: "cms", label: "CMS", path: "/admin/cms", icon: "FileText" },
-  { id: "advertising", label: "Advertising", path: "/admin/advertising", icon: "Megaphone" },
-  { id: "featured", label: "Featured Listings", path: "/admin/featured", icon: "Sparkles" },
-  { id: "seo", label: "SEO", path: "/admin/seo", icon: "Target" },
-  { id: "analytics", label: "Analytics", path: "/admin/analytics", icon: "BarChart3" },
-  { id: "health", label: "Platform Health", path: "/admin/health", icon: "Activity" },
-  { id: "ai-usage", label: "AI Usage", path: "/admin/ai-usage", icon: "Bot" },
-  { id: "settings", label: "System Settings", path: "/admin/settings", icon: "Settings" },
-  { id: "audit", label: "Audit Logs", path: "/admin/audit", icon: "Shield" },
-  { id: "developer", label: "Developer Tools", path: "/admin/developer", icon: "Cpu" },
-];
+const adminPrimaryNav: readonly NavItem[] = [];
 
-const developerPrimaryNav: readonly NavItem[] = [
-  { id: "api-keys", label: "API Keys", path: "/developer/api-keys", icon: "Key" },
-  { id: "webhooks", label: "Webhooks", path: "/developer/webhooks", icon: "Zap" },
-  { id: "logs", label: "Logs", path: "/developer/logs", icon: "FileText" },
-  { id: "flags", label: "Feature Flags", path: "/developer/flags", icon: "SlidersHorizontal" },
-  { id: "jobs", label: "Background Jobs", path: "/developer/jobs", icon: "Cpu" },
-  { id: "queue", label: "Queue Monitor", path: "/developer/queue", icon: "Activity" },
-  { id: "docs", label: "Documentation", path: "/developer/docs", icon: "FileText" },
-  { id: "environment", label: "Environment", path: "/developer/environment", icon: "Settings" },
-  { id: "monitoring", label: "Monitoring", path: "/developer/monitoring", icon: "BarChart3" },
+const developerPrimaryNav: readonly NavItem[] = [];
+
+const operationsPrimaryNav: readonly NavItem[] = [
+  { id: "operations-dashboard", label: "Dashboard", path: "/operations/dashboard", icon: "LayoutDashboard" },
+  { id: "dealer-management", label: "Dealer Management", path: "/operations/dealer-management", icon: "Building2" },
+  { id: "dealer-intelligence", label: "Dealer Intelligence", path: "/operations/dealer-intelligence", icon: "Brain" },
+  { id: "applications-centre", label: "Applications Centre", path: "/operations/applications-centre", icon: "FileText" },
+  { id: "marketplace-control", label: "Marketplace Control", path: "/operations/marketplace-control", icon: "Store" },
+  { id: "revenue-centre", label: "Revenue Centre", path: "/operations/revenue-centre", icon: "TrendingUp" },
+  { id: "advertising-centre", label: "Advertising Centre", path: "/operations/advertising-centre", icon: "Megaphone" },
+  { id: "partner-centre", label: "Partner Centre", path: "/operations/partner-centre", icon: "Users" },
+  { id: "business-intelligence", label: "Business Intelligence", path: "/operations/business-intelligence", icon: "BarChart3" },
+  { id: "settings", label: "Settings", path: "/operations/settings", icon: "Settings" },
+  { id: "audit-logs", label: "Audit Logs", path: "/operations/audit-logs", icon: "Shield" },
+  { id: "workers", label: "Workers", path: "/operations/workers", icon: "Activity" },
 ];
 
 export const NAVIGATION_BY_USER_TYPE: Record<UserTypeId, NavigationConfig> = {
@@ -151,102 +84,76 @@ export const NAVIGATION_BY_USER_TYPE: Record<UserTypeId, NavigationConfig> = {
     primary: publicPrimaryNav,
     quickActions: [
       { id: "search", label: "Search Vehicles", path: "/search" },
-      { id: "sign-in", label: "Sign In", path: "/auth/sign-in" },
       { id: "dealer-sign-up", label: "Dealer Sign Up", path: "/auth/sign-up/dealer" },
     ],
     mobile: [
       { id: "home", label: "Home", path: "/" },
       { id: "search", label: "Search", path: "/search" },
-      { id: "dealers", label: "Dealers", path: "/dealers/featured" },
-      { id: "account", label: "Account", path: "/auth/sign-in" },
+      { id: "dealer-sign-up", label: "Dealer Sign Up", path: "/auth/sign-up/dealer" },
     ],
   },
   buyer: {
     userType: "buyer",
     portal: "buyer",
     primary: buyerPrimaryNav,
-    secondary: [
-      { id: "profile", label: "Profile", path: "/buyer/profile", icon: "User" },
-      { id: "settings", label: "Settings", path: "/buyer/settings", icon: "Settings" },
-      { id: "notifications", label: "Notifications", path: "/buyer/notifications", icon: "Bell" },
-      { id: "activity", label: "Activity", path: "/buyer/activity", icon: "Activity" },
-    ],
+    secondary: [],
     quickActions: [
       { id: "search", label: "Search Vehicles", path: "/search" },
-      { id: "save-search", label: "Save Search", path: "/buyer/searches" },
     ],
     commandPaletteGroups: [
       { id: "navigation", label: "Navigation", items: [...buyerPrimaryNav] },
       { id: "actions", label: "Quick Actions", items: [
-        { id: "new-collection", label: "New Collection", path: "/buyer/collections" },
-        { id: "messages", label: "View Messages", path: "/buyer/messages" },
+        { id: "search", label: "Search Vehicles", path: "/search" },
       ]},
     ],
     mobile: [
       { id: "dashboard", label: "Home", path: "/buyer" },
-      { id: "saved", label: "Saved", path: "/buyer/saved" },
+      { id: "intelligence", label: "Intelligence", path: "/buyer/intelligence" },
       { id: "search", label: "Search", path: "/search" },
-      { id: "messages", label: "Messages", path: "/buyer/messages" },
-      { id: "profile", label: "Profile", path: "/buyer/profile" },
+      { id: "dealer-sign-up", label: "Dealer Sign Up", path: "/auth/sign-up/dealer" },
     ],
   },
   dealer: {
     userType: "dealer",
     portal: "dealer",
-    primary: dealerPrimaryNav.filter((item) =>
-      ["dashboard", "inventory", "leads", "crm", "media"].includes(item.id),
-    ),
-    secondary: [
-      { id: "settings", label: "Settings", path: "/dealer/settings", icon: "Settings" },
-      { id: "notifications", label: "Notifications", path: "/dealer/notifications", icon: "Bell" },
-    ],
+    primary: dealerPrimaryNav,
+    secondary: [],
     mobile: [
       { id: "dashboard", label: "Home", path: "/dealer" },
       { id: "inventory", label: "Stock", path: "/dealer/inventory" },
-      { id: "leads", label: "Leads", path: "/dealer/leads" },
-      { id: "crm", label: "CRM", path: "/dealer/crm" },
-      { id: "more", label: "More", path: "/dealer/settings" },
+      { id: "market", label: "Market", path: "/dealer/market" },
+      { id: "create-vehicle", label: "Add", path: "/dealer/inventory/new" },
     ],
   },
   salesperson: {
     userType: "salesperson",
     portal: "dealer",
-    primary: dealerPrimaryNav.filter((item) =>
-      ["dashboard", "inventory", "marketing", "leads", "crm", "analytics"].includes(item.id),
-    ),
-    secondary: dealerSecondaryNav.filter((item) =>
-      ["profile", "settings", "notifications"].includes(item.id),
-    ),
+    primary: dealerPrimaryNav,
+    secondary: dealerSecondaryNav,
     quickActions: [
-      { id: "add-vehicle", label: "Add Vehicle", path: "/dealer/inventory" },
-      { id: "new-lead", label: "New Lead", path: "/dealer/leads" },
+      { id: "add-vehicle", label: "Add Vehicle", path: "/dealer/inventory/new" },
     ],
     mobile: [
       { id: "dashboard", label: "Home", path: "/dealer" },
       { id: "inventory", label: "Stock", path: "/dealer/inventory" },
-      { id: "leads", label: "Leads", path: "/dealer/leads" },
-      { id: "crm", label: "CRM", path: "/dealer/crm" },
-      { id: "more", label: "More", path: "/dealer/settings" },
+      { id: "market", label: "Market", path: "/dealer/market" },
+      { id: "create-vehicle", label: "Add", path: "/dealer/inventory/new" },
     ],
   },
   "branch-manager": {
     userType: "branch-manager",
     portal: "dealer",
     primary: dealerPrimaryNav,
-    secondary: dealerSecondaryNav.filter((item) =>
-      !["billing", "website"].includes(item.id),
-    ),
+    secondary: dealerSecondaryNav,
     quickActions: [
-      { id: "publish-vehicle", label: "Publish Vehicle", path: "/dealer/inventory" },
-      { id: "view-reports", label: "View Reports", path: "/dealer/reports" },
-      { id: "ai-insights", label: "AI Insights", path: "/dealer/ai/insights" },
+      { id: "publish-vehicle", label: "Publish Vehicle", path: "/dealer/inventory/new" },
+      { id: "view-market", label: "View Market", path: "/dealer/market" },
     ],
     mobile: [
       { id: "dashboard", label: "Home", path: "/dealer" },
       { id: "inventory", label: "Stock", path: "/dealer/inventory" },
-      { id: "analytics", label: "Analytics", path: "/dealer/analytics" },
-      { id: "marketing", label: "Marketing", path: "/dealer/marketing" },
-      { id: "more", label: "More", path: "/dealer/settings" },
+      { id: "market", label: "Market", path: "/dealer/market" },
+      { id: "create-vehicle", label: "Add", path: "/dealer/inventory/new" },
     ],
   },
   "dealer-owner": {
@@ -255,50 +162,128 @@ export const NAVIGATION_BY_USER_TYPE: Record<UserTypeId, NavigationConfig> = {
     primary: dealerPrimaryNav,
     secondary: dealerSecondaryNav,
     quickActions: [
-      { id: "team", label: "Manage Team", path: "/dealer/team" },
-      { id: "billing", label: "Billing", path: "/dealer/billing" },
-      { id: "ai-assistant", label: "AI Assistant", path: "/dealer/ai/assistant" },
+      { id: "publish-vehicle", label: "Publish Vehicle", path: "/dealer/inventory/new" },
+      { id: "view-market", label: "View Market", path: "/dealer/market" },
     ],
     commandPaletteGroups: [
       { id: "navigation", label: "Navigation", items: [...dealerPrimaryNav, ...dealerSecondaryNav] },
       { id: "actions", label: "Quick Actions", items: [
-        { id: "add-vehicle", label: "Add Vehicle", path: "/dealer/inventory" },
-        { id: "new-campaign", label: "New Campaign", path: "/dealer/marketing/campaigns" },
+        { id: "add-vehicle", label: "Add Vehicle", path: "/dealer/inventory/new" },
+        { id: "view-market", label: "View Market", path: "/dealer/market" },
       ]},
     ],
     mobile: [
       { id: "dashboard", label: "Home", path: "/dealer" },
       { id: "inventory", label: "Stock", path: "/dealer/inventory" },
-      { id: "analytics", label: "Analytics", path: "/dealer/analytics" },
-      { id: "marketing", label: "Marketing", path: "/dealer/marketing" },
-      { id: "more", label: "More", path: "/dealer/settings" },
+      { id: "market", label: "Market", path: "/dealer/market" },
+      { id: "create-vehicle", label: "Add", path: "/dealer/inventory/new" },
     ],
   },
   "platform-administrator": {
     userType: "platform-administrator",
     portal: "admin",
     primary: adminPrimaryNav,
-    quickActions: [
-      { id: "dealers", label: "Manage Dealers", path: "/admin/dealers" },
-      { id: "health", label: "Platform Health", path: "/admin/health" },
-    ],
-    mobile: [
-      { id: "dealers", label: "Dealers", path: "/admin/dealers" },
-      { id: "users", label: "Users", path: "/admin/users" },
-      { id: "support", label: "Support", path: "/admin/support" },
-      { id: "health", label: "Health", path: "/admin/health" },
-      { id: "more", label: "More", path: "/admin/settings" },
-    ],
+    quickActions: [],
+    mobile: [],
   },
   developer: {
     userType: "developer",
     portal: "developer",
     primary: developerPrimaryNav,
-    quickActions: [
-      { id: "docs", label: "API Docs", path: "/developer/docs" },
-      { id: "api-keys", label: "Create API Key", path: "/developer/api-keys" },
+    quickActions: [],
+    mobile: [],
+  },
+  "platform-owner": {
+    userType: "platform-owner",
+    portal: "operations",
+    primary: operationsPrimaryNav,
+    mobile: [
+      { id: "operations-dashboard", label: "Dashboard", path: "/operations/dashboard" },
+      { id: "dealer-management", label: "Dealers", path: "/operations/dealer-management" },
+      { id: "revenue-centre", label: "Revenue", path: "/operations/revenue-centre" },
+      { id: "audit-logs", label: "Audit", path: "/operations/audit-logs" },
     ],
-    mobile: developerPrimaryNav.slice(0, 5),
+  },
+  "operations-director": {
+    userType: "operations-director",
+    portal: "operations",
+    primary: operationsPrimaryNav,
+    mobile: [
+      { id: "operations-dashboard", label: "Dashboard", path: "/operations/dashboard" },
+      { id: "dealer-management", label: "Dealers", path: "/operations/dealer-management" },
+      { id: "revenue-centre", label: "Revenue", path: "/operations/revenue-centre" },
+      { id: "audit-logs", label: "Audit", path: "/operations/audit-logs" },
+    ],
+  },
+  "dealer-success": {
+    userType: "dealer-success",
+    portal: "operations",
+    primary: operationsPrimaryNav,
+    mobile: [
+      { id: "operations-dashboard", label: "Dashboard", path: "/operations/dashboard" },
+      { id: "dealer-management", label: "Dealers", path: "/operations/dealer-management" },
+      { id: "applications-centre", label: "Applications", path: "/operations/applications-centre" },
+    ],
+  },
+  marketplace: {
+    userType: "marketplace",
+    portal: "operations",
+    primary: operationsPrimaryNav,
+    mobile: [
+      { id: "operations-dashboard", label: "Dashboard", path: "/operations/dashboard" },
+      { id: "marketplace-control", label: "Marketplace", path: "/operations/marketplace-control" },
+      { id: "dealer-intelligence", label: "Intelligence", path: "/operations/dealer-intelligence" },
+    ],
+  },
+  revenue: {
+    userType: "revenue",
+    portal: "operations",
+    primary: operationsPrimaryNav,
+    mobile: [
+      { id: "operations-dashboard", label: "Dashboard", path: "/operations/dashboard" },
+      { id: "revenue-centre", label: "Revenue", path: "/operations/revenue-centre" },
+      { id: "business-intelligence", label: "BI", path: "/operations/business-intelligence" },
+    ],
+  },
+  finance: {
+    userType: "finance",
+    portal: "operations",
+    primary: operationsPrimaryNav,
+    mobile: [
+      { id: "operations-dashboard", label: "Dashboard", path: "/operations/dashboard" },
+      { id: "revenue-centre", label: "Revenue", path: "/operations/revenue-centre" },
+      { id: "applications-centre", label: "Applications", path: "/operations/applications-centre" },
+    ],
+  },
+  support: {
+    userType: "support",
+    portal: "operations",
+    primary: operationsPrimaryNav,
+    mobile: [
+      { id: "operations-dashboard", label: "Dashboard", path: "/operations/dashboard" },
+      { id: "applications-centre", label: "Applications", path: "/operations/applications-centre" },
+      { id: "audit-logs", label: "Audit", path: "/operations/audit-logs" },
+    ],
+  },
+  marketing: {
+    userType: "marketing",
+    portal: "operations",
+    primary: operationsPrimaryNav,
+    mobile: [
+      { id: "operations-dashboard", label: "Dashboard", path: "/operations/dashboard" },
+      { id: "advertising-centre", label: "Advertising", path: "/operations/advertising-centre" },
+      { id: "partner-centre", label: "Partners", path: "/operations/partner-centre" },
+    ],
+  },
+  moderation: {
+    userType: "moderation",
+    portal: "operations",
+    primary: operationsPrimaryNav,
+    mobile: [
+      { id: "operations-dashboard", label: "Dashboard", path: "/operations/dashboard" },
+      { id: "marketplace-control", label: "Marketplace", path: "/operations/marketplace-control" },
+      { id: "audit-logs", label: "Audit", path: "/operations/audit-logs" },
+    ],
   },
 };
 
@@ -312,6 +297,7 @@ export const GLOBAL_SEARCH = {
     dealer: ["inventory", "leads", "crm", "campaigns", "analytics"],
     admin: ["dealers", "users", "support", "moderation"],
     developer: ["endpoints", "webhooks", "logs", "docs"],
+    operations: ["dealers", "applications", "revenue", "alerts", "audit"],
   },
 } as const;
 
@@ -323,6 +309,7 @@ export const BREADCRUMB_STRATEGY = {
     public: "/",
     buyer: "/buyer",
     dealer: "/dealer",
+    operations: "/operations",
     admin: "/admin",
     developer: "/developer",
   },

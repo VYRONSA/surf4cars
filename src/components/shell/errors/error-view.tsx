@@ -1,7 +1,5 @@
 import type { ReactNode } from "react";
 
-import { SurfLogoLink } from "@/components/brand";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/utils";
 
 export type ErrorType =
@@ -15,39 +13,44 @@ export type ErrorType =
 export interface ErrorConfig {
   readonly title: string;
   readonly description: string;
-  readonly code?: string;
 }
 
+/**
+ * Error copy, written for a customer rather than for a log.
+ *
+ * The `code` field is gone with the text that needed it. It printed "403", "NETWORK", "MAINTENANCE"
+ * and "OFFLINE" above the heading in small caps — HTTP status codes and internal enum names, shown
+ * to somebody who has just been stopped from doing something. A status code helps an engineer read a
+ * trace; on a page it only tells a customer that the site is talking to itself.
+ *
+ * "Access denied" went with it. It is the vocabulary of a security system, and the situation it
+ * usually describes is far more ordinary: somebody followed a link into a part of the platform their
+ * account does not open.
+ */
 export const ERROR_CONFIG: Record<ErrorType, ErrorConfig> = {
   "404": {
-    title: "Page not found",
-    description: "The page you're looking for doesn't exist or has been moved.",
-    code: "404",
+    title: "That page has moved on.",
+    description: "The link may be old, or the vehicle may have sold. The marketplace is still here.",
   },
   "500": {
-    title: "Something went wrong",
-    description: "An unexpected error occurred. Please try again later.",
-    code: "500",
+    title: "Something broke on our side.",
+    description: "This is us, not you. Try again in a moment.",
   },
   network: {
-    title: "Network error",
-    description: "Unable to connect. Check your internet connection and try again.",
-    code: "NETWORK",
+    title: "We could not reach the marketplace.",
+    description: "Check your connection and try again.",
   },
   permission: {
-    title: "Access denied",
-    description: "You don't have permission to view this page.",
-    code: "403",
+    title: "This part of SURF4CARS is not open to your account.",
+    description: "Dealer and operations areas need the right sign-in. Everything a buyer needs is on the marketplace.",
   },
   maintenance: {
-    title: "Under maintenance",
-    description: "SURF FOR CARS is temporarily unavailable while we perform upgrades.",
-    code: "MAINTENANCE",
+    title: "Back shortly.",
+    description: "We are making changes to the platform. Nothing has been lost.",
   },
   offline: {
-    title: "You're offline",
-    description: "Reconnect to the internet to continue using SURF FOR CARS.",
-    code: "OFFLINE",
+    title: "You are offline.",
+    description: "The marketplace will be here when the connection is.",
   },
 };
 
@@ -70,31 +73,21 @@ export function ErrorView({
 
   return (
     <div
-      className={cn(
-        "flex min-h-[50vh] flex-col items-center justify-center px-4 py-16 text-center",
-        className,
-      )}
+      /* Left-aligned, in the page's own container. It was centred, in a 50vh block, under a
+         separate copy of the logo — which on a public route sat directly beneath the site header's
+         wordmark, showing the brand twice in 200px, the second time as the legacy raster asset. */
+      className={cn("mx-auto w-full max-w-[var(--container-2xl)] px-5 py-24 lg:px-8 lg:py-32", className)}
       role="alert"
     >
-      <SurfLogoLink variant="compact" className="mb-8" />
-      {config.code && (
-        <p className="mb-2 text-[length:var(--text-overline)] font-medium uppercase tracking-[var(--tracking-overline)] text-[var(--color-muted-foreground)]">
-          {config.code}
-        </p>
-      )}
-      <h1 className="text-[length:var(--text-h2)] font-semibold tracking-[var(--tracking-heading)]">
+      <h1 className="max-w-2xl text-balance text-[length:var(--text-h2)] font-semibold leading-[1.1] tracking-[-0.02em] text-[var(--color-foreground)]">
         {title ?? config.title}
       </h1>
-      <p className="mt-2 max-w-md text-[length:var(--text-body-md)] text-[var(--color-muted-foreground)]">
+      <p className="mt-4 max-w-xl text-[length:var(--text-body-lg)] leading-relaxed text-[var(--color-muted-foreground)]">
         {description ?? config.description}
       </p>
-      {action ?? (
-        <div className="mt-6">
-          <Button variant="outline" disabled>
-            Return home
-          </Button>
-        </div>
-      )}
+      {/* No disabled fallback. A greyed-out "Return home" on an error page is a dead end offering a
+          way out and refusing it. Callers pass a real action; without one there is simply none. */}
+      {action && <div className="mt-8">{action}</div>}
     </div>
   );
 }

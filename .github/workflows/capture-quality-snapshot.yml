@@ -1,0 +1,78 @@
+# Automated operational history.
+#
+# History that depends on somebody remembering to capture it is not operational history. This runs whether or
+# not anyone is looking, which is the entire point.
+#
+# WHY A SCHEDULED JOB RATHER THAN AN APPLICATION ROUTE
+# ===================================================
+# The obvious alternative is a cron-triggered API route inside the Next.js app. It was rejected: capture
+# reads every dealership, listing and media row, and running that inside the application means it shares a
+# runtime — and a connection pool — with customer traffic. PRP-003 asks for zero impact on customers, and the
+# only way to guarantee that is to not be in their process at all.
+#
+# This job talks to Supabase directly over the service role. If it fails, customers see nothing, and the
+# failure surfaces as a red run rather than as a slow page.
+#
+# GAPS ARE VISIBLE, NOT FILLED
+# ============================
+# A failed run leaves a hole in the series. That is deliberate. The history view reports missing periods
+# rather than interpolating across them — an estimated snapshot is a fabricated measurement, and this
+# platform does not fabricate.
+
+name: Capture quality snapshot
+
+on:
+  schedule:
+    # 02:10 UTC daily — 04:10 SAST, outside South African trading hours. Not on the hour: scheduled runners
+    # queue heavily at :00, and a snapshot that drifts late is less useful than one that starts promptly.
+    - cron: "10 2 * * *"
+  workflow_dispatch:
+    inputs:
+      period:
+        description: "Snapshot period"
+        required: false
+        default: "daily"
+        type: choice
+        options: [daily, hourly, weekly]
+
+concurrency:
+  # Two overlapping runs would be harmless — capture is idempotent per period — but serialising them keeps
+  # the logs readable when a manual run coincides with the schedule.
+  group: quality-snapshot
+  cancel-in-progress: false
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The capture records the commit it ran from, so the checkout must be a real ref rather than a
+          # shallow detached blob with no describable HEAD.
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      # No `npm ci`: the capture script imports the engines directly under Node's TypeScript stripping and
+      # uses only built-ins. Installing the full dependency tree would add minutes and a supply-chain surface
+      # for no benefit.
+
+      - name: Capture snapshot
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_REST_URL: ${{ secrets.SUPABASE_REST_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+        run: |
+          printf 'NEXT_PUBLIC_SUPABASE_URL=%s\n' "$NEXT_PUBLIC_SUPABASE_URL" > .env.local
+          printf 'SUPABASE_REST_URL=%s\n' "$SUPABASE_REST_URL" >> .env.local
+          printf 'SUPABASE_SECRET_KEY=%s\n' "$SUPABASE_SECRET_KEY" >> .env.local
+          node scripts/prp002-capture-snapshot.mjs \
+            --period "${{ inputs.period || 'daily' }}" \
+            --trigger cron
+
+      - name: Show series
+        if: always()
+        run: node scripts/prp002-capture-snapshot.mjs --history

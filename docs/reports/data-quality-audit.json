@@ -1,0 +1,840 @@
+{
+  "generatedOn": "2026-07-31",
+  "audited": 100,
+  "rows": [
+    {
+      "slug": "2026-toyota-corolla-cross-1-8-xs-s1-veh-0",
+      "title": "2026 Toyota Corolla Cross 1.8 XS",
+      "issues": []
+    },
+    {
+      "slug": "2026-mazda-cx-5-2-2de-individual-s1-veh-0",
+      "title": "2026 Mazda CX-5 2.2DE Individual",
+      "issues": []
+    },
+    {
+      "slug": "2026-isuzu-d-max-1-9-ddi-ls-s1-veh-0",
+      "title": "2026 Isuzu D-Max 1.9 Ddi LS",
+      "issues": []
+    },
+    {
+      "slug": "2026-toyota-hilux-2-8-gd-6-raider-s1-veh-0",
+      "title": "2026 Toyota Hilux 2.8 GD-6 Raider",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/toyota-hilux/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2026-volkswagen-amarok-3-0-v6-aventura-s1-veh-0",
+      "title": "2026 Volkswagen Amarok 3.0 V6 Aventura",
+      "issues": []
+    },
+    {
+      "slug": "2026-ford-ranger-3-0-v6-raptor-s1-veh-0",
+      "title": "2026 Ford Ranger 3.0 V6 Raptor",
+      "issues": []
+    },
+    {
+      "slug": "2026-kia-sportage-1-6t-gt-line-s1-veh-0",
+      "title": "2026 Kia Sportage 1.6T GT-Line",
+      "issues": []
+    },
+    {
+      "slug": "2026-ford-everest-2-0-bit-xlt-s1-veh-0",
+      "title": "2026 Ford Everest 2.0 BiT XLT",
+      "issues": []
+    },
+    {
+      "slug": "2026-toyota-land-cruiser-300-3-3-zx-s1-veh-0",
+      "title": "2026 Toyota Land Cruiser 300 3.3 ZX",
+      "issues": []
+    },
+    {
+      "slug": "2026-mitsubishi-triton-2-4-di-d-xtreme-s1-veh-0",
+      "title": "2026 Mitsubishi Triton 2.4 DI-D Xtreme",
+      "issues": []
+    },
+    {
+      "slug": "2026-peugeot-2008-1-2-puretech-allure-s1-veh-0",
+      "title": "2026 Peugeot 2008 1.2 PureTech Allure",
+      "issues": []
+    },
+    {
+      "slug": "2026-toyota-corolla-2-0-xr-s1-veh-0",
+      "title": "2026 Toyota Corolla 2.0 XR",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/toyota-corolla/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2026-audi-q5-40-tdi-quattro-s-line-s1-veh-0",
+      "title": "2026 Audi Q5 40 TDI quattro S line",
+      "issues": []
+    },
+    {
+      "slug": "2026-lexus-nx-350h-se-s1-veh-0",
+      "title": "2026 Lexus NX 350h SE",
+      "issues": []
+    },
+    {
+      "slug": "2026-audi-a3-35-tfsi-s-line-s1-veh-0",
+      "title": "2026 Audi A3 35 TFSI S line",
+      "issues": []
+    },
+    {
+      "slug": "2026-honda-fit-1-5-comfort-s1-veh-0",
+      "title": "2026 Honda Fit 1.5 Comfort",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/honda-fit/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2025-toyota-land-cruiser-300-3-3-zx-s1-veh-0",
+      "title": "2025 Toyota Land Cruiser 300 3.3 ZX",
+      "issues": []
+    },
+    {
+      "slug": "2025-toyota-fortuner-2-4-gd-6-s1-veh-0",
+      "title": "2025 Toyota Fortuner 2.4 GD-6",
+      "issues": []
+    },
+    {
+      "slug": "2025-audi-q3-40-tdi-quattro-s1-veh-0",
+      "title": "2025 Audi Q3 40 TDI quattro",
+      "issues": []
+    },
+    {
+      "slug": "2025-suzuki-swift-1-2-glx-s1-veh-0",
+      "title": "2025 Suzuki Swift 1.2 GLX",
+      "issues": []
+    },
+    {
+      "slug": "2025-mercedes-benz-c-class-c200-amg-line-s1-veh-0",
+      "title": "2025 Mercedes-Benz C-Class C200 AMG Line",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/mercedes-benz-c-class/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2025-audi-a3-35-tfsi-s-line-s1-veh-0",
+      "title": "2025 Audi A3 35 TFSI S line",
+      "issues": []
+    },
+    {
+      "slug": "2025-kia-sportage-1-6t-gt-line-s1-veh-0",
+      "title": "2025 Kia Sportage 1.6T GT-Line",
+      "issues": []
+    },
+    {
+      "slug": "2025-peugeot-2008-1-2-puretech-allure-s1-veh-0",
+      "title": "2025 Peugeot 2008 1.2 PureTech Allure",
+      "issues": []
+    },
+    {
+      "slug": "2025-suzuki-jimny-1-5-glx-s1-veh-0",
+      "title": "2025 Suzuki Jimny 1.5 GLX",
+      "issues": []
+    },
+    {
+      "slug": "2025-honda-fit-1-5-comfort-s1-veh-0",
+      "title": "2025 Honda Fit 1.5 Comfort",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/honda-fit/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2025-bmw-320i-luxury-line-s1-veh-0",
+      "title": "2025 BMW 320i Luxury Line",
+      "issues": []
+    },
+    {
+      "slug": "2025-hyundai-tucson-1-6t-elite-s1-veh-0",
+      "title": "2025 Hyundai Tucson 1.6T Elite",
+      "issues": []
+    },
+    {
+      "slug": "2025-volkswagen-polo-1-0-tsi-life-s1-veh-0",
+      "title": "2025 Volkswagen Polo 1.0 TSI Life",
+      "issues": []
+    },
+    {
+      "slug": "2024-volvo-xc90-b5-ultimate-0c2b72d2",
+      "title": "2024 Volvo XC90 B5 Ultimate",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/volvo-xc90/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-bmw-x5-xdrive40i-m-sport-1b1e11c7",
+      "title": "2024 BMW X5 xDrive40i M Sport",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/bmw-x5/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-bmw-x5-xdrive40i-260747aa",
+      "title": "2024 BMW X5 xDrive40i",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/bmw-x5/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-volvo-xc90-b5-ultimate-283a11c0",
+      "title": "2024 Volvo XC90 B5 Ultimate",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/volvo-xc90/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-jaguar-f-pace-r-dynamic-288d238f",
+      "title": "2024 Jaguar F-Pace R-Dynamic",
+      "issues": []
+    },
+    {
+      "slug": "2024-bmw-x5-xdrive40i-288ed93e",
+      "title": "2024 BMW X5 xDrive40i",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/bmw-x5/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-jaguar-f-pace-r-dynamic-2b8f6d22",
+      "title": "2024 Jaguar F-Pace R-Dynamic",
+      "issues": []
+    },
+    {
+      "slug": "2024-bmw-x5-xdrive40i-2d7ee065",
+      "title": "2024 BMW X5 xDrive40i",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/bmw-x5/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-jaguar-f-pace-r-dynamic-2fefe84f",
+      "title": "2024 Jaguar F-Pace R-Dynamic",
+      "issues": []
+    },
+    {
+      "slug": "2024-bmw-x5-xdrive40i-39f303f6",
+      "title": "2024 BMW X5 xDrive40i",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/bmw-x5/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-volvo-xc90-b5-ultimate-3b3a3f70",
+      "title": "2024 Volvo XC90 B5 Ultimate",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/volvo-xc90/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-volvo-xc90-b5-ultimate-3f33ea41",
+      "title": "2024 Volvo XC90 B5 Ultimate",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/volvo-xc90/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-bmw-x5-xdrive40i-5674b4ce",
+      "title": "2024 BMW X5 xDrive40i",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/bmw-x5/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-volvo-xc90-b5-ultimate-572e1855",
+      "title": "2024 Volvo XC90 B5 Ultimate",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/volvo-xc90/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-volvo-xc90-57478690",
+      "title": "2024 Volvo XC90",
+      "issues": [
+        {
+          "field": "Specifications",
+          "problem": "Only 4 specification fields — nothing beyond what the card already shows.",
+          "excerpt": ">Specifications Overview Make Volvo Model XC90 Year 2024 Mileage 18 000 km Specification",
+          "correction": "Enrich from the VIN or model catalogue: drivetrain, engine, fuel, colour, service history.",
+          "priority": "medium"
+        },
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/volvo-xc90/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-jaguar-f-pace-r-dynamic-57bfb626",
+      "title": "2024 Jaguar F-Pace R-Dynamic",
+      "issues": []
+    },
+    {
+      "slug": "2024-bmw-x5-xdrive40i-59b28ff4",
+      "title": "2024 BMW X5 xDrive40i",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/bmw-x5/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-jaguar-f-pace-r-dynamic-5d61c350",
+      "title": "2024 Jaguar F-Pace R-Dynamic",
+      "issues": []
+    },
+    {
+      "slug": "2024-bmw-x5-xdrive40i-62a09209",
+      "title": "2024 BMW X5 xDrive40i",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/bmw-x5/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-bmw-x5-xdrive40i-6ab2dc0c",
+      "title": "2024 BMW X5 xDrive40i",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/bmw-x5/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-volvo-xc90-b5-ultimate-726421b6",
+      "title": "2024 Volvo XC90 B5 Ultimate",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/volvo-xc90/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-volvo-xc90-b5-ultimate-73187d28",
+      "title": "2024 Volvo XC90 B5 Ultimate",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/volvo-xc90/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-volvo-xc90-b5-ultimate-7c0c90a3",
+      "title": "2024 Volvo XC90 B5 Ultimate",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/volvo-xc90/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-volvo-xc90-b5-ultimate-841a639c",
+      "title": "2024 Volvo XC90 B5 Ultimate",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/volvo-xc90/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-jaguar-f-pace-r-dynamic-8774b5c8",
+      "title": "2024 Jaguar F-Pace R-Dynamic",
+      "issues": []
+    },
+    {
+      "slug": "2024-bmw-x5-xdrive40i-8c373486",
+      "title": "2024 BMW X5 xDrive40i",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/bmw-x5/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-jaguar-f-pace-8c3b190d",
+      "title": "2024 Jaguar F-Pace",
+      "issues": [
+        {
+          "field": "Specifications",
+          "problem": "Only 4 specification fields — nothing beyond what the card already shows.",
+          "excerpt": ">Specifications Overview Make Jaguar Model F-Pace Year 2024 Mileage 21 000 km Specification",
+          "correction": "Enrich from the VIN or model catalogue: drivetrain, engine, fuel, colour, service history.",
+          "priority": "medium"
+        }
+      ]
+    },
+    {
+      "slug": "2024-jaguar-f-pace-r-dynamic-9a6e4b43",
+      "title": "2024 Jaguar F-Pace R-Dynamic",
+      "issues": []
+    },
+    {
+      "slug": "2024-volvo-xc90-9cc5ac84",
+      "title": "2024 Volvo XC90",
+      "issues": [
+        {
+          "field": "Specifications",
+          "problem": "Only 4 specification fields — nothing beyond what the card already shows.",
+          "excerpt": ">Specifications Overview Make Volvo Model XC90 Year 2024 Mileage 18 000 km Specification",
+          "correction": "Enrich from the VIN or model catalogue: drivetrain, engine, fuel, colour, service history.",
+          "priority": "medium"
+        },
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/volvo-xc90/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-bmw-x5-xdrive40i-b07d72da",
+      "title": "2024 BMW X5 xDrive40i",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/bmw-x5/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-bmw-x5-xdrive40i-d3093359",
+      "title": "2024 BMW X5 xDrive40i",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/bmw-x5/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-jaguar-f-pace-r-dynamic-dd9c659c",
+      "title": "2024 Jaguar F-Pace R-Dynamic",
+      "issues": []
+    },
+    {
+      "slug": "2024-bmw-x5-xdrive40i-e255ae4c",
+      "title": "2024 BMW X5 xDrive40i",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/bmw-x5/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-volvo-xc90-b5-ultimate-e683303a",
+      "title": "2024 Volvo XC90 B5 Ultimate",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/volvo-xc90/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-volvo-xc90-b5-ultimate-f62b2d06",
+      "title": "2024 Volvo XC90 B5 Ultimate",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/volvo-xc90/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-bmw-x5-xdrive40i-fef37c90",
+      "title": "2024 BMW X5 xDrive40i",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/bmw-x5/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-toyota-hilux-2-4-gd-6-sr-s1-veh-0",
+      "title": "2024 Toyota Hilux 2.4 GD-6 SR",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/toyota-hilux/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-toyota-corolla-cross-1-8-hybrid-xs-s1-veh-0",
+      "title": "2024 Toyota Corolla Cross 1.8 Hybrid XS",
+      "issues": []
+    },
+    {
+      "slug": "2024-toyota-corolla-cross-1-8-xs-s1-veh-0",
+      "title": "2024 Toyota Corolla Cross 1.8 XS",
+      "issues": []
+    },
+    {
+      "slug": "2024-honda-fit-1-5-comfort-s1-veh-0",
+      "title": "2024 Honda Fit 1.5 Comfort",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/honda-fit/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2024-ford-ranger-3-0-v6-raptor-s1-veh-0",
+      "title": "2024 Ford Ranger 3.0 V6 Raptor",
+      "issues": []
+    },
+    {
+      "slug": "2024-peugeot-2008-1-2-puretech-allure-s1-veh-0",
+      "title": "2024 Peugeot 2008 1.2 PureTech Allure",
+      "issues": []
+    },
+    {
+      "slug": "2024-audi-a3-35-tfsi-s-line-s1-veh-0",
+      "title": "2024 Audi A3 35 TFSI S line",
+      "issues": []
+    },
+    {
+      "slug": "2024-toyota-land-cruiser-300-3-3-zx-s1-veh-0",
+      "title": "2024 Toyota Land Cruiser 300 3.3 ZX",
+      "issues": []
+    },
+    {
+      "slug": "2024-bmw-320i-luxury-line-s1-veh-0",
+      "title": "2024 BMW 320i Luxury Line",
+      "issues": []
+    },
+    {
+      "slug": "2023-porsche-macan-gts-c05cb91e",
+      "title": "2023 Porsche Macan GTS",
+      "issues": []
+    },
+    {
+      "slug": "2023-suzuki-swift-1-2-gl-s1-veh-0",
+      "title": "2023 Suzuki Swift 1.2 GL",
+      "issues": []
+    },
+    {
+      "slug": "2023-nissan-navara-2-5-ddti-le-s1-veh-0",
+      "title": "2023 Nissan Navara 2.5 DDTi LE",
+      "issues": []
+    },
+    {
+      "slug": "2023-audi-a3-40-tfsi-s1-veh-0",
+      "title": "2023 Audi A3 40 TFSI",
+      "issues": []
+    },
+    {
+      "slug": "2023-audi-q3-35-tfsi-s-line-s1-veh-0",
+      "title": "2023 Audi Q3 35 TFSI S line",
+      "issues": []
+    },
+    {
+      "slug": "2023-volvo-xc60-recharge-t8-s1-veh-0",
+      "title": "2023 Volvo XC60 Recharge T8",
+      "issues": []
+    },
+    {
+      "slug": "2023-toyota-hilux-2-8-gd-6-raider-s1-veh-0",
+      "title": "2023 Toyota Hilux 2.8 GD-6 Raider",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/toyota-hilux/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2023-suzuki-swift-1-2-glx-s1-veh-0",
+      "title": "2023 Suzuki Swift 1.2 GLX",
+      "issues": []
+    },
+    {
+      "slug": "2023-isuzu-d-max-1-9-ddi-ls-s1-veh-0",
+      "title": "2023 Isuzu D-Max 1.9 Ddi LS",
+      "issues": []
+    },
+    {
+      "slug": "2023-mazda-cx-5-2-2de-individual-s1-veh-0",
+      "title": "2023 Mazda CX-5 2.2DE Individual",
+      "issues": []
+    },
+    {
+      "slug": "2023-toyota-hilux-2-8-gd-6-legend-rs-s1-veh-0",
+      "title": "2023 Toyota Hilux 2.8 GD-6 Legend RS",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/toyota-hilux/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2023-suzuki-jimny-1-5-glx-5-door-s1-veh-0",
+      "title": "2023 Suzuki Jimny 1.5 GLX 5-door",
+      "issues": []
+    },
+    {
+      "slug": "2023-ford-ranger-3-0-v6-raptor-s1-veh-0",
+      "title": "2023 Ford Ranger 3.0 V6 Raptor",
+      "issues": []
+    },
+    {
+      "slug": "2022-volvo-xc60-b4-plus-1e0ad952",
+      "title": "2022 Volvo XC60 B4 Plus",
+      "issues": []
+    },
+    {
+      "slug": "2022-volkswagen-polo-1-0-tsi-life-s1-veh-0",
+      "title": "2022 Volkswagen Polo 1.0 TSI Life",
+      "issues": []
+    },
+    {
+      "slug": "2022-toyota-hilux-2-4-gd-6-sr-s1-veh-0",
+      "title": "2022 Toyota Hilux 2.4 GD-6 SR",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/toyota-hilux/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2022-toyota-prado-3-0-dt-vx-s1-veh-0",
+      "title": "2022 Toyota Prado 3.0 DT VX",
+      "issues": []
+    },
+    {
+      "slug": "2022-audi-a3-40-tfsi-s1-veh-0",
+      "title": "2022 Audi A3 40 TFSI",
+      "issues": []
+    },
+    {
+      "slug": "2022-volkswagen-amarok-2-0-bitdi-style-s1-veh-0",
+      "title": "2022 Volkswagen Amarok 2.0 BiTDI Style",
+      "issues": []
+    },
+    {
+      "slug": "2022-honda-fit-1-5-comfort-s1-veh-0",
+      "title": "2022 Honda Fit 1.5 Comfort",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/honda-fit/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2022-audi-a3-35-tfsi-s-line-s1-veh-0",
+      "title": "2022 Audi A3 35 TFSI S line",
+      "issues": []
+    },
+    {
+      "slug": "2022-isuzu-d-max-1-9-ddi-ls-s1-veh-0",
+      "title": "2022 Isuzu D-Max 1.9 Ddi LS",
+      "issues": []
+    },
+    {
+      "slug": "2022-suzuki-swift-1-2-gl-s1-veh-0",
+      "title": "2022 Suzuki Swift 1.2 GL",
+      "issues": []
+    },
+    {
+      "slug": "2021-toyota-hilux-2-8-gd-6-legend-rs-s1-veh-0",
+      "title": "2021 Toyota Hilux 2.8 GD-6 Legend RS",
+      "issues": [
+        {
+          "field": "Photography",
+          "problem": "Record still holds 1 photograph(s) suppressed by the presentation layer.",
+          "excerpt": "/images/vehicles/library/toyota-hilux/front.webp",
+          "correction": "Replace the file on the record. The suppression is a safety net, not a fix.",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "slug": "2021-volkswagen-polo-1-0-tsi-r-line-s1-veh-0",
+      "title": "2021 Volkswagen Polo 1.0 TSI R-Line",
+      "issues": []
+    },
+    {
+      "slug": "2021-bmw-x3-xdrive30d-m-sport-s1-veh-0",
+      "title": "2021 BMW X3 xDrive30d M Sport",
+      "issues": []
+    }
+  ]
+}

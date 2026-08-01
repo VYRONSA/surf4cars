@@ -70,11 +70,83 @@ export const USER_TYPES = {
     authenticationRequired: true,
     inheritsFrom: null,
   },
+  platformOwner: {
+    id: "platform-owner",
+    label: "Platform Owner",
+    description: "Executive owner of SURF FOR CARS platform operations",
+    portal: "operations",
+    authenticationRequired: true,
+    inheritsFrom: null,
+  },
+  operationsDirector: {
+    id: "operations-director",
+    label: "Operations Director",
+    description: "Head of internal operations across all operational domains",
+    portal: "operations",
+    authenticationRequired: true,
+    inheritsFrom: "platform-owner",
+  },
+  dealerSuccess: {
+    id: "dealer-success",
+    label: "Dealer Success",
+    description: "Internal dealer success and lifecycle operations",
+    portal: "operations",
+    authenticationRequired: true,
+    inheritsFrom: "operations-director",
+  },
+  marketplaceOperations: {
+    id: "marketplace",
+    label: "Marketplace",
+    description: "Marketplace governance and quality operations",
+    portal: "operations",
+    authenticationRequired: true,
+    inheritsFrom: "operations-director",
+  },
+  revenueOperations: {
+    id: "revenue",
+    label: "Revenue",
+    description: "Revenue operations and commercial controls",
+    portal: "operations",
+    authenticationRequired: true,
+    inheritsFrom: "operations-director",
+  },
+  financeOperations: {
+    id: "finance",
+    label: "Finance",
+    description: "Finance operations and reconciliation workflows",
+    portal: "operations",
+    authenticationRequired: true,
+    inheritsFrom: "operations-director",
+  },
+  supportOperations: {
+    id: "support",
+    label: "Support",
+    description: "Customer and dealer support operations",
+    portal: "operations",
+    authenticationRequired: true,
+    inheritsFrom: "operations-director",
+  },
+  marketingOperations: {
+    id: "marketing",
+    label: "Marketing",
+    description: "Platform marketing operations",
+    portal: "operations",
+    authenticationRequired: true,
+    inheritsFrom: "operations-director",
+  },
+  moderationOperations: {
+    id: "moderation",
+    label: "Moderation",
+    description: "Trust and safety moderation operations",
+    portal: "operations",
+    authenticationRequired: true,
+    inheritsFrom: "operations-director",
+  },
 } as const;
 
 export type UserTypeId = (typeof USER_TYPES)[keyof typeof USER_TYPES]["id"];
 
-export type PortalId = "public" | "buyer" | "dealer" | "admin" | "developer" | "auth";
+export type PortalId = "public" | "buyer" | "dealer" | "admin" | "developer" | "operations" | "auth";
 
 export interface UserTypeDefinition {
   readonly id: UserTypeId;

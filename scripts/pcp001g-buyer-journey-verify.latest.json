@@ -1,0 +1,187 @@
+{
+  "baseUrl": "http://localhost:3003",
+  "generatedAt": "2026-07-29T11:13:00.650Z",
+  "checks": [
+    {
+      "name": "journey-seed-published-stock",
+      "ok": true,
+      "published": 2
+    },
+    {
+      "name": "homepage-entry-points",
+      "ok": true,
+      "searchLinks": 18,
+      "vehicleLinks": 3,
+      "jsonLd": 1,
+      "title": "SURF FOR CARS — Premium Automotive Discovery | SURF FOR CARS"
+    },
+    {
+      "name": "featured-vehicles",
+      "ok": true,
+      "featuredCount": 3
+    },
+    {
+      "name": "search-journey-filter-sort",
+      "ok": true,
+      "discovered": 2,
+      "filtered": 2
+    },
+    {
+      "name": "vehicle-detail-journey",
+      "ok": true,
+      "galleryThumbs": 6,
+      "images": 14
+    },
+    {
+      "name": "image-gallery",
+      "ok": true,
+      "thumbCount": 6
+    },
+    {
+      "name": "breadcrumbs-and-related-vehicles",
+      "ok": true,
+      "relatedCount": 4
+    },
+    {
+      "name": "dealer-experience-on-listing",
+      "ok": true,
+      "seller": "Surf Auto pcp001e-1785323482097-9535",
+      "region": "Western Cape"
+    },
+    {
+      "name": "dealer-inventory-for-buyer",
+      "ok": true,
+      "dealerStock": 3
+    },
+    {
+      "name": "contact-channels-phone-whatsapp-email",
+      "ok": true,
+      "tel": "tel:+27215551234",
+      "whatsapp": "https://wa.me/27825551234",
+      "emailCapture": true
+    },
+    {
+      "name": "dealer-enquiry-submission",
+      "ok": true,
+      "confirmed": true
+    },
+    {
+      "name": "finance-enquiry-submission",
+      "ok": true,
+      "elapsedMs": 46,
+      "enquiryType": "finance"
+    },
+    {
+      "name": "enquiry-reaches-dealer",
+      "ok": true,
+      "dealerVisibleEnquiries": 2,
+      "types": [
+        "finance",
+        "contact"
+      ]
+    },
+    {
+      "name": "enquiry-duplicate-suppression",
+      "ok": true,
+      "duplicateSuppressed": true
+    },
+    {
+      "name": "enquiry-validation-and-integrity",
+      "ok": true,
+      "rejectedCases": 5
+    },
+    {
+      "name": "enquiry-on-unavailable-listing",
+      "ok": true,
+      "status": 400,
+      "error": "This listing is no longer available."
+    },
+    {
+      "name": "share-vehicle",
+      "ok": true,
+      "shared": true,
+      "clipboardMatches": true
+    },
+    {
+      "name": "saved-vehicles-requires-buyer",
+      "ok": true,
+      "guarded": true,
+      "apiStatus": 401
+    },
+    {
+      "name": "buyer-journey-error-handling",
+      "ok": true,
+      "notFoundHandled": true,
+      "emptyStateHandled": true
+    },
+    {
+      "name": "desktop-presentation",
+      "ok": true,
+      "viewport": "1440x1200",
+      "overflow": 0
+    },
+    {
+      "name": "tablet-presentation",
+      "ok": true,
+      "viewport": "1024x1366",
+      "overflows": [
+        0,
+        0,
+        0
+      ],
+      "contactable": {
+        "tel": 2,
+        "wa": 2
+      }
+    },
+    {
+      "name": "premium-phone-presentation",
+      "ok": true,
+      "viewport": "390x844",
+      "overflows": [
+        0,
+        0,
+        0
+      ],
+      "contactable": {
+        "tel": 2,
+        "wa": 2
+      }
+    }
+  ],
+  "timings": {
+    "journey-seed-published-stock": 64,
+    "homepage-entry-points": 426,
+    "featured-vehicles": 873,
+    "search-journey-filter-sort": 1500,
+    "vehicle-detail-journey": 273,
+    "image-gallery": 378,
+    "breadcrumbs-and-related-vehicles": 490,
+    "dealer-experience-on-listing": 238,
+    "dealer-inventory-for-buyer": 506,
+    "contact-channels-phone-whatsapp-email": 256,
+    "enquirySubmitMs": 0,
+    "dealer-enquiry-submission": 489,
+    "financeEnquiryMs": 46,
+    "finance-enquiry-submission": 46,
+    "enquiry-reaches-dealer": 10,
+    "enquiry-duplicate-suppression": 54,
+    "enquiry-validation-and-integrity": 66,
+    "enquiry-on-unavailable-listing": 1321,
+    "share-vehicle": 577,
+    "saved-vehicles-requires-buyer": 605,
+    "buyer-journey-error-handling": 626,
+    "desktop-presentation": 250,
+    "tablet-presentation": 1189,
+    "premium-phone-presentation": 1198
+  },
+  "outOfScope": [
+    "Compare vehicles — UI control present but disabled; /api/v1/buyer/compare exists without a buyer-facing surface. Not implemented; not built.",
+    "Recently viewed — declared in buyer route manifest and domain model only; no persistence or UI. Not implemented; not built.",
+    "Public dealer profile route (/dealers/[slug]) — declared in route manifest, not implemented. 'View Dealer Profile' is correctly disabled rather than a broken link."
+  ],
+  "summary": {
+    "passed": 22,
+    "failed": 0
+  }
+}

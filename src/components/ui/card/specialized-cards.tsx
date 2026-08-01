@@ -302,7 +302,7 @@ export function FeatureCard({
   return (
     <Card className={className} {...props}>
       <CardHeader>
-        {icon && <div className="mb-2 text-[var(--color-primary)]">{icon}</div>}
+        {icon && <div className="mb-2 text-[var(--color-primary-text)]">{icon}</div>}
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>

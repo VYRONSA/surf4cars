@@ -67,12 +67,60 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+
+  /*
+    In-page anchors glide rather than teleport.
+    ==========================================
+    "Enquire about this vehicle" sits in the purchase rail at the top of a vehicle page and targets
+    `#enquiry` near the bottom of it. Measured on the Corolla Cross, that is a 4 289px jump — and
+    without this it happened in a single frame. The customer pressed a button and the page they were
+    reading vanished, replaced by a form with no sense of how they got there or how far back the car
+    was.
+
+    It is the most important interaction on the platform: the moment a buyer decides to make contact.
+    A teleport at that moment reads as a page reload, which is the one thing a single-page experience
+    should never feel like.
+
+    The `prefers-reduced-motion` block below already forces this back to `auto` with `!important`,
+    and has done since before there was anything for it to override — the guard was written first and
+    the behaviour it guards was never switched on.
+  */
+  scroll-behavior: smooth;
 }
 
+/**
+ * The page wash.
+ *
+ * A flat background reads as a wall no matter how light it is, because nothing on it varies. Two fixed
+ * gradients give the page depth without moving it toward a light theme:
+ *
+ *   the dome    a broad lift from the top centre, so the page brightens toward the light the way a room
+ *               does. Fixed rather than scrolling, so the wash is a property of the page and not of a
+ *               position in it.
+ *   the base    a gentle return to the darker base at the foot, which keeps the footer grounded and stops
+ *               the lift reading as a gradient artefact.
+ *
+ * Fixed attachment means every page inherits this automatically — no section opts in, and nothing has to
+ * be retrofitted. Cards, glass, photography scrims and the red accent are all untouched.
+ */
 body {
   margin: 0;
   min-height: 100dvh;
-  background: var(--color-background);
+  background-color: var(--color-background);
+  background-image:
+    radial-gradient(
+      150% 105% at 50% 4%,
+      color-mix(in srgb, var(--color-background-lift) 42%, transparent) 0%,
+      color-mix(in srgb, var(--color-background-lift) 20%, transparent) 42%,
+      transparent 78%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 60%,
+      color-mix(in srgb, var(--color-surface-sunken) 26%, transparent) 100%
+    );
+  background-attachment: fixed, fixed;
+  background-repeat: no-repeat, no-repeat;
   color: var(--color-foreground);
   font-family: var(--font-sans);
   font-size: var(--text-body-md);

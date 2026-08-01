@@ -7,12 +7,12 @@ import type {
 import type { VehicleEngineRepository } from "@/services/vehicle-engine/vehicle-engine.repository";
 import { toVehicleSummary } from "@/services/vehicle-engine/vehicle-engine.repository";
 import {
-  buildSlugIndex,
   isMarketplaceVisible,
   toInventoryVehicle,
   toShowcaseVehicleListing,
   toVehicleDetail,
 } from "@/services/vehicle-engine/vehicle-projection.service";
+import { getSupabaseVehicleRepository } from "@/services/vehicle-engine/vehicle-supabase.repository";
 import { getShowcaseSeedRecords } from "@/services/vehicle-engine/vehicle-showcase.seed";
 import { getVehicleShowcaseRepository } from "@/services/vehicle-engine/vehicle-showcase.repository";
 import type { InventoryVehicle } from "@/features/inventory/types/inventory.types";
@@ -72,18 +72,26 @@ export class VehicleEngineService {
   /** Projections — UI-facing views derived from the unified record. */
   async getVehicleDetailBySlug(slug: string): Promise<VehicleDetail | undefined> {
     const record = await this.repository.findBySlug(slug);
+    // Resolving by slug alone would expose drafts, archived stock and soft-deleted listings on
+    // the public marketplace, because unpublishing only flips status — the slug stays resolvable.
+    if (!record || !isMarketplaceVisible(record)) return undefined;
+    const all = await this.repository.findAll();
+    return toVehicleDetail(record, all);
+  }
+
+  /** Dealer-facing lookup: resolves regardless of marketplace visibility. */
+  async getVehicleDetailBySlugForOwner(slug: string): Promise<VehicleDetail | undefined> {
+    const record = await this.repository.findBySlug(slug);
     if (!record) return undefined;
     const all = await this.repository.findAll();
-    const slugById = buildSlugIndex(all);
-    return toVehicleDetail(record, slugById);
+    return toVehicleDetail(record, all);
   }
 
   async getAllVehicleDetails(): Promise<readonly VehicleDetail[]> {
     const all = await this.repository.findAll();
-    const slugById = buildSlugIndex(all);
     return all
       .filter(isMarketplaceVisible)
-      .map((r) => toVehicleDetail(r, slugById));
+      .map((r) => toVehicleDetail(r, all));
   }
 
   async getShowcaseListings(): Promise<readonly ShowcaseVehicleListing[]> {
@@ -99,9 +107,14 @@ export class VehicleEngineService {
 
 let defaultEngine: VehicleEngineService | null = null;
 
+/**
+ * The Vehicle Engine is backed by Supabase. The local platform repository is retained only as the
+ * source for the one-time data migration (scripts/pcp001j2a-vehicle-data-migration.mjs) and is no
+ * longer reachable from any production path.
+ */
 export function getVehicleEngine(): VehicleEngineService {
   if (!defaultEngine) {
-    defaultEngine = new VehicleEngineService();
+    defaultEngine = new VehicleEngineService(getSupabaseVehicleRepository());
   }
   return defaultEngine;
 }
@@ -115,15 +128,14 @@ export function getVehicleDetailBySlugSync(slug: string): VehicleDetail | undefi
   const records = getShowcaseSeedRecords();
   const record = records.find((r) => r.slug === slug);
   if (!record) return undefined;
-  return toVehicleDetail(record, buildSlugIndex(records));
+  return toVehicleDetail(record, records);
 }
 
 export function getAllVehicleDetailsSync(): readonly VehicleDetail[] {
   const records = getShowcaseSeedRecords();
-  const slugById = buildSlugIndex(records);
   return records
     .filter(isMarketplaceVisible)
-    .map((r) => toVehicleDetail(r, slugById));
+    .map((r) => toVehicleDetail(r, records));
 }
 
 export function getAllVehicleSlugsSync(): readonly string[] {

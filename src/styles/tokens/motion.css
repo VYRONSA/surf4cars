@@ -128,3 +128,34 @@
 .animate-slide-up-sfc {
   animation: sfc-slide-up var(--motion-modal) var(--ease-premium) forwards;
 }
+
+/**
+ * Reduced motion (WCAG 2.1 SC 2.3.3).
+ *
+ * Every transition and animation in this system is defined above, so honouring the user's
+ * operating-system preference is a single block here rather than a per-component concern.
+ *
+ * Animations are not removed outright — an element that animates in with `forwards` would keep its
+ * `from` state and stay invisible. They are collapsed to a single frame instead, so the element
+ * lands on its final state immediately. Spinners are left running: a loading indicator that does
+ * not move conveys nothing, and its rotation is neither large nor parallax motion.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .motion-hover,
+  .motion-button,
+  .motion-card,
+  .motion-modal,
+  .motion-drawer,
+  .motion-nav,
+  .motion-page {
+    transition-duration: var(--duration-instant);
+  }
+
+  .animate-pulse-sfc,
+  .animate-shimmer-sfc,
+  .animate-fade-in-sfc,
+  .animate-slide-up-sfc {
+    animation-duration: 1ms;
+    animation-iteration-count: 1;
+  }
+}

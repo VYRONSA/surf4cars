@@ -17,16 +17,16 @@ export function DashboardKpiGrid({ kpis }: DashboardKpiGridProps) {
       </h2>
       <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {kpis.map((kpi) => (
-          <li key={kpi.id} className={dashboardPolish.kpiCard}>
+          <li key={kpi.id} className={dashboardPolish.kpiCard} data-kpi-id={kpi.id}>
             <div className="mb-4 flex items-start justify-between gap-3">
               <p className="text-[length:var(--text-caption)] font-medium uppercase tracking-[var(--tracking-wide)] text-[var(--color-muted-foreground)]">
                 {kpi.label}
               </p>
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-[var(--radius-xl)] bg-[var(--color-primary-muted)] text-[var(--color-primary)]">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-[var(--radius-xl)] bg-[var(--color-primary-muted)] text-[var(--color-primary-text)]">
                 <Icon icon={resolveDashboardIcon(kpi.icon)} size="sm" tone="primary" aria-hidden />
               </span>
             </div>
-            <p className="text-[length:var(--text-h3)] font-semibold tracking-[var(--tracking-heading)]">
+            <p className="text-[length:var(--text-h3)] font-semibold tracking-[var(--tracking-heading)]" data-kpi-value>
               {kpi.value}
             </p>
             <div className="mt-2 flex items-center gap-1.5">

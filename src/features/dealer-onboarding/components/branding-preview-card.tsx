@@ -6,7 +6,7 @@ import { Text } from "@/components/ui/typography";
 export function BrandingPreviewCard() {
   const { data } = useOnboarding();
   const { branding, dealership } = data;
-  const displayName = dealership.tradingName || dealership.dealershipName || "Your Dealership";
+  const displayName = dealership.tradingName || dealership.businessName || "Your Dealership";
 
   return (
     <article

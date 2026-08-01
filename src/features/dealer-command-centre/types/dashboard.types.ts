@@ -5,12 +5,15 @@ export interface DashboardDealerProfile {
   readonly lastLogin: string;
 }
 
+export type DashboardAvailability = "live" | "coming-soon";
+
 export interface DashboardKpi {
   readonly id: string;
   readonly label: string;
   readonly value: string;
   readonly explanation: string;
   readonly icon: string;
+  readonly availability?: DashboardAvailability;
   readonly trend: {
     readonly direction: "up" | "down" | "neutral";
     readonly label: string;
@@ -39,6 +42,14 @@ export interface DashboardInventoryItem {
   readonly category: "recent" | "photos" | "low-views" | "above-market" | "below-market" | "expiring";
 }
 
+export interface DashboardInventoryCategory {
+  readonly id: DashboardInventoryItem["category"];
+  readonly label: string;
+  readonly availability: DashboardAvailability;
+  readonly message?: string;
+  readonly items: readonly DashboardInventoryItem[];
+}
+
 export interface DashboardTask {
   readonly id: string;
   readonly label: string;
@@ -58,27 +69,37 @@ export interface DashboardHealthMetric {
   readonly label: string;
   readonly value: string;
   readonly status: "good" | "warning" | "neutral";
+  readonly availability?: DashboardAvailability;
 }
 
 export interface DashboardActivity {
   readonly id: string;
   readonly message: string;
   readonly timestamp: string;
-  readonly type: "view" | "lead" | "save" | "price" | "promotion" | "expiry";
+  readonly type: "view" | "lead" | "save" | "price" | "promotion" | "expiry" | "publish" | "status" | "team";
 }
 
 export interface DashboardChartSeries {
   readonly id: string;
   readonly label: string;
   readonly values: readonly number[];
+  readonly availability?: DashboardAvailability;
+  readonly message?: string;
 }
 
-export interface DashboardShowcaseData {
+export interface DashboardLeadSourceMetric {
+  readonly label: string;
+  readonly value: number;
+  readonly availability?: DashboardAvailability;
+  readonly message?: string;
+}
+
+export interface DealerDashboardData {
   readonly dealer: DashboardDealerProfile;
   readonly kpis: readonly DashboardKpi[];
   readonly aiInsights: readonly DashboardAiInsight[];
   readonly leads: readonly DashboardLead[];
-  readonly inventory: readonly DashboardInventoryItem[];
+  readonly inventory: readonly DashboardInventoryCategory[];
   readonly tasks: readonly DashboardTask[];
   readonly quickActions: readonly DashboardQuickAction[];
   readonly health: readonly DashboardHealthMetric[];
@@ -89,7 +110,7 @@ export interface DashboardShowcaseData {
     readonly enquiries: DashboardChartSeries;
     readonly conversions: DashboardChartSeries;
     readonly inventoryGrowth: DashboardChartSeries;
-    readonly leadSources: readonly { readonly label: string; readonly value: number }[];
+    readonly leadSources: readonly DashboardLeadSourceMetric[];
     readonly dailyTraffic: DashboardChartSeries;
     readonly monthlySales: DashboardChartSeries;
   };

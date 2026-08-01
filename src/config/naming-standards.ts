@@ -89,7 +89,7 @@ export const namingStandards = {
   },
   routes: {
     convention: "kebab-case URL segments",
-    examples: ["/dealer/inventory", "/auth/sign-in", "/vehicles/[slug]"],
+    examples: ["/dealer/inventory", "/auth/sign-in", "/vehicle/[slug]"],
     rules: [
       "Route definitions in src/config/navigation",
       "Dynamic segments use [param] syntax",

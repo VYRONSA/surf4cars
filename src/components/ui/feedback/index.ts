@@ -18,3 +18,8 @@ export {
   type SkeletonProps,
   type ToastProps,
 } from "./feedback";
+export {
+  LuxuryEmptyState,
+  type LuxuryEmptyStateAction,
+  type LuxuryEmptyStateProps,
+} from "./luxury-empty-state";

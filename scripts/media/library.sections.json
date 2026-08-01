@@ -1,0 +1,82 @@
+[
+  {
+    "id": "hero",
+    "label": "Hero",
+    "sourcing": "curated",
+    "purpose": "The first photograph anyone sees. One frame, wide and cinematic, with quiet space on the left for copy.",
+    "briefs": ["hero"]
+  },
+  {
+    "id": "categories",
+    "label": "Categories",
+    "sourcing": "curated",
+    "purpose": "One frame per body style. Each tile is the front door to its own part of the marketplace and has to earn the click on photography alone.",
+    "briefs": [
+      "suv",
+      "bakkie",
+      "hatchback",
+      "sedan",
+      "luxury",
+      "performance",
+      "ev",
+      "mpv",
+      "convertible"
+    ]
+  },
+  {
+    "id": "dealers",
+    "label": "Dealers",
+    "sourcing": "curated",
+    "purpose": "Exterior cover photography for dealer profiles, and the fallback mark a dealership wears until it uploads its own.",
+    "briefs": ["dealer-cover", "dealer-logo"]
+  },
+  {
+    "id": "showrooms",
+    "label": "Showrooms",
+    "sourcing": "curated",
+    "purpose": "Interior architecture. Used where a dealer profile needs to feel like a building you have walked into rather than a page you have loaded.",
+    "briefs": ["showroom"]
+  },
+  {
+    "id": "lifestyle",
+    "label": "Lifestyle",
+    "sourcing": "curated",
+    "purpose": "People, and the part of their life a car is in. Used wherever the product needs to be about a person rather than a vehicle — and where a stock model would undo the whole effect.",
+    "briefs": ["lifestyle"]
+  },
+  {
+    "id": "places",
+    "label": "Places",
+    "sourcing": "curated",
+    "purpose": "Where Surf4Cars is. Cape Town and the Western Cape — the identity set that makes a South African marketplace look like one instead of like anywhere.",
+    "briefs": ["cape-town"]
+  },
+  {
+    "id": "backgrounds",
+    "label": "Backgrounds",
+    "sourcing": "curated",
+    "purpose": "Full-bleed editorial plates behind long-form sections. Judged on how much quiet area they hold, not on their subject.",
+    "briefs": ["editorial-buyers"]
+  },
+  {
+    "id": "promotions",
+    "label": "Promotions",
+    "sourcing": "composed",
+    "purpose": "Photographic plates for promotional banners. SURF typography is composed over the approved plate in the layout — never burned into the pixels.",
+    "briefs": ["promo-banner"]
+  },
+  {
+    "id": "manufacturers",
+    "label": "Manufacturers",
+    "sourcing": "uploaded",
+    "purpose": "Marque logos. A manufacturer's mark is its trademark: it is supplied under licence or not used at all, and can never be substituted from a stock library.",
+    "briefs": []
+  },
+  {
+    "id": "vehicles",
+    "label": "Vehicles",
+    "sourcing": "uploaded",
+    "purpose": "Photography of individual cars for sale, published by the dealer who owns the vehicle. A listing's photographs are a factual claim about that car, so a stock frame here would be a misrepresentation.",
+    "briefs": []
+  }
+]

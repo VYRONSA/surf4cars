@@ -14,7 +14,7 @@ const iconSizes = createVariants("", {
   tone: {
     default: "text-[var(--color-foreground)]",
     muted: "text-[var(--color-muted-foreground)]",
-    primary: "text-[var(--color-primary)]",
+    primary: "text-[var(--color-primary-text)]",
     accent: "text-[var(--color-accent)]",
     success: "text-[var(--color-success)]",
     warning: "text-[var(--color-warning)]",

@@ -1,6 +1,7 @@
 import type { UploadFormData } from "@/features/vehicle-upload/types/upload.types";
 import type { ShowcaseVehicleListing } from "@/features/search/config/search-showcase-listings";
 import { PREMIUM_IMAGES } from "@/config/images";
+import { resolveListingTitle, resolvePrimaryListingMedia } from "@/features/vehicle-upload/utils/listing-summary";
 
 function formatPrice(value: string): string {
   const num = Number(value.replace(/[^\d]/g, ""));
@@ -8,20 +9,15 @@ function formatPrice(value: string): string {
   return `R ${num.toLocaleString("en-ZA")}`;
 }
 
-function buildTitle(data: UploadFormData): string {
-  const { year, make, model, variant } = data.identification;
-  const parts = [year, make, model, variant].filter(Boolean);
-  return parts.length > 0 ? parts.join(" ") : "New Vehicle Listing";
-}
-
 export function buildPreviewListing(data: UploadFormData): ShowcaseVehicleListing {
-  const primary = data.media.find((m) => m.isPrimary) ?? data.media[0];
+  const primary = resolvePrimaryListingMedia(data);
   const sellingPrice = data.pricing.sellingPrice;
+  const title = resolveListingTitle(data);
 
   return {
     id: "upload-preview",
     slug: "preview",
-    title: buildTitle(data),
+    title: title || "New Vehicle Listing",
     price: formatPrice(sellingPrice),
     year: Number(data.identification.year) || new Date().getFullYear(),
     mileage: data.specifications.mileage ? `${data.specifications.mileage} km` : "— km",

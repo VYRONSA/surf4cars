@@ -50,6 +50,7 @@ export {
   authRoutes,
   buyerRoutes,
   dealerRoutes,
+  operationsRoutes,
   developerRoutes,
   getApiRoutes,
   getMobileRoutes,

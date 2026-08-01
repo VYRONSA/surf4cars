@@ -137,7 +137,7 @@ function SidebarNavItem({
       className={cn(
         "group flex items-center gap-3 rounded-[var(--radius-lg)] px-3 py-2 text-[length:var(--text-body-sm)] font-medium motion-nav",
         active
-          ? "bg-[var(--color-primary-muted)] text-[var(--color-primary)]"
+          ? "bg-[var(--color-primary-muted)] text-[var(--color-primary-text)]"
           : "text-[var(--color-muted-foreground)] hover:bg-[var(--color-hover)] hover:text-[var(--color-foreground)]",
         collapsed && "justify-center px-2",
       )}

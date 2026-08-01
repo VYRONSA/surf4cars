@@ -9,7 +9,7 @@ const badgeStyles = createVariants(
   {
     variant: {
       default: "bg-[var(--color-surface-sunken)] text-[var(--color-foreground)]",
-      primary: "bg-[var(--color-primary-muted)] text-[var(--color-primary)]",
+      primary: "bg-[var(--color-primary-muted)] text-[var(--color-primary-text)]",
       success: "bg-[var(--color-success-muted)] text-[var(--color-success)]",
       warning: "bg-[var(--color-warning-muted)] text-[var(--color-warning)]",
       danger: "bg-[var(--color-danger-muted)] text-[var(--color-danger)]",
@@ -227,7 +227,10 @@ export function Skeleton({
     <div
       aria-hidden
       className={cn(
-        "animate-pulse-sfc bg-[var(--color-surface-sunken)]",
+        // A placeholder must read as sitting above its surface. --color-surface-sunken (#050505) is
+        // darker than both the page and a card, so skeletons were effectively invisible on the V2
+        // dark palette; the overlay step is the first surface that is lighter than either.
+        "animate-pulse-sfc bg-[var(--color-surface-overlay)]",
         variant === "text" && "h-4 w-full rounded-[var(--radius-sm)]",
         variant === "circular" && "size-10 rounded-[var(--radius-pill)]",
         variant === "rectangular" && "rounded-[var(--radius-lg)]",

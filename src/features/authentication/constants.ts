@@ -1,0 +1,9 @@
+export const AUTH_TOKEN_COOKIE = "surf4cars-auth-token";
+export const AUTH_USER_TYPE_COOKIE = "surf4cars-auth-user-type";
+export const AUTH_USER_TYPE_STORAGE_KEY = "surf4cars:auth-user-type";
+export const ACTIVE_DEALERSHIP_STORAGE_KEY = "surf4cars:active-dealership-id";
+export const ACTIVE_BRANCH_STORAGE_KEY = "surf4cars:active-branch-id";
+export const ACTIVE_DEALERSHIP_COOKIE = "surf4cars-active-dealership-id";
+export const ACTIVE_BRANCH_COOKIE = "surf4cars-active-branch-id";
+export const ACTIVE_BUYER_STORAGE_KEY = "surf4cars:active-buyer-id";
+export const ACTIVE_BUYER_COOKIE = "surf4cars-active-buyer-id";

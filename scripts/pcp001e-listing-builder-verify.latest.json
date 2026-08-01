@@ -1,0 +1,99 @@
+{
+  "baseUrl": "http://localhost:3003",
+  "generatedAt": "2026-07-29T10:14:12.886Z",
+  "checks": [
+    {
+      "name": "builder-route-loads",
+      "ok": true,
+      "url": "http://localhost:3003/dealer/inventory/new"
+    },
+    {
+      "name": "desktop-preview-presentation",
+      "ok": true,
+      "visible": true
+    },
+    {
+      "name": "media-uploads-image-order-primary-image",
+      "ok": true,
+      "photoCount": 6
+    },
+    {
+      "name": "licence-disc-and-vehicle-specifications",
+      "ok": true,
+      "stockNumber": "PCP001E-1785320056355",
+      "vin": "WBA1785320056355",
+      "registration": "CA056355"
+    },
+    {
+      "name": "features-options-and-surf-review",
+      "ok": true,
+      "selectedFeatures": 3
+    },
+    {
+      "name": "ai-description",
+      "ok": true,
+      "title": "n/a-after-step-change"
+    },
+    {
+      "name": "pricing-and-ai-guidance",
+      "ok": true,
+      "readyForReview": true
+    },
+    {
+      "name": "save-draft-resume-browser-refresh-session-continuity",
+      "ok": true,
+      "restored": true
+    },
+    {
+      "name": "cross-tab-sync",
+      "ok": true,
+      "syncedTitle": "2024 BMW X5 PCP001E-1785320056355 SYNC"
+    },
+    {
+      "name": "publish-readiness-and-publish",
+      "ok": true,
+      "vehicleId": "6c1d6a8a-a382-4a24-bb3d-6c6364c711d1",
+      "lifecycleStatus": "published"
+    },
+    {
+      "name": "edit-published-listing",
+      "ok": true,
+      "loadedForEdit": true
+    },
+    {
+      "name": "unpublish",
+      "ok": true,
+      "lifecycleStatus": "draft"
+    },
+    {
+      "name": "republish",
+      "ok": true,
+      "lifecycleStatus": "published"
+    },
+    {
+      "name": "duplicate-protection",
+      "ok": true,
+      "error": "Duplicate protection: stock number or VIN already exists in inventory."
+    },
+    {
+      "name": "archive-and-delete",
+      "ok": true,
+      "archived": true,
+      "deleted": true
+    },
+    {
+      "name": "tablet-touch-first-presentation",
+      "ok": true,
+      "preview": "tablet"
+    },
+    {
+      "name": "premium-phone-presentation",
+      "ok": true,
+      "preview": "phone"
+    }
+  ],
+  "summary": {
+    "passed": 17,
+    "failed": 0
+  }
+}

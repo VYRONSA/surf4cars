@@ -1,0 +1,65 @@
+/**
+ * Ordered manifest of database migrations shipped with this build.
+ *
+ * Held as a constant rather than read from disk so migration version reporting works in serverless
+ * deployments, where db/migrations is not part of the function bundle.
+ *
+ * When a migration file is added to db/migrations, add its id here in the same order.
+ */
+
+export interface MigrationDescriptor {
+  readonly id: string;
+  readonly description: string;
+}
+
+export const MIGRATION_MANIFEST: readonly MigrationDescriptor[] = [
+  { id: "20260629090000_sfc102_dealer_onboarding", description: "Dealerships, branches, staff memberships, onboarding drafts" },
+  { id: "20260629091000_sfc103_inventory_intelligence", description: "Inventory vehicles, media, documents, price history, history, audit" },
+  { id: "20260629092000_sfc106_market_intelligence_engine", description: "Market analytics events" },
+  { id: "20260629093000_sfc107_buyer_intelligence_platform", description: "Buyer profiles, saved searches, saved vehicles, alerts" },
+  { id: "20260630090000_sfc108_onboarding_completion_atomic", description: "Atomic onboarding completion function" },
+  { id: "20260704090000_soc003_dealer_intelligence_engine", description: "Dealer intelligence reviews and activity" },
+  { id: "20260729090000_pcp001j1_lead_ecosystem", description: "Leads and lead timeline" },
+  { id: "20260729091000_pcp001j1_operations_applications", description: "Operations application reviews, events, notes, attachments" },
+  { id: "20260729092000_pcp001j1_public_marketplace_rls", description: "Public read policies for published marketplace stock" },
+  { id: "20260729093000_pcp001j1_storage_buckets", description: "Storage buckets and access policies" },
+  { id: "20260729094000_pcp001j2_rls_recursion_and_staff_access", description: "RLS recursion fix and dealer staff access" },
+  { id: "20260802090000_pcp017_editorial_console", description: "Editorial slots and placements for the Founder Editorial Console" },
+] as const;
+
+/** The migration this build expects to be the most recent one applied. */
+export const EXPECTED_MIGRATION_VERSION = MIGRATION_MANIFEST[MIGRATION_MANIFEST.length - 1]!.id;
+
+export const MIGRATION_COUNT = MIGRATION_MANIFEST.length;
+
+/**
+ * Tables the application queries at runtime. Used by the health check to detect a database that is
+ * reachable but not migrated, which otherwise surfaces as scattered request-time failures.
+ */
+export const REQUIRED_TABLES: readonly string[] = [
+  "dealerships",
+  "dealership_branches",
+  "dealership_staff_memberships",
+  "dealer_onboarding_drafts",
+  "inventory_vehicles",
+  "inventory_vehicle_media",
+  "inventory_vehicle_documents",
+  "inventory_vehicle_price_history",
+  "inventory_vehicle_history",
+  "inventory_vehicle_audit",
+  "market_analytics_events",
+  "buyer_profiles",
+  "buyer_saved_searches",
+  "buyer_saved_vehicles",
+  "buyer_alert_subscriptions",
+  "leads",
+  "lead_timeline",
+] as const;
+
+/** Storage buckets the media pipeline expects to exist. */
+export const REQUIRED_STORAGE_BUCKETS: readonly string[] = [
+  "vehicle-media",
+  "dealer-branding",
+  "licence-discs",
+  "vehicle-documents",
+] as const;

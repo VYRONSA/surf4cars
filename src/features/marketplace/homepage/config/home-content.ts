@@ -4,96 +4,39 @@ export interface HomePillar {
   readonly tagline: string;
 }
 
-export const HOME_PILLARS: readonly HomePillar[] = [
+/**
+ * Why a buyer should choose Surf4Cars.
+ *
+ * This replaces the three platform pillars that used to sit here — "AI Marketing", "Dealer Growth",
+ * "Better Vehicle Discovery". Every one of them was a reason a *dealership* should buy the software,
+ * presented in the middle of a car buyer's evening. That mismatch, not the styling, is why the
+ * section read as SaaS: it was addressing the wrong person.
+ *
+ * Each reason is a promise about the buyer's experience that the platform can actually keep today.
+ * Nothing aspirational, and nothing about us.
+ */
+export const HOME_BUYER_REASONS: readonly HomePillar[] = [
   {
-    id: "ai-marketing",
-    title: "AI Marketing",
-    tagline: "Campaigns that write themselves — on brand, on time.",
+    id: "photography",
+    title: "Every car, shown properly",
+    tagline: "Full galleries and real photography. No listing hiding behind “more photos on request”.",
   },
   {
-    id: "dealer-growth",
-    title: "Dealer Growth",
-    tagline: "One platform for inventory, leads, and momentum.",
+    id: "verified",
+    title: "Dealers who are verified",
+    tagline: "Every dealership is checked before it can publish a single vehicle.",
   },
   {
-    id: "discovery",
-    title: "Better Vehicle Discovery",
-    tagline: "Search that understands what buyers actually want.",
-  },
-] as const;
-
-export const HOME_DEALER_PILLARS = [
-  {
-    id: "presence",
-    title: "Premium Presence",
-    tagline: "Showcase inventory with the quality your brand deserves.",
-  },
-  {
-    id: "marketing",
-    title: "Modern Marketing",
-    tagline: "Social, campaigns, and content — without the agency overhead.",
-  },
-  {
-    id: "intelligence",
-    title: "Quiet Intelligence",
-    tagline: "AI that supports your team — never replaces it.",
+    id: "context",
+    title: "The price, in context",
+    tagline: "What comparable cars are actually selling for — before you pick up the phone.",
   },
 ] as const;
 
-export const HOME_AI_DEALER_CARDS = [
-  {
-    id: "marketing",
-    title: "Smarter Marketing",
-    tagline: "Generate campaigns and social content in seconds.",
-  },
-  {
-    id: "inventory",
-    title: "Inventory Intelligence",
-    tagline: "Understand pricing, performance, and opportunity.",
-  },
-  {
-    id: "leads",
-    title: "Lead Guidance",
-    tagline: "Follow up with clarity. Convert with confidence.",
-  },
-] as const;
-
-export interface HomeEditorialTile {
-  readonly id: string;
-  readonly label: string;
-  readonly description: string;
-  readonly href: string;
-  readonly variant: "featured" | "standard";
-}
-
-export const HOME_EDITORIAL_TILES: readonly HomeEditorialTile[] = [
-  {
-    id: "guides",
-    label: "Buying Guides",
-    description: "Expert advice for confident purchases — from finance to final inspection.",
-    href: "/guides",
-    variant: "featured",
-  },
-  {
-    id: "news",
-    label: "Latest News",
-    description: "Industry updates, launches, and market insights from across South Africa.",
-    href: "/news",
-    variant: "standard",
-  },
-  {
-    id: "advice",
-    label: "Vehicle Advice",
-    description: "Ownership tips, maintenance guidance, and smart buying strategies.",
-    href: "/guides",
-    variant: "standard",
-  },
-] as const;
-
-export const HOME_DEALER_BENEFITS = [
-  "Grow Your Dealership",
-  "Better Marketing",
-  "AI Tools",
-  "Inventory Management",
-  "Lead Growth",
-] as const;
+/*
+  HOME_DEALER_PILLARS, HOME_AI_DEALER_CARDS, HOME_EDITORIAL_TILES and HOME_DEALER_BENEFITS have gone,
+  with the V2 sections that read them. All four were dealer-acquisition copy — "Built for the future
+  of automotive", "AI-powered pricing intelligence" — written to be shown to somebody who came to
+  look at cars, which is the mismatch that made the homepage read as SaaS. The buyer homepage keeps
+  one list, and it is about buying.
+*/

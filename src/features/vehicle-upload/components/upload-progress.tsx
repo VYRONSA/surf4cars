@@ -40,7 +40,7 @@ export function UploadProgress() {
         />
       </div>
 
-      <ol className="mt-5 hidden gap-2 lg:grid lg:grid-cols-8">
+      <ol className="mt-5 hidden gap-2 lg:grid lg:grid-cols-7">
         {UPLOAD_STEPS.map((step, index) => {
           const isActive = index === currentStepIndex;
           const isComplete = completedSteps.includes(step.id);
@@ -79,7 +79,7 @@ export function UploadProgress() {
                 <span
                   className={cn(
                     "truncate text-center text-[length:var(--text-caption)] font-medium",
-                    isActive && "text-[var(--color-primary)]",
+                    isActive && "text-[var(--color-primary-text)]",
                     isComplete && !isActive && "text-[var(--color-foreground)]",
                     !isActive && !isComplete && "text-[var(--color-muted-foreground)]",
                   )}

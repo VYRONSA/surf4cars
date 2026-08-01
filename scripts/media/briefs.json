@@ -1,0 +1,349 @@
+[
+  {
+    "id": "hero",
+    "title": "Homepage Hero",
+    "acquisition": "sourced",
+    "sources": ["pexels", "unsplash"],
+    "target": 10,
+    "emotion": "Arrival. Anticipation. The road ahead at the best hour of the day.",
+    "direction": "Coastal or mountain road identity. Blue hour, dusk or night. The vehicle's own lighting signature is the brightest thing in frame. Wide and cinematic, with space on the left for copy.",
+    "aspect": 1.85,
+    "searches": [
+      "luxury car coastal road sunset",
+      "car headlights night city cinematic",
+      "car driving mountain pass dusk",
+      "car blue hour highway",
+      "suv scenic road golden hour",
+      "sports car night reflections wet road"
+    ],
+    "mustMatch": ["car", "vehicle", "suv", "driving", "headlight", "road", "drive"],
+    "exclude": ["parking lot", "car park", "traffic jam", "museum", "toy"]
+  },
+  {
+    "id": "suv",
+    "title": "SUVs",
+    "acquisition": "sourced",
+    "sources": ["pexels", "unsplash"],
+    "target": 10,
+    "emotion": "Adventure. Dust, mountains, capability — a family that goes places.",
+    "direction": "Vehicle in landscape, not in a car park. Gravel, mountain pass, open country. Warm low light.",
+    "aspect": 1.5,
+    "searches": [
+      "suv mountain gravel road",
+      "luxury suv countryside",
+      "4x4 off road dust landscape",
+      "suv driving dirt road adventure",
+      "suv parked mountain view",
+      "family suv road trip"
+    ],
+    "mustMatch": ["suv", "4x4", "off-road", "offroad", "crossover", "jeep", "land rover", "car", "vehicle"],
+    "exclude": ["car park", "parking", "showroom", "military", "toy"]
+  },
+  {
+    "id": "sedan",
+    "title": "Sedans",
+    "acquisition": "sourced",
+    "sources": ["pexels", "unsplash"],
+    "target": 10,
+    "emotion": "Composure. The classic shape, executed properly.",
+    "direction": "Clean profile or three-quarter. Restrained setting. Evening or overcast light. Modern car — not a period piece.",
+    "aspect": 1.5,
+    "searches": [
+      "luxury sedan street evening",
+      "executive sedan city",
+      "modern sedan three quarter view",
+      "black sedan urban night",
+      "sedan driving road",
+      "premium saloon car"
+    ],
+    "mustMatch": ["sedan", "saloon", "car", "vehicle", "coupe"],
+    "exclude": ["taxi", "police", "museum", "car show", "rally", "toy"]
+  },
+  {
+    "id": "hatchback",
+    "title": "Hatchbacks",
+    "acquisition": "sourced",
+    "sources": ["pexels", "unsplash"],
+    "target": 10,
+    "emotion": "City life. Compact confidence, easy to live with.",
+    "direction": "Urban setting, clean architecture, daylight or city lights. Modern car, well kept, photographed with intent.",
+    "aspect": 1.5,
+    "searches": [
+      "hatchback city street modern",
+      "compact car urban architecture",
+      "small car city lights",
+      "hatchback parked street daylight",
+      "modern compact car driving",
+      "city car street photography"
+    ],
+    "mustMatch": ["hatchback", "hatch", "compact car", "city car", "small car", "car", "vehicle"],
+    "exclude": ["museum", "vintage", "classic car show", "toy", "wreck"]
+  },
+  {
+    "id": "bakkie",
+    "title": "Bakkies",
+    "acquisition": "sourced",
+    "sources": ["pexels", "unsplash"],
+    "target": 10,
+    "emotion": "South African utility and adventure. Work hard, then escape.",
+    "direction": "Pickup in genuine terrain — bush, farm, mountain track, river crossing. Dust or mud welcome. Never a forecourt.",
+    "aspect": 1.5,
+    "searches": [
+      "pickup truck dirt road landscape",
+      "pickup truck river crossing",
+      "4x4 pickup mountain adventure",
+      "pickup truck farm field",
+      "double cab pickup off road",
+      "pickup truck bush track"
+    ],
+    "mustMatch": ["pickup", "pick-up", "bakkie", "ute", "hilux", "ranger", "truck", "4x4"],
+    "exclude": ["semi truck", "lorry", "fire truck", "tow truck", "monster truck", "food truck", "military", "toy"]
+  },
+  {
+    "id": "luxury",
+    "title": "Luxury",
+    "acquisition": "sourced",
+    "sources": ["pexels", "unsplash"],
+    "target": 10,
+    "emotion": "Night. City. Glass and lighting. Quiet money.",
+    "direction": "Dark, reflective surfaces. Architectural backdrop. No daylight. Restraint over flash — a car that does not need to announce itself.",
+    "aspect": 1.5,
+    "searches": [
+      "luxury car night city lights",
+      "black luxury car reflection",
+      "premium car modern architecture night",
+      "luxury car glass building",
+      "elegant car dark garage lighting",
+      "luxury car interior leather detail"
+    ],
+    "allow": ["interior"],
+    "mustMatch": ["luxury", "car", "sedan", "coupe", "mercedes", "bmw", "porsche", "audi", "bentley", "vehicle"],
+    "exclude": ["car show", "museum", "wedding", "toy", "limousine"]
+  },
+  {
+    "id": "ev",
+    "title": "Electric",
+    "acquisition": "sourced",
+    "sources": ["pexels", "unsplash"],
+    "target": 10,
+    "emotion": "Minimal. Clean. Modern. The quiet future.",
+    "direction": "Uncluttered composition, cool light, modern architecture. Charging imagery is welcome where it is elegant rather than instructional.",
+    "aspect": 1.5,
+    "searches": [
+      "electric car charging modern",
+      "electric vehicle minimal architecture",
+      "ev charging station clean design",
+      "electric car city night",
+      "electric car interior screen",
+      "electric suv modern"
+    ],
+    "allow": ["interior"],
+    "mustMatch": ["electric", "ev", "charging", "charger", "tesla", "car", "vehicle"],
+    "exclude": ["bus", "scooter", "bicycle", "bike", "tram", "train", "forklift", "golf cart", "toy"]
+  },
+  {
+    "id": "performance",
+    "title": "Performance",
+    "acquisition": "sourced",
+    "sources": ["pexels", "unsplash"],
+    "target": 10,
+    "emotion": "Track. Motion. Aggression held in check.",
+    "direction": "Panning or motion blur, circuit or mountain road. Low angle. Never static in a car park.",
+    "aspect": 1.5,
+    "searches": [
+      "sports car track motion blur",
+      "supercar driving mountain road",
+      "race car circuit panning",
+      "sports car low angle road",
+      "performance car motion speed",
+      "sports car rear lights night"
+    ],
+    "mustMatch": ["sports car", "supercar", "race", "racing", "track", "circuit", "motorsport", "porsche", "ferrari", "lamborghini", "car"],
+    "exclude": ["kart", "motorcycle", "bike", "truck racing", "museum", "toy", "model"]
+  },
+  {
+    "id": "mpv",
+    "title": "People carriers",
+    "acquisition": "sourced",
+    "sources": ["pexels", "unsplash"],
+    "target": 10,
+    "emotion": "Everyone, and everything they bring. Calm competence.",
+    "direction": "Van or MPV in a real setting. Space and practicality implied, never stated. Family present or implied, not posed.",
+    "aspect": 1.5,
+    "searches": [
+      "family van road trip",
+      "minivan modern street",
+      "people carrier family loading",
+      "van interior seats spacious",
+      "mpv driving countryside",
+      "family car luggage holiday"
+    ],
+    "allow": ["interior"],
+    "mustMatch": ["minivan", "mpv", "people carrier", "van", "family car", "car", "vehicle"],
+    "exclude": ["military", "soldier", "armoured", "police", "ambulance", "cargo van", "delivery", "camper"]
+  },
+  {
+    "id": "convertible",
+    "title": "Convertibles",
+    "acquisition": "sourced",
+    "sources": ["pexels", "unsplash"],
+    "target": 10,
+    "emotion": "Ocean. Sunset. Lifestyle over specification.",
+    "direction": "Roof down, coastal road, warm low sun. The feeling of a Sunday with nowhere to be.",
+    "aspect": 1.5,
+    "searches": [
+      "convertible car coastal road sunset",
+      "cabriolet driving ocean",
+      "roadster coast road",
+      "convertible car golden hour",
+      "open top car driving",
+      "convertible sports car sea"
+    ],
+    "mustMatch": ["convertible", "cabriolet", "roadster", "spyder", "open-top", "soft top", "car"],
+    "exclude": ["museum", "car show", "parade", "wedding", "toy"]
+  },
+  {
+    "id": "showroom",
+    "title": "Dealer Showrooms",
+    "acquisition": "sourced",
+    "sources": ["pexels", "unsplash"],
+    "target": 20,
+    "note": "Interiors. Used on dealer public profiles, where the job is to make a dealership feel like a building the buyer has walked into. The cars in frame are incidental — the architecture and the light are the subject.",
+    "emotion": "You have arrived somewhere serious. Quiet, lit, and expensive to run.",
+    "direction": "Interior architecture. Polished floor, controlled lighting, glass and clean structural lines. Wide enough to read as a space rather than a display stand. No crowds, no signage, no paperwork on desks.",
+    "aspect": 1.85,
+    "allow": ["interior", "showroom"],
+    "subjectFilter": false,
+    "searches": [
+      "car showroom interior modern",
+      "luxury car dealership interior",
+      "car showroom polished floor lighting",
+      "automotive showroom architecture",
+      "modern showroom glass interior",
+      "car dealership interior minimal",
+      "luxury garage interior car",
+      "car display hall lighting"
+    ],
+    "exclude": ["motor show", "auto show", "car show", "crowd", "geneva", "frankfurt", "museum", "aircraft", "boat", "furniture store"]
+  },
+  {
+    "id": "dealer-cover",
+    "title": "Dealership Exteriors",
+    "acquisition": "sourced",
+    "sources": ["pexels", "unsplash"],
+    "target": 20,
+    "note": "Cover photography for dealer profiles. Architecture, not signage — a building that looks like it is worth walking into. Variety across candidates matters here more than anywhere: these are covers for many different dealerships and one building reused everywhere is worse than none.",
+    "emotion": "Arrival at a serious showroom. Architecture, not signage.",
+    "direction": "Modern dealership or gallery architecture from outside. Glass, light, clean lines, ideally at dusk when the interior lighting reads. Wide letterbox crop.",
+    "aspect": 2.4,
+    "allow": ["showroom"],
+    "subjectFilter": false,
+    "searches": [
+      "car dealership exterior modern building",
+      "glass showroom building dusk",
+      "modern automotive building architecture",
+      "car dealership building evening lights",
+      "showroom exterior glass facade",
+      "modern commercial building glass cars",
+      "automotive retail architecture",
+      "car garage building exterior modern"
+    ],
+    "exclude": ["airport", "concert", "aircraft", "boat", "furniture", "bicycle", "shopping mall", "petrol station"]
+  },
+  {
+    "id": "lifestyle",
+    "title": "Lifestyle",
+    "acquisition": "sourced",
+    "sources": ["pexels", "unsplash"],
+    "target": 20,
+    "note": "People, and the part of their life a car is in. Used behind editorial sections and wherever the product needs to be about a person rather than a vehicle. Nobody should look like a stock model: no thumbs up, no handshake over a desk, no keys held to camera.",
+    "emotion": "The good part. The drive there, the arrival, the door closing.",
+    "direction": "Natural light, unposed, one or two people. Loading a boot, a hand on a wheel, a family arriving somewhere. Warm and specific rather than aspirational and generic.",
+    "aspect": 1.6,
+    "allow": ["interior"],
+    "subjectFilter": false,
+    "searches": [
+      "couple road trip car window",
+      "family loading car boot holiday",
+      "hands on steering wheel driving",
+      "woman driving car sunlight",
+      "friends road trip car mountains",
+      "person leaning against car sunset",
+      "family arriving home car driveway",
+      "dog in car window road trip"
+    ],
+    "exclude": ["thumbs up", "handshake", "office desk", "isolated", "white background", "studio", "accident", "crash", "police"]
+  },
+  {
+    "id": "cape-town",
+    "title": "Cape Town",
+    "acquisition": "sourced",
+    "sources": ["pexels", "unsplash"],
+    "target": 20,
+    "note": "Surf4Cars is a South African marketplace and should look like one. This is the identity set: place before product. Used for hero alternates, editorial plates and regional pages.",
+    "emotion": "Home. The mountain, the coast, and a road worth taking the long way round.",
+    "direction": "Cape Town and the Western Cape. Table Mountain, Chapman's Peak, Camps Bay, the coastal roads, city at blue hour. A car in frame is a bonus, not a requirement. Wide, cinematic, and unmistakably this place.",
+    "aspect": 1.85,
+    "subjectFilter": false,
+    "searches": [
+      "cape town table mountain",
+      "chapmans peak drive coastal road",
+      "camps bay cape town coast",
+      "cape town city aerial",
+      "cape town coastal road drive",
+      "table mountain sunset",
+      "south africa coastal road mountains",
+      "cape town city night lights"
+    ],
+    "exclude": ["protest", "township poverty", "crime", "accident", "museum interior", "market stall"]
+  },
+  {
+    "id": "editorial-buyers",
+    "title": "Editorial — Why Buyers Choose Surf4Cars",
+    "acquisition": "sourced",
+    "sources": ["pexels", "unsplash"],
+    "target": 10,
+    "note": "The full-bleed plate behind the homepage's editorial section. Judged almost entirely on its quiet area: the copy sits over the left third, so a candidate with a beautiful subject dead centre is the wrong candidate.",
+    "emotion": "Confidence, held still. The decision has already been made and it was the right one.",
+    "direction": "One vehicle small in a large landscape, or an open road at the end of the day. Low sun or blue hour. The right two-thirds may be busy; the left third must be near-empty and low-contrast so white type holds without a scrim.",
+    "aspect": 2.1,
+    "subjectFilter": false,
+    "searches": [
+      "open road landscape car distance",
+      "empty coastal road horizon sunset",
+      "car mountain pass wide landscape",
+      "aerial coastal road car",
+      "empty highway golden hour",
+      "car small in vast landscape"
+    ],
+    "exclude": ["traffic jam", "roadworks", "construction", "crossing", "roundabout", "sign"]
+  },
+  {
+    "id": "promo-banner",
+    "title": "Promotional Banners",
+    "acquisition": "sourced",
+    "sources": ["pexels", "unsplash"],
+    "target": 10,
+    "note": "A banner is a photographic plate plus SURF typography. This brief selects the plate only — the type is composed in-house over the approved image, so a candidate must hold a large quiet area for copy.",
+    "emotion": "Editorial confidence. The image carries the message before a word is read.",
+    "direction": "Wide letterbox crop. One dominant subject, large negative space on one side. Low contrast in the copy zone so white type holds without a scrim.",
+    "aspect": 3,
+    "subjectFilter": false,
+    "searches": [
+      "open road panorama aerial",
+      "coastal road panorama wide",
+      "empty road horizon minimal",
+      "highway aerial view landscape",
+      "car open road wide banner"
+    ],
+    "exclude": ["traffic jam", "roadworks", "construction", "sign", "crossing"]
+  },
+  {
+    "id": "dealer-logo",
+    "title": "Dealer Logos",
+    "acquisition": "in-house",
+    "note": "A real dealer's logo is that dealer's trademark and is uploaded by them — it can never be sourced from a stock library. What the platform actually needs curating is the FALLBACK mark shown when a dealership has not uploaded one. Candidates are generated from the SURF brand system, so no third-party licence applies.",
+    "emotion": "A dealership that has not uploaded a logo should still look like it belongs here.",
+    "direction": "Monogram from the dealership initials. Restrained, single accent, works at 40px and 160px, legible on both light and dark cards."
+  }
+]

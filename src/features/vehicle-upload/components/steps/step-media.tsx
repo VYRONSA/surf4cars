@@ -5,7 +5,7 @@ import { useCallback, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icons";
-import { ChevronDown, ChevronUp, Image as ImageIcon, Star, Trash2, Upload, Video } from "@/components/ui/icons/registry";
+import { ChevronDown, ChevronUp, Image as ImageIcon, Smartphone, Star, Trash2, Upload } from "@/components/ui/icons/registry";
 import { UploadNavigation } from "@/features/vehicle-upload/components/upload-navigation";
 import { UploadStepLayout } from "@/features/vehicle-upload/components/upload-step-layout";
 import { uploadPolish } from "@/features/vehicle-upload/config/upload-shared";
@@ -13,69 +13,109 @@ import { useUploadWizard } from "@/features/vehicle-upload/context/upload-contex
 import type { UploadMediaItem } from "@/features/vehicle-upload/types/upload.types";
 import { cn } from "@/utils";
 
-function createMediaItem(file: File, kind: UploadMediaItem["kind"], isPrimary: boolean): UploadMediaItem {
+function createMediaItem(file: File, isPrimary: boolean): UploadMediaItem {
   return {
-    id: `${kind}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-    kind,
+    id: `photo-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+    kind: "photo",
     name: file.name,
     previewUrl: URL.createObjectURL(file),
     isPrimary,
-    uploadProgress: 100,
+    uploadProgress: 12,
+    angleTag: "other",
   };
 }
 
 export function StepMedia() {
   const { data, setMedia, markStepComplete } = useUploadWizard();
   const [dragOver, setDragOver] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
+  const mobileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   const addFiles = useCallback(
-    (files: FileList, kind: UploadMediaItem["kind"]) => {
-      const items = Array.from(files).map((file, index) =>
-        createMediaItem(file, kind, data.media.length === 0 && index === 0),
-      );
-      setMedia([...data.media, ...items]);
+    async (files: FileList) => {
+      const incoming = Array.from(files).map((file) => createMediaItem(file, false));
+      setMedia((currentMedia) => {
+        const hasPrimary = currentMedia.some((item) => item.isPrimary);
+        const nextIncoming = incoming.map((item, index) => ({
+          ...item,
+          isPrimary: !hasPrimary && currentMedia.length === 0 && index === 0,
+        }));
+        return [...currentMedia, ...nextIncoming];
+      });
+
+      for (const item of incoming) {
+        window.setTimeout(() => {
+          setMedia(
+            (currentMedia) => currentMedia.map((current) =>
+              current.id === item.id
+                ? { ...current, uploadProgress: 45 }
+                : current,
+            ),
+          );
+        }, 220);
+
+        window.setTimeout(() => {
+          setMedia(
+            (currentMedia) => currentMedia.map((current) =>
+              current.id === item.id
+                ? { ...current, uploadProgress: 100 }
+                : current,
+            ),
+          );
+        }, 650);
+      }
     },
-    [data.media, setMedia],
+    [setMedia],
   );
 
   const setPrimary = useCallback(
     (id: string) => {
-      setMedia(data.media.map((m) => ({ ...m, isPrimary: m.id === id })));
+      setMedia((currentMedia) => currentMedia.map((m) => ({ ...m, isPrimary: m.id === id })));
     },
-    [data.media, setMedia],
+    [setMedia],
   );
 
   const removeItem = useCallback(
     (id: string) => {
-      const next = data.media.filter((m) => m.id !== id);
-      if (next.length > 0 && !next.some((m) => m.isPrimary)) {
-        const first = next[0]!;
-        setMedia([{ ...first, isPrimary: true }, ...next.slice(1)]);
-        return;
-      }
-      setMedia(next);
+      setMedia((currentMedia) => {
+        const next = currentMedia.filter((m) => m.id !== id);
+        if (next.length > 0 && !next.some((m) => m.isPrimary)) {
+          const first = next[0]!;
+          return [{ ...first, isPrimary: true }, ...next.slice(1)];
+        }
+        return next;
+      });
     },
-    [data.media, setMedia],
+    [setMedia],
   );
 
   const moveItem = useCallback(
     (id: string, direction: -1 | 1) => {
-      const index = data.media.findIndex((m) => m.id === id);
-      const target = index + direction;
-      if (index < 0 || target < 0 || target >= data.media.length) return;
-      const next = [...data.media];
-      const current = next[index];
-      const swap = next[target];
-      if (!current || !swap) return;
-      next[index] = swap;
-      next[target] = current;
-      setMedia(next);
+      setMedia((currentMedia) => {
+        const index = currentMedia.findIndex((m) => m.id === id);
+        const target = index + direction;
+        if (index < 0 || target < 0 || target >= currentMedia.length) return currentMedia;
+        const next = [...currentMedia];
+        const current = next[index];
+        const swap = next[target];
+        if (!current || !swap) return currentMedia;
+        next[index] = swap;
+        next[target] = current;
+        return next;
+      });
     },
-    [data.media, setMedia],
+    [setMedia],
   );
 
   function validate() {
+    if (data.media.filter((item) => item.kind === "photo").length === 0) {
+      setValidationError("Upload at least one vehicle photo to continue.");
+      return false;
+    }
+
+    setValidationError(null);
     markStepComplete();
     return true;
   }
@@ -97,7 +137,7 @@ export function StepMedia() {
         onDrop={(e) => {
           e.preventDefault();
           setDragOver(false);
-          if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files, "photo");
+          if (e.dataTransfer.files.length) void addFiles(e.dataTransfer.files);
         }}
         role="button"
         tabIndex={0}
@@ -115,19 +155,45 @@ export function StepMedia() {
         <div>
           <p className="text-[length:var(--text-body-lg)] font-semibold">Drop photos here</p>
           <p className="mt-1 text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
-            JPG or PNG · First image becomes your hero shot · Aim for 10+ photos
+            JPG or PNG · Drag and drop or upload from mobile/camera · Reorder and set primary image
           </p>
         </div>
         <Button type="button" variant="primary" size="lg" onClick={() => photoInputRef.current?.click()}>
           Browse Files
         </Button>
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          <Button type="button" variant="outline" size="sm" onClick={() => mobileInputRef.current?.click()}>
+            <Icon icon={Smartphone} size="xs" aria-hidden />
+            Mobile Upload
+          </Button>
+          <Button type="button" variant="outline" size="sm" onClick={() => cameraInputRef.current?.click()}>
+            <Icon icon={ImageIcon} size="xs" aria-hidden />
+            Camera Upload
+          </Button>
+        </div>
         <input
           ref={photoInputRef}
           type="file"
           accept="image/*"
           multiple
           className="sr-only"
-          onChange={(e) => e.target.files && addFiles(e.target.files, "photo")}
+          onChange={(e) => e.target.files && void addFiles(e.target.files)}
+        />
+        <input
+          ref={mobileInputRef}
+          type="file"
+          accept="image/*"
+          multiple
+          className="sr-only"
+          onChange={(e) => e.target.files && void addFiles(e.target.files)}
+        />
+        <input
+          ref={cameraInputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          className="sr-only"
+          onChange={(e) => e.target.files && void addFiles(e.target.files)}
         />
       </div>
 
@@ -157,13 +223,7 @@ export function StepMedia() {
                 )}
               >
                 <div className="relative size-24 shrink-0 overflow-hidden rounded-[var(--radius-lg)] bg-[var(--color-surface-sunken)] shadow-inner">
-                  {item.kind === "photo" ? (
-                    <Image src={item.previewUrl} alt={item.name} fill className="object-cover" unoptimized />
-                  ) : (
-                    <div className="flex size-full items-center justify-center">
-                      <Icon icon={Video} size="md" tone="muted" aria-hidden />
-                    </div>
-                  )}
+                  <Image src={item.previewUrl} alt={item.name} fill className="object-cover" unoptimized />
                   {item.isPrimary && (
                     <span className="absolute left-1.5 top-1.5 rounded-[var(--radius-sm)] bg-[var(--color-primary)] px-2 py-0.5 text-[length:var(--text-caption)] font-semibold text-white shadow-sm">
                       Hero
@@ -187,7 +247,7 @@ export function StepMedia() {
                       <button
                         type="button"
                         onClick={() => setPrimary(item.id)}
-                        className="inline-flex items-center gap-1 rounded-[var(--radius-md)] px-2 py-1 text-[length:var(--text-caption)] font-medium text-[var(--color-primary)] motion-hover hover:bg-[var(--color-hover)]"
+                        className="inline-flex items-center gap-1 rounded-[var(--radius-md)] px-2 py-1 text-[length:var(--text-caption)] font-medium text-[var(--color-primary-text)] motion-hover hover:bg-[var(--color-hover)]"
                       >
                         <Icon icon={Star} size="xs" aria-hidden />
                         Set as hero
@@ -227,7 +287,22 @@ export function StepMedia() {
         </>
       )}
 
-      <UploadNavigation onContinue={validate} continueLabel="Continue to Description" />
+      <div className="mt-6 grid gap-4 md:grid-cols-3">
+        <article className="rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-surface)] p-4">
+          <p className="text-[length:var(--text-body-sm)] font-semibold">Video Walkthroughs</p>
+          <p className="mt-2 text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">Coming Soon</p>
+        </article>
+        <article className="rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-surface)] p-4">
+          <p className="text-[length:var(--text-body-sm)] font-semibold">360 Spin Sets</p>
+          <p className="mt-2 text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">Coming Soon</p>
+        </article>
+        <article className="rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-surface)] p-4">
+          <p className="text-[length:var(--text-body-sm)] font-semibold">Bulk Media Quality Review</p>
+          <p className="mt-2 text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">Coming Soon</p>
+        </article>
+      </div>
+
+      <UploadNavigation onContinue={validate} validationError={validationError} continueLabel="Continue to Licence Disc" />
     </UploadStepLayout>
   );
 }

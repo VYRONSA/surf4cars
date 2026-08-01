@@ -11,6 +11,7 @@ export type LayoutId =
   | "marketplace"
   | "buyer-portal"
   | "dealer-portal"
+  | "operations-portal"
   | "admin-portal"
   | "developer-portal"
   | "authentication"
@@ -72,6 +73,15 @@ export const LAYOUT_REGISTRY: Record<LayoutId, LayoutDefinition> = {
     description: "Dealer Command Centre with full operations navigation",
     routeGroup: "(dealer)",
     appPath: "src/app/(dealer)/layout.tsx",
+    includes: ["header", "sidebar", "command-palette", "breadcrumbs"],
+    navigationType: "sidebar",
+  },
+  "operations-portal": {
+    id: "operations-portal",
+    label: "Operations Centre",
+    description: "SURF FOR CARS internal operations workspace",
+    routeGroup: "(operations)",
+    appPath: "src/app/(operations)/layout.tsx",
     includes: ["header", "sidebar", "command-palette", "breadcrumbs"],
     navigationType: "sidebar",
   },
@@ -144,6 +154,7 @@ export const PORTAL_LAYOUT_MAP = {
   public: "public-website",
   buyer: "buyer-portal",
   dealer: "dealer-portal",
+  operations: "operations-portal",
   admin: "admin-portal",
   developer: "developer-portal",
   auth: "authentication",

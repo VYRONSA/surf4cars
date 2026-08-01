@@ -31,23 +31,33 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  icons: {
-    icon: [
-      {
-        url: "/images/branding/logo-main.webp",
-        type: "image/webp",
-      },
-    ],
-    apple: "/images/branding/logo-main.webp",
-  },
+  /*
+    Icons come from `src/app/favicon.ico` alone.
+    ==========================================
+    This block used to override it with `/images/branding/logo-main.webp` — a **1.4 MB** image,
+    fetched on every page load, to draw a 32px icon. It was also declared as the `apple-touch-icon`,
+    which Safari ignores because that slot requires a PNG; adding the site to a home screen produced
+    a screenshot of the page rather than the brand.
+
+    Next serves the co-located `favicon.ico` (26 KB) automatically. A proper 180px PNG for
+    `apple-touch-icon` is a design asset that does not exist yet, and declaring one that does not
+    work is worse than declaring none.
+  */
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
+    /*
+      Must track `--color-background`.
+      ==============================
+      This was `#080808` — the near-black from before the palette moved to slate. The page has been
+      `#1a1f28` for several programmes, so on iOS and Android the browser chrome rendered a
+      near-black band directly above a slate page: a visible seam across the top of every mobile
+      screen, on the surface a customer looks at most.
+    */
+    { color: "#1a1f28" },
   ],
 };
 

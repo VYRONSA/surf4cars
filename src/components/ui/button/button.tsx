@@ -23,7 +23,7 @@ const buttonStyles = createVariants(
         "bg-transparent text-[var(--color-foreground)] hover:bg-[var(--color-hover)] active:bg-[var(--color-active)]",
       outline:
         "border border-[var(--color-border)] bg-transparent text-[var(--color-foreground)] hover:bg-[var(--color-hover)] active:bg-[var(--color-active)]",
-      text: "bg-transparent text-[var(--color-foreground)] hover:text-[var(--color-primary)] px-0",
+      text: "bg-transparent text-[var(--color-foreground)] hover:text-[var(--color-primary-text)] px-0",
       danger:
         "bg-[var(--color-danger)] text-[var(--color-danger-foreground)] hover:bg-[var(--color-danger-hover)] shadow-sm",
       success:

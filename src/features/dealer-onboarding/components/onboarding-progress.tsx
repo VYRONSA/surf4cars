@@ -23,20 +23,25 @@ export function OnboardingProgress() {
         </span>
       </div>
 
+      {/*
+        One progress indicator, not two.
+        ===============================
+        This rendered a continuous bar *and* a segmented one, stacked four pixels apart — two red
+        lines of different thickness both reporting the same number. On the first screen a dealership
+        sees, it read as a rendering fault.
+
+        The segments survive because they carry more: they show how many steps there are and which
+        are done, which is what "Step 1 of 7" above them is already promising. The continuous bar
+        could only repeat the percentage.
+      */}
       <div
-        className="h-1 overflow-hidden rounded-[var(--radius-pill)] bg-[var(--color-surface-sunken)]"
+        className="flex gap-2"
         role="progressbar"
         aria-valuenow={Math.round(progress)}
         aria-valuemin={0}
         aria-valuemax={100}
+        aria-label={`Step ${Math.min(currentStepIndex + 1, formSteps.length)} of ${formSteps.length}`}
       >
-        <div
-          className="h-full rounded-[var(--radius-pill)] bg-[var(--color-primary)] transition-[width] duration-300 ease-[var(--ease-premium)]"
-          style={{ width: `${progress}%` }}
-        />
-      </div>
-
-      <div className="mt-4 hidden gap-2 sm:flex">
         {formSteps.map((step, index) => {
           const isActive = index === currentStepIndex;
           const isComplete = index < currentStepIndex;

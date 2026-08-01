@@ -6,6 +6,8 @@ export {
   VEHICLE_SHOWCASE_DETAILS,
 } from "./vehicle-showcase-details";
 export {
+  buildVehicleBreadcrumbStructuredData,
+  buildVehicleStructuredData,
   resolveVehicleNotFoundSeo,
   resolveVehicleSeoMetadata,
   type VehicleSeoMetadata,

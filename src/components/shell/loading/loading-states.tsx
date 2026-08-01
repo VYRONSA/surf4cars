@@ -1,4 +1,4 @@
-import { SurfLogo } from "@/components/brand";
+import { SurfWordmark } from "@/components/brand";
 import { Skeleton, Spinner } from "@/components/ui/feedback";
 import { cn } from "@/utils";
 
@@ -10,7 +10,7 @@ export function PageLoading({ className }: { readonly className?: string }) {
       aria-label="Loading page"
     >
       <div className="flex flex-col items-center gap-4 pb-2">
-        <SurfLogo variant="loading" priority />
+        <SurfWordmark size="header" />
         <Spinner className="size-5" label="Loading" />
       </div>
       <div className="space-y-2">

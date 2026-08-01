@@ -1,19 +1,33 @@
 "use client";
 
+import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/feedback";
 import { Icon } from "@/components/ui/icons";
-import { Bell, Search, User } from "@/components/ui/icons/registry";
-import { Input } from "@/components/ui/form";
+import { Bell, RotateCcw, Search, User } from "@/components/ui/icons/registry";
+import { useNotifications } from "@/components/shell/notifications";
 import { dashboardPolish } from "@/features/dealer-command-centre/config/dashboard-shared";
 import type { DashboardDealerProfile } from "@/features/dealer-command-centre/types/dashboard.types";
 import { cn } from "@/utils";
 
 export interface DashboardHeaderProps {
   readonly dealer: DashboardDealerProfile;
+  readonly onRefresh: () => void;
+  readonly isRefreshing: boolean;
 }
 
-export function DashboardHeader({ dealer }: DashboardHeaderProps) {
+export function DashboardHeader({ dealer, onRefresh, isRefreshing }: DashboardHeaderProps) {
+  const { showToast } = useNotifications();
+
+  const showComingSoon = (label: string) => {
+    showToast({
+      title: `${label} Coming Soon`,
+      description: `${label} will connect to the shared SURF shell when the live service is ready.`,
+      variant: "info",
+    });
+  };
+
   return (
     <header className={cn(dashboardPolish.glassCard, "p-5 lg:p-6")}>
       <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
@@ -37,30 +51,40 @@ export function DashboardHeader({ dealer }: DashboardHeaderProps) {
           <div className="min-w-[200px] sm:min-w-[240px]">
             <div className="mb-1.5 flex items-center justify-between text-[length:var(--text-caption)]">
               <span className="text-[var(--color-muted-foreground)]">Profile completion</span>
-              <span className="font-medium text-[var(--color-primary)]">{dealer.profileCompletion}%</span>
+              <span className="font-medium text-[var(--color-primary-text)]">{dealer.profileCompletion}%</span>
             </div>
             <Progress value={dealer.profileCompletion} className="h-2" aria-label="Profile completion" />
           </div>
 
-          <div className="flex items-center gap-2">
-            <div className="relative hidden min-w-[220px] md:block">
-              <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2">
-                <Icon icon={Search} size="sm" tone="muted" aria-hidden />
-              </span>
-              <Input
-                placeholder="Quick search inventory, leads…"
-                disabled
-                className="h-10 pl-9"
-                aria-label="Quick search"
-              />
-            </div>
-            <Button variant="ghost" size="icon-sm" disabled aria-label="Notifications">
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="hidden h-10 gap-2 md:inline-flex"
+              onClick={() => showComingSoon("Dashboard Search")}
+            >
+              <Icon icon={Search} size="sm" tone="muted" aria-hidden />
+              Search
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-10 gap-2"
+              onClick={onRefresh}
+              loading={isRefreshing}
+            >
+              {!isRefreshing && <Icon icon={RotateCcw} size="sm" tone="muted" aria-hidden />}
+              Refresh
+            </Button>
+            <Button variant="ghost" size="icon-sm" onClick={() => showComingSoon("Notifications")} aria-label="Notifications coming soon">
               <Icon icon={Bell} size="sm" tone="muted" />
             </Button>
-            <Button variant="outline" size="sm" disabled className="h-10 gap-2">
+            <Link href="/dealer/profile" className="inline-flex">
+              <Button variant="outline" size="sm" className="h-10 gap-2">
               <Icon icon={User} size="sm" tone="muted" aria-hidden />
               Profile
-            </Button>
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

@@ -150,6 +150,14 @@ export const MODULE_REGISTRY: Record<string, ModuleDefinition> = {
     description: "Platform governance",
     dependsOn: ["authentication", "dealership", "analytics"],
   },
+  operations: {
+    id: "operations",
+    label: "Operations Centre",
+    tier: "platform",
+    featurePath: "src/features/operations",
+    description: "Internal operating system for SURF staff",
+    dependsOn: ["authentication", "dealership", "inventory", "analytics"],
+  },
   developer: {
     id: "developer",
     label: "Developer",
@@ -163,7 +171,7 @@ export const MODULE_REGISTRY: Record<string, ModuleDefinition> = {
 export const MODULE_HIERARCHY = {
   platform: {
     label: "Platform Layer",
-    modules: ["administration", "developer", "authentication"],
+    modules: ["administration", "operations", "developer", "authentication"],
   },
   core: {
     label: "Core Business Layer",

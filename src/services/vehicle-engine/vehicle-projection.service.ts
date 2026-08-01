@@ -1,4 +1,5 @@
 import { VEHICLE_STATUS, PUBLISHABLE_VEHICLE_STATUSES } from "@/domain/vehicle/constants/vehicle-status.constants";
+import { isPresentablePhotograph } from "@/config/media";
 import { MARKETING_CHANNELS } from "@/domain/vehicle/types/vehicle-marketing.types";
 import type { UnifiedVehicleRecord, VehicleSearchDocument } from "@/domain/vehicle";
 import type { InventoryListingStatus, InventoryVehicle } from "@/features/inventory/types/inventory.types";
@@ -7,6 +8,81 @@ import type {
   VehicleDetail,
   VehicleGalleryImage,
 } from "@/features/vehicle/types/vehicle.types";
+
+/**
+ * There is no placeholder photograph, and there must not be.
+ *
+ * This was `PREMIUM_IMAGES.vehicles.details` — a hero shot of a dark blue Porsche Cayenne on
+ * Chapman's Peak. Every listing without a usable photograph led with it, so a Hilux Raider and a
+ * Corolla were both advertised on the marketplace with a picture of a Porsche.
+ *
+ * It is the substitution the whole provenance model exists to stop, and the vehicle page had already
+ * been fixed for exactly this once — its blurred backdrop used to be this same file behind every
+ * bakkie and people-carrier on the platform. The constant survived that fix in the one place that
+ * mattered more.
+ *
+ * An empty string is the honest answer, and the codebase was already shaped for it:
+ * `isEligibleForDisplay` treats an empty `imageSrc` as unfit to represent the marketplace, so these
+ * listings drop out of shop windows and rails on their own while staying searchable, counted and
+ * reachable. Cards render an explicit "no photograph yet" state rather than a picture of a car
+ * nobody is selling.
+ */
+const NO_PHOTOGRAPH = "";
+
+/**
+ * The photograph a listing leads with, anywhere it appears.
+ *
+ * This is the single funnel for every lead image on the platform — search results, the homepage, the
+ * "similar vehicles" rail, dealer inventory, the detail page's own hero — so it is the only correct place
+ * to enforce the photography policy. Doing it in each consumer is what let the collision photograph sit
+ * on the search page while the homepage was clean.
+ *
+ * **It skips the bad frame rather than hiding the car.** An earlier attempt filtered whole listings out of
+ * the results, which was wrong twice over: the vehicle is genuinely for sale and a buyer searching its
+ * make should find it, and dropping rows from a page while the result counter came from the search index
+ * made the two disagree. Choosing the vehicle's next acceptable photograph keeps every car findable,
+ * every count honest, and the unusable frame off the screen. A vehicle with no usable *exterior*
+ * returns no photograph at all, which is better than one that is not the car.
+ *
+ * See `src/config/media/vehicle-photography-policy.ts` for what is excluded and why.
+ */
+function resolvePrimaryImageUrl(record: UnifiedVehicleRecord): string {
+  const usable = record.media.photos.filter((photo) => {
+    const url = (photo.url ?? "").trim();
+    return url.length > 0 && isPresentablePhotograph(url);
+  });
+
+  /**
+   * An exterior, or nothing.
+   *
+   * Skipping an unusable frame is not enough on its own: the next photograph in the record is often an
+   * instrument cluster, a wheel or a windscreen, and the marketplace filled with dashboards the moment
+   * the skip was introduced. A card's job is to show the car.
+   *
+   * That was addressed by *preferring* an exterior and falling back to any usable frame — which held
+   * only while every vehicle had at least one good exterior. It does not. Once the Hilux's and the
+   * Corolla's exteriors were denied (a liveried government fleet truck, a 1970s coupé), the chain
+   * walked straight past the intent it was written to express and put an interior on the card
+   * anyway — and for the Corolla, an instrument cluster lit with warning lamps, on a car for sale.
+   *
+   * So the preference is now a requirement. No exterior means no lead photograph, and a card that
+   * admits it has no picture of the car is better than one showing something that is not the car.
+   *
+   * This is deliberately narrower than the photography policy and does not replace it. The policy
+   * answers "may a customer see this frame at all"; this answers "may it lead". `interior.webp` is a
+   * good photograph that belongs in the gallery and must not be a card's lead image, and denying it
+   * outright to keep it off the card would have removed it from the gallery too.
+   *
+   * `undefined` is not treated as exterior. It used to be, which made the test vacuous the moment a
+   * record arrived without categories — and every record did, because both read paths stamped the
+   * literal `"exterior"` on every frame. See `vehicle-photo-category.ts`. An uncategorised photograph
+   * is one nobody has said is a picture of the car, which is not the same as one that is.
+   */
+  const exteriors = usable.filter((photo) => photo.category === "exterior");
+  const chosen = exteriors.find((photo) => photo.isPrimary) ?? exteriors[0];
+
+  return (chosen?.url ?? "").trim() || NO_PHOTOGRAPH;
+}
 
 /** True when the vehicle is visible on the public marketplace. */
 export function isMarketplaceVisible(record: UnifiedVehicleRecord): boolean {
@@ -27,13 +103,37 @@ export function toInventoryListingStatus(record: UnifiedVehicleRecord): Inventor
 }
 
 function toGalleryImages(record: UnifiedVehicleRecord): VehicleGalleryImage[] {
-  return record.media.photos.map((photo) => ({
-    id: photo.id,
-    src: photo.url,
-    alt: photo.alt,
-    category: photo.category ?? "exterior",
-    objectPosition: photo.objectPosition,
-  }));
+  /*
+    No photographs on the record — return none.
+
+    An earlier version substituted a generic make-and-model image here. That is the substitution the whole
+    provenance model exists to stop, and doing it inside the projection made it invisible to every rule
+    above: the listing looked photographed, and nothing downstream could tell that it was not.
+
+    An empty gallery is not a gap to be filled. `VehicleDetailShowcase` says so on the page itself,
+    which is the honest answer and the one the Founder Quality Centre can count.
+  */
+  if (record.media.photos.length === 0) {
+    return [];
+  }
+
+  /* A record row with no URL is not a photograph, and it used to become one: the empty string fell
+     through to the placeholder, so a missing file rendered as a picture of a Porsche in the gallery
+     of whatever car it belonged to. Dropping the row is the honest projection — and it also keeps an
+     empty `src` away from `next/image`, which throws on one. */
+  return record.media.photos
+    .filter((photo) => (photo.url ?? "").trim().length > 0)
+    .map((photo) => ({
+      id: photo.id,
+      src: photo.url,
+      alt: photo.alt,
+      /* Carried through unset rather than defaulted to "exterior". The gallery captions from this
+         field, and the default is why eight photographs of one car — interior, dashboard, engine
+         bay, wheel — were all captioned "Exterior" on the vehicle page. */
+      category: photo.category,
+      objectPosition: photo.objectPosition,
+      provenance: photo.provenance ?? "library",
+    }));
 }
 
 function resolveSimilarSlugs(
@@ -46,7 +146,8 @@ function resolveSimilarSlugs(
 }
 
 export function toVehicleSearchDocument(record: UnifiedVehicleRecord): VehicleSearchDocument {
-  const primaryPhoto = record.media.photos.find((p) => p.isPrimary) ?? record.media.photos[0];
+  // Colour, condition and engine are folded into the free-text query by the search-query builder,
+  // so they must be present here or those filters silently match nothing.
   const searchText = [
     record.core.title,
     record.core.make,
@@ -55,11 +156,16 @@ export function toVehicleSearchDocument(record: UnifiedVehicleRecord): VehicleSe
     record.core.fuel,
     record.core.transmission,
     record.core.bodyType,
+    record.core.colour,
+    record.core.condition,
+    record.core.engine,
+    String(record.core.year),
     record.dealer.location,
     record.dealer.province,
     record.dealer.dealershipName,
     record.dealer.stockNumber,
   ]
+    .filter((value): value is string => Boolean(value))
     .join(" ")
     .toLowerCase();
 
@@ -85,7 +191,7 @@ export function toVehicleSearchDocument(record: UnifiedVehicleRecord): VehicleSe
     verified: record.dealer.verified,
     listingScore: record.ai.scores.listingScore,
     aiMatchScore: record.ai.scores.aiMatchScore,
-    primaryImageUrl: primaryPhoto?.url ?? "",
+    primaryImageUrl: resolvePrimaryImageUrl(record),
     searchText,
   };
 }
@@ -107,8 +213,12 @@ export function toShowcaseVehicleListing(record: UnifiedVehicleRecord): Showcase
     location: record.dealer.location,
     financeEstimate: financeShort,
     aiMatchScore: record.ai.scores.aiMatchScore,
-    imageSrc: primaryPhoto?.url ?? "",
+    imageSrc: resolvePrimaryImageUrl(record),
     imagePosition: primaryPhoto?.objectPosition ?? "center",
+    /* Carried so curation can mix body styles. A shop window that lists five premium SUVs in a row
+       is a filtered query wearing an editor's byline — see `selectFeatured`. */
+    bodyType: record.core.bodyType || undefined,
+    make: record.core.make || undefined,
     featured: record.marketing.featured || undefined,
     reducedPrice: record.pricing.reducedPrice || undefined,
     verified: record.dealer.verified || undefined,
@@ -117,16 +227,29 @@ export function toShowcaseVehicleListing(record: UnifiedVehicleRecord): Showcase
 
 export function toVehicleDetail(
   record: UnifiedVehicleRecord,
-  slugById?: ReadonlyMap<string, string>,
+  records?: readonly UnifiedVehicleRecord[],
 ): VehicleDetail {
-  const slugMap = slugById ?? new Map([[record.id, record.slug]]);
+  const catalogue = records ?? [record];
+  const slugMap = buildSlugIndex(catalogue);
   const similarSlugs = resolveSimilarSlugs(record, slugMap);
+
+  // Projected here rather than re-resolved by the UI: the detail page previously looked similar
+  // vehicles up in the static showcase config, so anything a dealer published resolved to nothing
+  // and the section silently disappeared.
+  const byId = new Map(catalogue.map((item) => [item.id, item]));
+  const similarListings = record.history.similarVehicleIds
+    .map((id) => byId.get(id))
+    .filter((item): item is UnifiedVehicleRecord => Boolean(item))
+    .filter((item) => item.id !== record.id && isMarketplaceVisible(item))
+    .map(toShowcaseVehicleListing);
 
   return {
     slug: record.slug,
     id: record.id,
     title: record.core.title,
     subtitle: record.core.subtitle,
+    make: record.core.make,
+    model: record.core.model,
     price: record.pricing.sellingPriceDisplay,
     priceNumeric: Math.round(record.pricing.sellingPriceCents / 100),
     financeEstimate: record.pricing.financeEstimateDisplay,
@@ -152,6 +275,7 @@ export function toVehicleDetail(
       specs: g.specs.map((s) => ({ ...s })),
     })),
     dealer: {
+      dealershipId: record.dealer.dealershipId,
       name: record.dealer.dealershipName,
       slug: record.dealer.dealershipSlug,
       logoInitials: record.dealer.logoInitials,
@@ -167,6 +291,7 @@ export function toVehicleDetail(
     aiInsights: record.ai.insights.map((i) => ({ ...i })),
     trustIndicators: record.history.trustIndicators.map((t) => ({ ...t })),
     similarSlugs: similarSlugs.length > 0 ? similarSlugs : [record.slug],
+    similarListings,
     featured: record.marketing.featured || undefined,
     reducedPrice: record.pricing.reducedPrice || undefined,
     aiMatchScore: record.ai.scores.aiMatchScore,
@@ -176,6 +301,7 @@ export function toVehicleDetail(
 export function toInventoryVehicle(record: UnifiedVehicleRecord): InventoryVehicle {
   const primaryPhoto = record.media.photos.find((p) => p.isPrimary) ?? record.media.photos[0];
   const health = record.ai.scores.health;
+  const imageSrc = resolvePrimaryImageUrl(record);
   const status = toInventoryListingStatus(record);
   const financeShort = record.pricing.financeEstimateDisplay.replace(/ at .+$/, "");
 
@@ -183,7 +309,7 @@ export function toInventoryVehicle(record: UnifiedVehicleRecord): InventoryVehic
     id: record.id,
     stockNumber: record.dealer.stockNumber,
     title: record.core.title,
-    imageSrc: primaryPhoto?.url ?? "",
+    imageSrc,
     imagePosition: primaryPhoto?.objectPosition ?? "center",
     price: record.pricing.sellingPriceDisplay,
     priceNumeric: Math.round(record.pricing.sellingPriceCents / 100),

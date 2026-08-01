@@ -152,7 +152,7 @@ export function TagInput({
       {tags.map((tag) => (
         <span
           key={tag}
-          className="inline-flex items-center gap-1 rounded-[var(--radius-md)] bg-[var(--color-primary-muted)] px-2 py-0.5 text-[length:var(--text-caption)] text-[var(--color-primary)]"
+          className="inline-flex items-center gap-1 rounded-[var(--radius-md)] bg-[var(--color-primary-muted)] px-2 py-0.5 text-[length:var(--text-caption)] text-[var(--color-primary-text)]"
         >
           {tag}
           {onRemoveTag && (

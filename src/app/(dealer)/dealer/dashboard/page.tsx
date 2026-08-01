@@ -5,7 +5,7 @@ import { DealerDashboardPage } from "@/features/dealer-command-centre";
 export const metadata: Metadata = {
   title: "Dealer Command Centre",
   description:
-    "Atlantic Auto Collective — executive dashboard for inventory, leads, performance, and AI business insights.",
+    "Executive dashboard for dealership performance, leads, inventory health, and AI business insights.",
   robots: { index: false, follow: false },
 };
 

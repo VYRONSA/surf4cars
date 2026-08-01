@@ -27,7 +27,7 @@ export function DashboardQuickActions({ actions }: DashboardQuickActionsProps) {
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]",
               )}
             >
-              <span className="flex size-10 items-center justify-center rounded-[var(--radius-xl)] bg-[var(--color-primary-muted)] text-[var(--color-primary)]">
+              <span className="flex size-10 items-center justify-center rounded-[var(--radius-xl)] bg-[var(--color-primary-muted)] text-[var(--color-primary-text)]">
                 <Icon icon={resolveDashboardIcon(action.icon)} size="sm" tone="primary" aria-hidden />
               </span>
               <span className="text-[length:var(--text-body-md)] font-semibold">{action.label}</span>

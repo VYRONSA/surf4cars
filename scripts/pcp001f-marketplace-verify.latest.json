@@ -1,0 +1,192 @@
+{
+  "baseUrl": "http://localhost:3003",
+  "generatedAt": "2026-07-29T10:56:10.784Z",
+  "checks": [
+    {
+      "name": "marketplace-loads",
+      "ok": true,
+      "baselineResults": 23
+    },
+    {
+      "name": "publish-propagation",
+      "ok": true,
+      "publishedCount": 3,
+      "publishApiMs": {
+        "alpha": 37,
+        "bravo": 29,
+        "charlie": 25
+      }
+    },
+    {
+      "name": "unique-slug-per-listing",
+      "ok": true,
+      "distinctSlugs": 26,
+      "totalCards": 26
+    },
+    {
+      "name": "vehicle-detail-page",
+      "ok": true,
+      "title": "2024 Volvo XC90 B5 Ultimate 1785322570842 for Sale | SURF FOR CARS",
+      "robots": "index, follow"
+    },
+    {
+      "name": "dealer-profile-integration",
+      "ok": true,
+      "dealer": "Surf Auto pcp001e-1785322495499-711",
+      "region": "Western Cape"
+    },
+    {
+      "name": "related-vehicles",
+      "ok": true,
+      "relatedLinkCount": 4,
+      "sampled": [
+        "2024-volvo-xc90-b5-ultimate-283a11c0",
+        "2024-volvo-xc90-b5-ultimate-3f33ea41",
+        "2024-volvo-xc90-b5-ultimate-572e1855"
+      ]
+    },
+    {
+      "name": "seo-metadata",
+      "ok": true,
+      "title": "2024 Volvo XC90 B5 Ultimate 1785322570842 for Sale | SURF FOR CARS",
+      "canonical": "http://localhost:3003/vehicle/2024-volvo-xc90-b5-ultimate-3b3a3f70",
+      "robots": "index, follow"
+    },
+    {
+      "name": "open-graph-metadata",
+      "ok": true,
+      "ogTitle": "2024 Volvo XC90 B5 Ultimate 1785322570842 for Sale",
+      "ogImage": "http://localhost:3003/images/branding/logo.png"
+    },
+    {
+      "name": "structured-data",
+      "ok": true,
+      "types": [
+        "Vehicle",
+        "BreadcrumbList"
+      ],
+      "price": 1450000
+    },
+    {
+      "name": "search-keyword",
+      "ok": true,
+      "matched": 1
+    },
+    {
+      "name": "filter-single-and-combined",
+      "ok": true,
+      "byMake": 2,
+      "combined": 1,
+      "priceBounded": 1,
+      "cleared": 3
+    },
+    {
+      "name": "filter-province-and-colour",
+      "ok": true,
+      "byProvince": 3,
+      "byColour": 1
+    },
+    {
+      "name": "sorting-deterministic",
+      "ok": true,
+      "priceAsc": 3,
+      "deterministic": true
+    },
+    {
+      "name": "pagination",
+      "ok": true,
+      "total": 3,
+      "pageOne": "2022-volvo-xc60-b4-plus-68b710d6",
+      "pageTwo": "2024-volvo-xc90-b5-ultimate-3b3a3f70"
+    },
+    {
+      "name": "featured-and-recently-added",
+      "ok": true,
+      "featuredCount": 2,
+      "recentCount": 3
+    },
+    {
+      "name": "unpublish-propagation",
+      "ok": true,
+      "elapsedMs": 25,
+      "robots": "noindex, nofollow"
+    },
+    {
+      "name": "republish-propagation",
+      "ok": true,
+      "restored": true
+    },
+    {
+      "name": "archived-listing-behaviour",
+      "ok": true,
+      "archived": true
+    },
+    {
+      "name": "soft-delete-behaviour",
+      "ok": true,
+      "deleted": true,
+      "robots": "noindex, nofollow"
+    },
+    {
+      "name": "error-handling-and-empty-states",
+      "ok": true,
+      "emptyCount": 0,
+      "invalidFilterCards": 0
+    },
+    {
+      "name": "desktop-presentation",
+      "ok": true,
+      "viewport": "1440x1200",
+      "overflow": 0
+    },
+    {
+      "name": "tablet-presentation",
+      "ok": true,
+      "viewport": "1024x1366",
+      "overflow": 0,
+      "searchOverflow": 0
+    },
+    {
+      "name": "premium-phone-presentation",
+      "ok": true,
+      "viewport": "390x844",
+      "overflow": 0,
+      "searchOverflow": 0
+    }
+  ],
+  "timings": {
+    "marketplace-loads": 688,
+    "publishApiMs": {
+      "alpha": 37,
+      "bravo": 29,
+      "charlie": 25
+    },
+    "publish-propagation": 602,
+    "unique-slug-per-listing": 741,
+    "vehicle-detail-page": 272,
+    "dealer-profile-integration": 269,
+    "related-vehicles": 1478,
+    "seo-metadata": 477,
+    "open-graph-metadata": 270,
+    "structured-data": 252,
+    "search-keyword": 500,
+    "filter-single-and-combined": 1933,
+    "filter-province-and-colour": 1009,
+    "sorting-deterministic": 2572,
+    "pagination": 1076,
+    "featured-and-recently-added": 1013,
+    "unpublishApiMs": 25,
+    "unpublish-propagation": 682,
+    "republish-propagation": 786,
+    "archived-listing-behaviour": 1918,
+    "soft-delete-behaviour": 1791,
+    "error-handling-and-empty-states": 1188,
+    "desktop-presentation": 476,
+    "tablet-presentation": 932,
+    "premium-phone-presentation": 919
+  },
+  "summary": {
+    "passed": 23,
+    "failed": 0
+  }
+}

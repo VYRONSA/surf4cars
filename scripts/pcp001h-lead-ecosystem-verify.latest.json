@@ -1,0 +1,158 @@
+{
+  "baseUrl": "http://localhost:3003",
+  "generatedAt": "2026-07-29T11:39:10.627Z",
+  "checks": [
+    {
+      "name": "lifecycle-seed-published-vehicle",
+      "ok": true,
+      "vehicleId": "196a84de-bfd6-4b06-bb4c-3e3fc4f4cbed"
+    },
+    {
+      "name": "finance-enquiry-submission",
+      "ok": true,
+      "leadId": "23eda83a-523f-4725-8822-7454af487e69",
+      "elapsedMs": 47
+    },
+    {
+      "name": "lead-creation-and-routing",
+      "ok": true,
+      "leadCount": 5,
+      "elapsedMs": 11
+    },
+    {
+      "name": "lead-ownership-and-dealer-isolation",
+      "ok": true,
+      "crossRead": 403,
+      "crossWrite": 403,
+      "unscoped": 403
+    },
+    {
+      "name": "permissions-buyer-and-anonymous-denied",
+      "ok": true,
+      "buyer": 403,
+      "anonymous": 401,
+      "dealerOnOps": 401
+    },
+    {
+      "name": "operations-lead-visibility-is-gated",
+      "ok": true,
+      "gateStatus": 401,
+      "sharedStoreWired": true,
+      "endToEndVerification": "deferred-to-PCP-001I"
+    },
+    {
+      "name": "lead-lifecycle-transitions",
+      "ok": true,
+      "finalStatus": "closed-won",
+      "timings": {
+        "assign": 51,
+        "respond": 183,
+        "finance": 47,
+        "followUp": 45,
+        "close": 44
+      }
+    },
+    {
+      "name": "lead-lifecycle-guards-terminal-state",
+      "ok": true,
+      "status": 400,
+      "error": "Invalid enquiry transition: closed-won -> responded."
+    },
+    {
+      "name": "lead-timeline-and-audit",
+      "ok": true,
+      "timelineEntries": 6,
+      "auditEntries": 6
+    },
+    {
+      "name": "duplicate-suppression",
+      "ok": true,
+      "duplicateSuppressed": true,
+      "financeTreatedSeparately": true
+    },
+    {
+      "name": "lead-filtering-and-sorting",
+      "ok": true,
+      "total": 7,
+      "closedWon": 1
+    },
+    {
+      "name": "error-handling-invalid-targets",
+      "ok": true,
+      "rejectedCases": 5
+    },
+    {
+      "name": "archived-vehicle-blocks-new-finance-lead",
+      "ok": true,
+      "blocked": 400,
+      "existingLeadsPreserved": true
+    },
+    {
+      "name": "dealer-dashboard-lead-visibility",
+      "ok": true,
+      "dashboardLoadMs": 194,
+      "widgetRows": 5
+    },
+    {
+      "name": "desktop-presentation",
+      "ok": true,
+      "viewport": "1440x1200",
+      "overflow": 0
+    },
+    {
+      "name": "tablet-presentation",
+      "ok": true,
+      "viewport": "1024x1366",
+      "overflow": 0
+    },
+    {
+      "name": "premium-phone-presentation",
+      "ok": true,
+      "viewport": "390x844",
+      "overflow": 0
+    }
+  ],
+  "timings": {
+    "lifecycle-seed-published-vehicle": 37,
+    "financeSubmitMs": 47,
+    "finance-enquiry-submission": 47,
+    "leadListMs": 11,
+    "lead-creation-and-routing": 52,
+    "lead-ownership-and-dealer-isolation": 42,
+    "permissions-buyer-and-anonymous-denied": 28,
+    "operations-lead-visibility-is-gated": 11,
+    "lifecycleActionsMs": {
+      "assign": 51,
+      "respond": 183,
+      "finance": 47,
+      "followUp": 45,
+      "close": 44
+    },
+    "lead-lifecycle-transitions": 370,
+    "lead-lifecycle-guards-terminal-state": 11,
+    "lead-timeline-and-audit": 18,
+    "duplicate-suppression": 119,
+    "leadFilterMs": 8,
+    "lead-filtering-and-sorting": 26,
+    "error-handling-invalid-targets": 60,
+    "archived-vehicle-blocks-new-finance-lead": 1406,
+    "dashboardLoadMs": 194,
+    "dealer-dashboard-lead-visibility": 2652,
+    "desktop-presentation": 785,
+    "tablet-presentation": 799,
+    "premium-phone-presentation": 554
+  },
+  "outOfScope": [
+    "Insurance — no buyer or dealer insurance enquiry flow exists. 'Insurance' appears only as an Operations partner/revenue category and a dealer staff-role label. Not implemented; not built.",
+    "Lead free-text search — the lead API filters by status only. No search index or query parameter exists. Not implemented; not built.",
+    "Lead attachments — the lead model has no attachment field (attachments exist only on Operations applications). Not implemented; not built.",
+    "Finance affordability capture — the vehicle finance calculator is client-side only (deposit/interest/term) and does not feed the finance enquiry, which carries contact details and message. Not implemented; not built.",
+    "Lead notifications — leads are persisted for dealer retrieval; no email/SMS/push dispatch exists. Not implemented; not built.",
+    "Dedicated dealer lead-management UI — leads are exposed via API and the dashboard 'Recent Leads' widget; there is no /dealer/leads page. Not implemented; not built."
+  ],
+  "summary": {
+    "passed": 17,
+    "failed": 0
+  },
+  "outOfScopeNote": "Operations end-to-end lead visibility deferred to PCP-001I (requires Supabase session)."
+}

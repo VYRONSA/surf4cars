@@ -19,6 +19,7 @@
   --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.24);
   --shadow-hover: 0 8px 24px -4px rgba(0, 0, 0, 0.32);
   --shadow-focus: 0 0 0 3px var(--color-focus-ring);
-  --shadow-glow-brand: 0 0 24px rgba(0, 102, 255, 0.2);
+  /* Brand glow follows the V2 primary. This was still the pre-V2 blue (0, 102, 255). */
+  --shadow-glow-brand: 0 0 24px rgba(225, 6, 0, 0.28);
   --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.12);
 }

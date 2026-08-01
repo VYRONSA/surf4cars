@@ -5,46 +5,43 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FormField, Input, Select } from "@/components/ui/form";
 import { Icon } from "@/components/ui/icons";
-import { Wand2 } from "@/components/ui/icons/registry";
+import { Sparkles } from "@/components/ui/icons/registry";
 import { UploadNavigation } from "@/features/vehicle-upload/components/upload-navigation";
 import { UploadStepLayout } from "@/features/vehicle-upload/components/upload-step-layout";
 import { uploadPolish } from "@/features/vehicle-upload/config/upload-shared";
 import { useUploadWizard } from "@/features/vehicle-upload/context/upload-context";
-import {
-  applyVinDecodeToIdentification,
-  vinDecoder,
-} from "@/features/vehicle-upload/utils/vin-decoder";
-import { cn } from "@/utils";
 
 export function StepIdentification() {
-  const { data, updateIdentification, markStepComplete } = useUploadWizard();
-  const { identification } = data;
-  const [decodeMessage, setDecodeMessage] = useState<string | null>(null);
-  const [isDecoding, setIsDecoding] = useState(false);
+  const {
+    data,
+    markStepComplete,
+    runVehicleIdentification,
+    updateIdentification,
+    updateSpecifications,
+  } = useUploadWizard();
+
+  const isIdentificationBusy = data.identificationAi.analysisStatus === "pending";
+
   const [validationError, setValidationError] = useState<string | null>(null);
 
-  async function handleVinDecode() {
-    setIsDecoding(true);
-    setDecodeMessage(null);
-    const result = await vinDecoder.decode(identification.vin);
-    updateIdentification(applyVinDecodeToIdentification(identification, result));
-    setDecodeMessage(result.message ?? (result.success ? "VIN decoded." : "Could not decode VIN."));
-    setIsDecoding(false);
+  async function triggerIdentification() {
+    await runVehicleIdentification();
   }
 
   function validate() {
-    if (!identification.make.trim()) {
-      setValidationError("Enter the vehicle make — e.g. BMW, Toyota, Mercedes-Benz.");
+    if (!data.identification.make.trim()) {
+      setValidationError("Vehicle make is required.");
       return false;
     }
-    if (!identification.model.trim()) {
-      setValidationError("Enter the model — e.g. X5, Hilux, GLC.");
+    if (!data.identification.model.trim()) {
+      setValidationError("Vehicle model is required.");
       return false;
     }
-    if (!identification.year.trim()) {
-      setValidationError("Enter the model year — e.g. 2024.");
+    if (!data.identification.year.trim()) {
+      setValidationError("Vehicle year is required.");
       return false;
     }
+
     setValidationError(null);
     markStepComplete();
     return true;
@@ -53,70 +50,31 @@ export function StepIdentification() {
   return (
     <UploadStepLayout stepId="identification">
       <div className={uploadPolish.formStack}>
-        <FormField
-          label="VIN (Vehicle Identification Number)"
-          htmlFor="vin"
-          helperText="17-character code — used for duplicate detection and future auto-decode."
-        >
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <Input
-              id="vin"
-              value={identification.vin}
-              onChange={(e) => updateIdentification({ vin: e.target.value.toUpperCase() })}
-              placeholder="WBAxxxxxxxxxxxxxx"
-              className={cn(uploadPolish.inputClass, "font-mono uppercase tracking-wider")}
-              aria-describedby="vin-helper"
-            />
-            <Button
-              type="button"
-              variant="outline"
-              size="lg"
-              onClick={handleVinDecode}
-              loading={isDecoding}
-              disabled={!identification.vin.trim()}
-              className="shrink-0 gap-1.5"
-            >
-              <Icon icon={Wand2} size="sm" aria-hidden />
-              Decode VIN
+        <div className="rounded-[var(--radius-xl)] border border-[var(--color-border-subtle)] bg-[var(--color-surface-sunken)]/35 p-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="text-[length:var(--text-body-md)] font-semibold">AI Identification Pipeline</p>
+              <p className="text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
+                Make, model, variant, year, colour, fuel, transmission, VIN and engine size extraction.
+              </p>
+            </div>
+            <Button type="button" onClick={() => void triggerIdentification()} disabled={isIdentificationBusy}>
+              <Icon icon={Sparkles} size="xs" aria-hidden />
+              {isIdentificationBusy ? "Running AI Identification..." : "Run AI Identification"}
             </Button>
           </div>
-          {decodeMessage && (
-            <p className="mt-2 text-[length:var(--text-body-sm)] text-[var(--color-primary)]" role="status">
-              {decodeMessage}
-            </p>
-          )}
-        </FormField>
 
-        <div className={uploadPolish.formGrid}>
-          <FormField label="Registration Number" htmlFor="registration" helperText="Licence disc number on file.">
-            <Input
-              id="registration"
-              inputSize="lg"
-              value={identification.registration}
-              onChange={(e) => updateIdentification({ registration: e.target.value.toUpperCase() })}
-              placeholder="CA 123-456"
-              className={uploadPolish.inputClass}
-            />
-          </FormField>
-          <FormField label="Stock Number" htmlFor="stock-number" helperText="Your internal reference — e.g. AAC-X5-2401.">
-            <Input
-              id="stock-number"
-              inputSize="lg"
-              value={identification.stockNumber}
-              onChange={(e) => updateIdentification({ stockNumber: e.target.value.toUpperCase() })}
-              placeholder="AAC-X5-2401"
-              className={uploadPolish.inputClass}
-            />
-          </FormField>
+          <p className="mt-3 text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
+            {data.identificationAi.analysisMessage || "Awaiting AI analysis"}
+          </p>
         </div>
 
         <div className={uploadPolish.formGrid}>
           <FormField label="Make" htmlFor="make" required>
             <Input
               id="make"
-              inputSize="lg"
-              value={identification.make}
-              onChange={(e) => updateIdentification({ make: e.target.value })}
+              value={data.identification.make}
+              onChange={(event) => updateIdentification({ make: event.target.value })}
               placeholder="BMW"
               className={uploadPolish.inputClass}
             />
@@ -124,9 +82,8 @@ export function StepIdentification() {
           <FormField label="Model" htmlFor="model" required>
             <Input
               id="model"
-              inputSize="lg"
-              value={identification.model}
-              onChange={(e) => updateIdentification({ model: e.target.value })}
+              value={data.identification.model}
+              onChange={(event) => updateIdentification({ model: event.target.value })}
               placeholder="X5"
               className={uploadPolish.inputClass}
             />
@@ -134,12 +91,11 @@ export function StepIdentification() {
         </div>
 
         <div className={uploadPolish.formGrid}>
-          <FormField label="Variant / Trim" htmlFor="variant" helperText="M Sport, Raider, AMG Line, etc.">
+          <FormField label="Variant" htmlFor="variant">
             <Input
               id="variant"
-              inputSize="lg"
-              value={identification.variant}
-              onChange={(e) => updateIdentification({ variant: e.target.value })}
+              value={data.identification.variant}
+              onChange={(event) => updateIdentification({ variant: event.target.value })}
               placeholder="xDrive40i M Sport"
               className={uploadPolish.inputClass}
             />
@@ -147,39 +103,128 @@ export function StepIdentification() {
           <FormField label="Year" htmlFor="year" required>
             <Input
               id="year"
-              inputSize="lg"
               type="number"
               min={1990}
-              max={2030}
-              value={identification.year}
-              onChange={(e) => updateIdentification({ year: e.target.value })}
+              max={2035}
+              value={data.identification.year}
+              onChange={(event) => updateIdentification({ year: event.target.value })}
               placeholder="2024"
               className={uploadPolish.inputClass}
             />
           </FormField>
         </div>
 
-        <FormField label="Condition" htmlFor="condition" required helperText="Affects buyer expectations and warranty display.">
-          <Select
-            id="condition"
-            inputSize="lg"
-            value={identification.condition}
-            onChange={(e) =>
-              updateIdentification({
-                condition: e.target.value as typeof identification.condition,
-              })
-            }
-            className={uploadPolish.inputClass}
-          >
-            <option value="new">New — unregistered, full warranty</option>
-            <option value="demo">Demo — low mileage, dealer-owned</option>
-            <option value="used">Used — standard pre-owned stock</option>
-            <option value="certified-pre-owned">Certified Pre-Owned — inspected programme</option>
-          </Select>
-        </FormField>
+        <div className={uploadPolish.formGrid}>
+          <FormField label="Stock Number" htmlFor="stock-number">
+            <Input
+              id="stock-number"
+              value={data.identification.stockNumber}
+              onChange={(event) => updateIdentification({ stockNumber: event.target.value.toUpperCase() })}
+              placeholder="SFC-2024-001"
+              className={uploadPolish.inputClass}
+            />
+          </FormField>
+          <FormField label="Condition" htmlFor="condition">
+            <Select
+              id="condition"
+              value={data.identification.condition}
+              onChange={(event) => updateIdentification({ condition: event.target.value as typeof data.identification.condition })}
+            >
+              <option value="used">Used</option>
+              <option value="new">New</option>
+              <option value="demo">Demo</option>
+              <option value="certified-pre-owned">Certified Pre-Owned</option>
+            </Select>
+          </FormField>
+        </div>
+
+        <div className={uploadPolish.formGrid}>
+          <FormField label="VIN" htmlFor="vin">
+            <Input
+              id="vin"
+              value={data.identification.vin}
+              onChange={(event) => updateIdentification({ vin: event.target.value.toUpperCase() })}
+              placeholder="WBAxxxxxxxxxxxxxx"
+              className={uploadPolish.inputClass}
+            />
+          </FormField>
+          <FormField label="Registration" htmlFor="registration">
+            <Input
+              id="registration"
+              value={data.identification.registration}
+              onChange={(event) => updateIdentification({ registration: event.target.value.toUpperCase() })}
+              placeholder="CA 123-456"
+              className={uploadPolish.inputClass}
+            />
+          </FormField>
+        </div>
+
+        <div className={uploadPolish.formGrid}>
+          <FormField label="Fuel Type" htmlFor="fuel">
+            <Select
+              id="fuel"
+              value={data.specifications.fuel}
+              onChange={(event) => updateSpecifications({ fuel: event.target.value })}
+            >
+              <option value="Petrol">Petrol</option>
+              <option value="Diesel">Diesel</option>
+              <option value="Hybrid">Hybrid</option>
+              <option value="Electric">Electric</option>
+            </Select>
+          </FormField>
+          <FormField label="Transmission" htmlFor="transmission">
+            <Select
+              id="transmission"
+              value={data.specifications.transmission}
+              onChange={(event) => updateSpecifications({ transmission: event.target.value })}
+            >
+              <option value="Automatic">Automatic</option>
+              <option value="Manual">Manual</option>
+            </Select>
+          </FormField>
+        </div>
+
+        <div className={uploadPolish.formGrid}>
+          <FormField label="Mileage (km)" htmlFor="mileage">
+            <Input
+              id="mileage"
+              type="number"
+              min={0}
+              value={data.specifications.mileage}
+              onChange={(event) => updateSpecifications({ mileage: event.target.value })}
+              placeholder="25000"
+              className={uploadPolish.inputClass}
+            />
+          </FormField>
+          <FormField label="Engine Size" htmlFor="engine">
+            <Input
+              id="engine"
+              value={data.specifications.engine}
+              onChange={(event) => updateSpecifications({ engine: event.target.value })}
+              placeholder="3.0L"
+              className={uploadPolish.inputClass}
+            />
+          </FormField>
+        </div>
+
+        <div className={uploadPolish.formGrid}>
+          <FormField label="Colour" htmlFor="colour">
+            <Input
+              id="colour"
+              value={data.specifications.colour}
+              onChange={(event) => updateSpecifications({ colour: event.target.value })}
+              placeholder="Alpine White"
+              className={uploadPolish.inputClass}
+            />
+          </FormField>
+        </div>
       </div>
 
-      <UploadNavigation onContinue={validate} validationError={validationError} />
+      <UploadNavigation
+        onContinue={validate}
+        validationError={validationError}
+        continueLabel="Continue to SURF Intelligence Review"
+      />
     </UploadStepLayout>
   );
 }

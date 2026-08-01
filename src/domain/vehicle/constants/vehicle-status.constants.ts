@@ -3,8 +3,11 @@
  */
 export const VEHICLE_STATUS = {
   DRAFT: "draft",
+  AI_REVIEW: "ai-review",
+  READY_TO_PUBLISH: "ready-to-publish",
   READY: "ready",
   PUBLISHED: "published",
+  PERFORMANCE_MONITORING: "performance-monitoring",
   FEATURED: "featured",
   RESERVED: "reserved",
   SOLD: "sold",
@@ -22,8 +25,11 @@ export const PUBLISHABLE_VEHICLE_STATUSES: readonly VehicleStatus[] = [
 
 export const DEALER_VISIBLE_VEHICLE_STATUSES: readonly VehicleStatus[] = [
   VEHICLE_STATUS.DRAFT,
+  VEHICLE_STATUS.AI_REVIEW,
+  VEHICLE_STATUS.READY_TO_PUBLISH,
   VEHICLE_STATUS.READY,
   VEHICLE_STATUS.PUBLISHED,
+  VEHICLE_STATUS.PERFORMANCE_MONITORING,
   VEHICLE_STATUS.FEATURED,
   VEHICLE_STATUS.RESERVED,
   VEHICLE_STATUS.SOLD,

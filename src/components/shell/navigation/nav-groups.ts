@@ -24,9 +24,7 @@ const marketplaceGroup: ShellNavGroup = {
   label: "Marketplace",
   items: [
     { id: "search", label: "Search", href: "/search", icon: "Search" },
-    { id: "vehicles", label: "Vehicles", href: "/vehicles", icon: "Car" },
-    { id: "dealers", label: "Dealers", href: "/dealers", icon: "Store" },
-    { id: "collections", label: "Collections", href: "/collections", icon: "Layers" },
+    { id: "dealer-sign-up", label: "Dealer Sign Up", href: "/auth/sign-up/dealer", icon: "Store" },
   ],
 };
 
@@ -35,8 +33,12 @@ const dealerCommandCentreGroup: ShellNavGroup = {
   label: "Dealer Command Centre",
   items: [
     { id: "dashboard", label: "Dashboard", href: "/dealer/dashboard", icon: "LayoutDashboard" },
-    { id: "leads", label: "Lead Centre", href: "/dealer/leads", icon: "Users" },
-    { id: "reports", label: "Reports", href: "/dealer/reports", icon: "FileText" },
+    { id: "dealership-profile", label: "Dealership Profile", href: "/dealer/profile", icon: "Building2" },
+    { id: "team-management", label: "Team Management", href: "/dealer/team", icon: "Users" },
+    { id: "branches", label: "Branches", href: "/dealer/branches", icon: "MapPin" },
+    { id: "settings", label: "Settings", href: "/dealer/settings", icon: "Settings" },
+    { id: "inventory", label: "Inventory", href: "/dealer/inventory", icon: "Car" },
+    { id: "create-vehicle", label: "Create Vehicle", href: "/dealer/inventory/new", icon: "Plus" },
   ],
 };
 
@@ -45,48 +47,8 @@ const inventoryGroup: ShellNavGroup = {
   label: "Inventory",
   items: [
     { id: "stock", label: "Stock", href: "/dealer/inventory", icon: "Car" },
-    { id: "media", label: "Media Library", href: "/dealer/media", icon: "Image" },
-  ],
-};
-
-const marketingStudioGroup: ShellNavGroup = {
-  id: "marketing-studio",
-  label: "Marketing Studio",
-  items: [
-    { id: "campaigns", label: "Campaigns", href: "/dealer/marketing/campaigns", icon: "Megaphone" },
-    { id: "social", label: "Social Posts", href: "/dealer/marketing/social", icon: "Share2" },
-    { id: "calendar", label: "Content Calendar", href: "/dealer/marketing/calendar", icon: "Calendar" },
-    { id: "library", label: "Marketing Library", href: "/dealer/marketing/library", icon: "Layers" },
-  ],
-};
-
-const aiStudioGroup: ShellNavGroup = {
-  id: "ai-studio",
-  label: "AI Studio",
-  items: [
-    { id: "ai-listings", label: "AI Listings", href: "/dealer/ai/listings", icon: "Sparkles" },
-    { id: "ai-insights", label: "AI Insights", href: "/dealer/ai/insights", icon: "Brain" },
-    { id: "ai-assistant", label: "AI Assistant", href: "/dealer/ai/assistant", icon: "Bot" },
-  ],
-};
-
-const analyticsGroup: ShellNavGroup = {
-  id: "analytics",
-  label: "Analytics",
-  items: [
-    { id: "performance", label: "Performance", href: "/dealer/analytics/performance", icon: "BarChart3" },
-    { id: "inventory-analytics", label: "Inventory", href: "/dealer/analytics/inventory", icon: "LineChart" },
-    { id: "marketing-analytics", label: "Marketing", href: "/dealer/analytics/marketing", icon: "TrendingUp" },
-    { id: "traffic", label: "Traffic", href: "/dealer/analytics/traffic", icon: "Activity" },
-  ],
-};
-
-const crmGroup: ShellNavGroup = {
-  id: "crm",
-  label: "CRM",
-  items: [
-    { id: "crm", label: "CRM", href: "/dealer/crm", icon: "Building2" },
-    { id: "pipeline", label: "Pipeline", href: "/dealer/crm", icon: "Target" },
+    { id: "market-intelligence", label: "Market Intelligence", href: "/dealer/market", icon: "LineChart" },
+    { id: "new-vehicle", label: "Create Vehicle", href: "/dealer/inventory/new", icon: "Upload" },
   ],
 };
 
@@ -95,70 +57,43 @@ const buyerGroup: ShellNavGroup = {
   label: "Buyer",
   items: [
     { id: "dashboard", label: "Dashboard", href: "/buyer", icon: "LayoutDashboard" },
-    { id: "saved", label: "Saved Vehicles", href: "/buyer/saved", icon: "Car" },
-    { id: "messages", label: "Messages", href: "/buyer/messages", icon: "MessageSquare" },
-    { id: "alerts", label: "Price Alerts", href: "/buyer/alerts", icon: "Bell" },
+    { id: "intelligence", label: "Buyer Intelligence", href: "/buyer/intelligence", icon: "Brain" },
+    { id: "search", label: "Search", href: "/search", icon: "Search" },
   ],
 };
 
-const administrationGroup: ShellNavGroup = {
-  id: "administration",
-  label: "Administration",
+const operationsGroup: ShellNavGroup = {
+  id: "operations-centre",
+  label: "Operations Centre",
   items: [
-    { id: "dealers", label: "Dealers", href: "/admin/dealers", icon: "Store" },
-    { id: "users", label: "Users", href: "/admin/users", icon: "Users" },
-    { id: "moderation", label: "Moderation", href: "/admin/moderation", icon: "Shield" },
-    { id: "cms", label: "CMS", href: "/admin/cms", icon: "FileText" },
-    { id: "health", label: "Platform Health", href: "/admin/health", icon: "Activity" },
-  ],
-};
-
-const developerGroup: ShellNavGroup = {
-  id: "developer",
-  label: "Developer",
-  items: [
-    { id: "api-keys", label: "API Keys", href: "/developer/api-keys", icon: "Key" },
-    { id: "webhooks", label: "Webhooks", href: "/developer/webhooks", icon: "Zap" },
-    { id: "docs", label: "Documentation", href: "/developer/docs", icon: "FileText" },
-    { id: "monitoring", label: "Monitoring", href: "/developer/monitoring", icon: "BarChart3" },
-  ],
-};
-
-const settingsGroup: ShellNavGroup = {
-  id: "settings",
-  label: "Settings",
-  items: [
-    { id: "profile", label: "Profile", href: "/settings/profile", icon: "User" },
-    { id: "notifications-settings", label: "Notifications", href: "/settings/notifications", icon: "Bell" },
-    { id: "security", label: "Security", href: "/settings/security", icon: "Lock" },
-  ],
-};
-
-const supportGroup: ShellNavGroup = {
-  id: "support",
-  label: "Support",
-  items: [
-    { id: "help", label: "Help Centre", href: "/support", icon: "MessageSquare" },
-    { id: "faq", label: "FAQ", href: "/faq", icon: "FileText" },
-    { id: "contact", label: "Contact", href: "/contact", icon: "Mail" },
+    { id: "operations-dashboard", label: "Dashboard", href: "/operations/dashboard", icon: "LayoutDashboard" },
+    /* Second, deliberately. It is the surface the marketplace is changed from, and burying it under
+       eleven analytics screens is how a curation tool goes unused. */
+    { id: "editorial", label: "Editorial Console", href: "/operations/editorial", icon: "Sparkles" },
+    { id: "onboarding-centre", label: "Onboarding Centre", href: "/operations/onboarding-centre", icon: "TrendingUp" },
+    { id: "verification", label: "Verification", href: "/operations/verification", icon: "Shield" },
+    { id: "quality-centre", label: "Quality Centre", href: "/operations/quality-centre", icon: "BadgeCheck" },
+    { id: "dealer-management", label: "Dealer Management", href: "/operations/dealer-management", icon: "Building2" },
+    { id: "dealer-intelligence", label: "Dealer Intelligence", href: "/operations/dealer-intelligence", icon: "Brain" },
+    { id: "applications-centre", label: "Applications Centre", href: "/operations/applications-centre", icon: "FileText" },
+    { id: "marketplace-control", label: "Marketplace Control", href: "/operations/marketplace-control", icon: "Store" },
+    { id: "revenue-centre", label: "Revenue Centre", href: "/operations/revenue-centre", icon: "TrendingUp" },
+    { id: "advertising-centre", label: "Advertising Centre", href: "/operations/advertising-centre", icon: "Megaphone" },
+    { id: "partner-centre", label: "Partner Centre", href: "/operations/partner-centre", icon: "Users" },
+    { id: "business-intelligence", label: "Business Intelligence", href: "/operations/business-intelligence", icon: "BarChart3" },
+    { id: "settings", label: "Settings", href: "/operations/settings", icon: "Settings" },
+    { id: "audit-logs", label: "Audit Logs", href: "/operations/audit-logs", icon: "Shield" },
+    { id: "workers", label: "Workers", href: "/operations/workers", icon: "Activity" },
   ],
 };
 
 export const SHELL_NAV_BY_PORTAL: Record<PortalId | "public", readonly ShellNavGroup[]> = {
-  public: [marketplaceGroup, supportGroup],
-  buyer: [buyerGroup, marketplaceGroup, settingsGroup, supportGroup],
-  dealer: [
-    dealerCommandCentreGroup,
-    inventoryGroup,
-    marketingStudioGroup,
-    aiStudioGroup,
-    analyticsGroup,
-    crmGroup,
-    settingsGroup,
-    supportGroup,
-  ],
-  admin: [administrationGroup, marketplaceGroup, developerGroup, settingsGroup, supportGroup],
-  developer: [developerGroup, settingsGroup, supportGroup],
+  public: [marketplaceGroup],
+  buyer: [buyerGroup, marketplaceGroup],
+  dealer: [dealerCommandCentreGroup, inventoryGroup],
+  operations: [operationsGroup],
+  admin: [],
+  developer: [],
   auth: [],
 };
 

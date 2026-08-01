@@ -39,3 +39,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# creative review workflow — regenerable working files.
+# The approved library (public/media/premium/) and the manifest ARE committed; these are not.
+scripts/media/candidates/
+scripts/media/review/
+
+# Local development store.
+#
+# Holds real-shaped buyer records — 74 leads with name, email and phone at the time this was added.
+# It is a 1.6 MB working file that `git add -A` would otherwise sweep into history, where personal
+# data is very hard to remove. The platform is about to publish a privacy policy; committing buyer
+# contact details to a repository would contradict it on day one.
+db/local/

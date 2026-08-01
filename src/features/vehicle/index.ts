@@ -10,6 +10,8 @@ export type {
   VehicleTrustIndicator,
 } from "./types/vehicle.types";
 export {
+  buildVehicleBreadcrumbStructuredData,
+  buildVehicleStructuredData,
   getAllVehicleSlugs,
   getVehicleBySlug,
   resolveVehicleSeoMetadata,

@@ -7,7 +7,7 @@ import { useOnboarding } from "@/features/dealer-onboarding/context/onboarding-c
 import { cn } from "@/utils";
 
 export interface OnboardingNavigationProps {
-  readonly onContinue?: () => boolean | void;
+  readonly onContinue?: () => boolean | void | Promise<boolean | void>;
   readonly continueLabel?: string;
   readonly showBack?: boolean;
   readonly className?: string;
@@ -19,12 +19,12 @@ export function OnboardingNavigation({
   showBack = true,
   className,
 }: OnboardingNavigationProps) {
-  const { prevStep, nextStep, isFirstStep, isSuccessStep } = useOnboarding();
+  const { prevStep, nextStep, isFirstStep, isSuccessStep, isSubmitting } = useOnboarding();
 
   if (isSuccessStep) return null;
 
-  function handleContinue() {
-    const canProceed = onContinue?.();
+  async function handleContinue() {
+    const canProceed = await onContinue?.();
     if (canProceed === false) return;
     nextStep();
   }
@@ -37,7 +37,7 @@ export function OnboardingNavigation({
       )}
     >
       {showBack && !isFirstStep ? (
-        <button type="button" onClick={prevStep} className={onboardingStyles.secondaryButton}>
+        <button type="button" onClick={prevStep} className={onboardingStyles.secondaryButton} disabled={isSubmitting}>
           <Icon icon={ArrowLeft} size="sm" aria-hidden />
           Back
         </button>
@@ -45,7 +45,7 @@ export function OnboardingNavigation({
         <div className="hidden sm:block" aria-hidden />
       )}
 
-      <button type="button" onClick={handleContinue} className={cn(onboardingStyles.primaryButton, "w-full sm:w-auto sm:ml-auto")}>
+      <button type="button" onClick={handleContinue} className={cn(onboardingStyles.primaryButton, "w-full sm:w-auto sm:ml-auto")} disabled={isSubmitting}>
         {continueLabel}
         <Icon icon={ArrowRight} size="sm" aria-hidden />
       </button>

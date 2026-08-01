@@ -35,7 +35,7 @@ export const onboardingStyles = {
   ),
   ghostButton: cn(
     "inline-flex h-10 items-center gap-1 rounded-[var(--radius-lg)] px-3",
-    "text-[length:var(--text-body-sm)] font-medium text-[var(--color-primary)]",
+    "text-[length:var(--text-body-sm)] font-medium text-[var(--color-primary-text)]",
     "motion-nav hover:text-[var(--color-primary-hover)]",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]",
   ),

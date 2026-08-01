@@ -34,12 +34,36 @@ export type BusinessType =
 
 export type SubscriptionPackageId = "starter" | "growth" | "enterprise";
 
+export type StaffRoleId =
+  | "owner"
+  | "dealer-principal"
+  | "sales-manager"
+  | "sales-executive"
+  | "administrator"
+  | "photographer"
+  | "marketing"
+  | "finance-insurance";
+
+export interface GpsLocation {
+  readonly latitude: string;
+  readonly longitude: string;
+}
+
 export interface DealershipInfo {
-  readonly dealershipName: string;
+  readonly businessName: string;
   readonly tradingName: string;
+  readonly registrationNumber: string;
+  readonly vatNumber: string;
+  readonly dealerLicenceNumber: string;
   readonly businessType: BusinessType | "";
+  readonly physicalAddress: string;
   readonly province: string;
   readonly city: string;
+  readonly postalCode: string;
+  readonly gps: GpsLocation;
+  readonly telephone: string;
+  readonly whatsapp: string;
+  readonly email: string;
   readonly website: string;
 }
 
@@ -53,34 +77,103 @@ export interface BrandingInfo {
 }
 
 export interface BranchInfo {
+  readonly id: string;
   readonly branchName: string;
-  readonly physicalAddress: string;
-  readonly contactNumber: string;
+  readonly address: string;
+  readonly province: string;
+  readonly city: string;
+  readonly postalCode: string;
+  readonly telephone: string;
+  readonly whatsapp: string;
+  readonly email: string;
   readonly businessHours: string;
+  readonly branchManager: string;
 }
 
-export interface TeamInfo {
+export interface OwnerAccountInfo {
   readonly fullName: string;
-  readonly position: string;
   readonly email: string;
   readonly password: string;
+}
+
+export interface StaffInvite {
+  readonly id: string;
+  readonly fullName: string;
+  readonly email: string;
+  readonly role: StaffRoleId;
+  readonly permissions: readonly string[];
+}
+
+export interface OnboardingContextSnapshot {
+  readonly currentStepIndex: number;
+  readonly revision: number;
+  readonly data: OnboardingFormData;
+}
+
+export interface OnboardingCompletionResult {
+  readonly dealershipId: string;
+  readonly primaryBranchId: string;
+  readonly ownerMembershipId: string;
 }
 
 export interface OnboardingFormData {
   readonly dealership: DealershipInfo;
   readonly branding: BrandingInfo;
-  readonly branch: BranchInfo;
-  readonly team: TeamInfo;
+  readonly branches: readonly BranchInfo[];
+  readonly ownerAccount: OwnerAccountInfo;
+  readonly staffInvites: readonly StaffInvite[];
   readonly subscriptionPackage: SubscriptionPackageId | "";
+}
+
+function createId(prefix: string): string {
+  return `${prefix}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
+export function createDefaultBranch(): BranchInfo {
+  return {
+    id: createId("branch"),
+    branchName: "",
+    address: "",
+    province: "",
+    city: "",
+    postalCode: "",
+    telephone: "",
+    whatsapp: "",
+    email: "",
+    businessHours: "",
+    branchManager: "",
+  };
+}
+
+export function createDefaultStaffInvite(): StaffInvite {
+  return {
+    id: createId("invite"),
+    fullName: "",
+    email: "",
+    role: "sales-executive",
+    permissions: [],
+  };
 }
 
 export const INITIAL_ONBOARDING_DATA: OnboardingFormData = {
   dealership: {
-    dealershipName: "",
+    businessName: "",
     tradingName: "",
+    registrationNumber: "",
+    vatNumber: "",
+    dealerLicenceNumber: "",
     businessType: "",
+    physicalAddress: "",
     province: "",
     city: "",
+    postalCode: "",
+    gps: {
+      latitude: "",
+      longitude: "",
+    },
+    telephone: "",
+    whatsapp: "",
+    email: "",
     website: "",
   },
   branding: {
@@ -91,17 +184,12 @@ export const INITIAL_ONBOARDING_DATA: OnboardingFormData = {
     primaryColor: "#0066ff",
     secondaryColor: "#c8a96e",
   },
-  branch: {
-    branchName: "",
-    physicalAddress: "",
-    contactNumber: "",
-    businessHours: "",
-  },
-  team: {
+  branches: [createDefaultBranch()],
+  ownerAccount: {
     fullName: "",
-    position: "",
     email: "",
     password: "",
   },
+  staffInvites: [],
   subscriptionPackage: "",
 };

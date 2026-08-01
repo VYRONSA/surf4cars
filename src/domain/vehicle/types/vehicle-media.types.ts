@@ -18,6 +18,12 @@ export type VehiclePhotoCategory =
   | "dashboard"
   | "rear-seats";
 
+/**
+ * Where an image came from. Only `dealer` depicts the vehicle being sold, and only `dealer` may therefore be
+ * presented without a label. See db/migrations/20260731160000_pcp015d_media_provenance.sql.
+ */
+export type VehicleMediaProvenance = "dealer" | "library" | "manufacturer";
+
 export interface VehicleMediaAsset {
   readonly id: string;
   readonly kind: VehicleMediaKind;
@@ -29,6 +35,8 @@ export interface VehicleMediaAsset {
   readonly isPrimary: boolean;
   readonly mimeType?: string;
   readonly fileName?: string;
+  /** Absent only for non-photographic assets, where the question does not arise. */
+  readonly provenance?: VehicleMediaProvenance;
 }
 
 export interface VehicleMediaBundle {

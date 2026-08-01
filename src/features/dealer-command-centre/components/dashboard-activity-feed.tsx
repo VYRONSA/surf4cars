@@ -17,7 +17,7 @@ export function DashboardActivityFeedPanel({ activities }: DashboardActivityFeed
       <ActivityFeed
         className={cn(dashboardPolish.glassCard, "border-0 shadow-[var(--shadow-sm)]")}
         items={activities.map((activity) => (
-          <div key={activity.id}>
+          <div key={activity.id} data-activity-id={activity.id}>
             <p className="text-[length:var(--text-body-sm)] leading-[var(--leading-relaxed)]">
               {activity.message}
             </p>

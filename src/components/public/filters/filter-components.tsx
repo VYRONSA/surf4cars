@@ -175,7 +175,7 @@ export function FilterTag({ label, active, className }: FilterTagProps) {
       className={cn(
         "rounded-[var(--radius-pill)] border px-3 py-1.5 text-[length:var(--text-body-sm)] font-medium motion-button",
         active
-          ? "border-[var(--color-primary)] bg-[var(--color-primary-muted)] text-[var(--color-primary)]"
+          ? "border-[var(--color-primary)] bg-[var(--color-primary-muted)] text-[var(--color-primary-text)]"
           : "border-[var(--color-border)] bg-transparent text-[var(--color-muted-foreground)]",
         className,
       )}

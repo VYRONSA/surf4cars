@@ -1,0 +1,75 @@
+{
+  "baseUrl": "http://localhost:3003",
+  "generatedAt": "2026-07-06T07:46:17.712Z",
+  "checks": [
+    {
+      "name": "start-onboarding",
+      "ok": true,
+      "url": "http://localhost:3003/auth/sign-up/dealer"
+    },
+    {
+      "name": "dealership-validation",
+      "ok": true,
+      "alert": "Business name is required."
+    },
+    {
+      "name": "dealership-refresh-and-autosave",
+      "ok": true,
+      "restoredName": "Surf Motors pcp001b-1783323978162-1413"
+    },
+    {
+      "name": "branding-upload-and-retry",
+      "ok": true,
+      "interruptionDetected": true
+    },
+    {
+      "name": "branch-validation-navigation-refresh",
+      "ok": true,
+      "restoredBranch": "Main Branch pcp001b-1783323978162-1413"
+    },
+    {
+      "name": "close-browser-and-resume",
+      "ok": true,
+      "resumedEmail": "owner.pcp001b-1783323978162-1413@example.com"
+    },
+    {
+      "name": "cross-tab-synchronization",
+      "ok": true,
+      "syncName": "Owner pcp001b-1783323978162-1413"
+    },
+    {
+      "name": "team-subscription-review-completion",
+      "ok": true,
+      "url": "http://localhost:3003/dealer/dashboard"
+    },
+    {
+      "name": "dashboard-redirect-and-session-continuity",
+      "ok": true,
+      "url": "http://localhost:3003/dealer/dashboard"
+    },
+    {
+      "name": "duplicate-completion-idempotency",
+      "ok": true,
+      "dealershipId": "dealership-owner-owner-pcp001b-1783323978162-1413-example-com",
+      "primaryBranchId": "branch-primary-dealership-owner-owner-pcp001b-1783323978162-1413-example-com",
+      "afterDealershipCount": 1,
+      "branchCount": 1
+    },
+    {
+      "name": "tablet-onboarding-responsive-smoke",
+      "ok": true,
+      "url": "http://localhost:3003/auth/sign-up/dealer",
+      "viewport": "tablet"
+    },
+    {
+      "name": "mobile-onboarding-responsive-smoke",
+      "ok": true,
+      "url": "http://localhost:3003/auth/sign-up/dealer",
+      "viewport": "mobile"
+    }
+  ],
+  "summary": {
+    "passed": 12,
+    "failed": 0
+  }
+}

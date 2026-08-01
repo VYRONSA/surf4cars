@@ -1,28 +1,24 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
 
-import type { SearchMode, SearchViewMode } from "@/features/search/config";
-
+/**
+ * What is left of the search UI state.
+ *
+ * It used to carry five slices. Four of them were only ever read by the controls that set them:
+ *
+ *   searchMode           an Intelligent/Classic pair whose two branches rendered identical markup
+ *   viewMode             grid, list and a disabled map — only grid was ever reachable in practice
+ *   advancedDrawerOpen   a second filter drawer, duplicating this one
+ *   activeQuickFilters   chips that highlighted themselves and filtered nothing
+ *
+ * The real filter state has always lived in the URL, which is where it belongs: it survives a reload,
+ * it can be shared, and the server component can read it. Local state that shadows it is how a page
+ * ends up with controls that look active and change nothing.
+ */
 export interface SearchUiContextValue {
-  readonly searchMode: SearchMode;
-  readonly viewMode: SearchViewMode;
-  readonly advancedDrawerOpen: boolean;
   readonly mobileFiltersOpen: boolean;
-  readonly activeQuickFilters: readonly string[];
-  readonly setSearchMode: (mode: SearchMode) => void;
-  readonly setViewMode: (mode: SearchViewMode) => void;
-  readonly setAdvancedDrawerOpen: (open: boolean) => void;
   readonly setMobileFiltersOpen: (open: boolean) => void;
-  readonly toggleQuickFilter: (id: string) => void;
-  readonly clearQuickFilters: () => void;
 }
 
 const SearchUiContext = createContext<SearchUiContextValue | null>(null);
@@ -32,45 +28,11 @@ export interface SearchUiProviderProps {
 }
 
 export function SearchUiProvider({ children }: SearchUiProviderProps) {
-  const [searchMode, setSearchMode] = useState<SearchMode>("intelligent");
-  const [viewMode, setViewMode] = useState<SearchViewMode>("grid");
-  const [advancedDrawerOpen, setAdvancedDrawerOpen] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [activeQuickFilters, setActiveQuickFilters] = useState<readonly string[]>([]);
-
-  const toggleQuickFilter = useCallback((id: string) => {
-    setActiveQuickFilters((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
-    );
-  }, []);
-
-  const clearQuickFilters = useCallback(() => {
-    setActiveQuickFilters([]);
-  }, []);
 
   const value = useMemo<SearchUiContextValue>(
-    () => ({
-      searchMode,
-      viewMode,
-      advancedDrawerOpen,
-      mobileFiltersOpen,
-      activeQuickFilters,
-      setSearchMode,
-      setViewMode,
-      setAdvancedDrawerOpen,
-      setMobileFiltersOpen,
-      toggleQuickFilter,
-      clearQuickFilters,
-    }),
-    [
-      searchMode,
-      viewMode,
-      advancedDrawerOpen,
-      mobileFiltersOpen,
-      activeQuickFilters,
-      toggleQuickFilter,
-      clearQuickFilters,
-    ],
+    () => ({ mobileFiltersOpen, setMobileFiltersOpen }),
+    [mobileFiltersOpen],
   );
 
   return (

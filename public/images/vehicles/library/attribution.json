@@ -1,0 +1,2168 @@
+{
+  "lexus-nx": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/lexus-nx/front.webp",
+      "title": "File:Lexus LF-NX Back IAA 2013.jpg",
+      "author": "Alexander Migl",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Lexus_LF-NX_Back_IAA_2013.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/lexus-nx/rear.webp",
+      "title": "File:2022 Lexus NX 350, rear 3.7.22.jpg",
+      "author": "Kevauto",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2022_Lexus_NX_350,_rear_3.7.22.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/lexus-nx/side.webp",
+      "title": "File:Lexus NX 200t - Mondial de l'Automobile de Paris 2014 - 003.jpg",
+      "author": "Thesupermat",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Lexus_NX_200t_-_Mondial_de_l%27Automobile_de_Paris_2014_-_003.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/lexus-nx/interior.webp",
+      "title": "File:Lexus LF-NX interior.jpg",
+      "author": "TTTNIS",
+      "licence": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:Lexus_LF-NX_interior.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/lexus-nx/wheel.webp",
+      "title": "File:The tire wheel of Lexus NX 200t F SPORT (AGZ10).JPG",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:The_tire_wheel_of_Lexus_NX_200t_F_SPORT_(AGZ10).JPG"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/lexus-nx/engine.webp",
+      "title": "File:2014 Lexus NX 300h (AYZ15R) F Sport wagon (2015-06-03) 01.jpg",
+      "author": "OSX",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:2014_Lexus_NX_300h_(AYZ15R)_F_Sport_wagon_(2015-06-03)_01.jpg"
+    }
+  ],
+  "volvo-xc90": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/volvo-xc90/front.webp",
+      "title": "File:Uber Self Driving Volvo at Otto Headquarters at 737 Harrison.jpg",
+      "author": "Dllu",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Uber_Self_Driving_Volvo_at_Otto_Headquarters_at_737_Harrison.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/volvo-xc90/rear.webp",
+      "title": "File:Volvo XC90 rear 20080226.jpg",
+      "author": "Rudolf Stricker",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Volvo_XC90_rear_20080226.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/volvo-xc90/side.webp",
+      "title": "File:Volvo XC90 (P28), right side (875531978).jpg",
+      "author": "Tom Reynolds from Melbourne, Australia",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Volvo_XC90_(P28),_right_side_(875531978).jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/volvo-xc90/interior.webp",
+      "title": "File:Volvo XC90 II (2017) interior.jpg",
+      "author": "MichalPL",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Volvo_XC90_II_(2017)_interior.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/volvo-xc90/wheel.webp",
+      "title": "File:Městská policie sundavá botičku.jpg",
+      "author": "cs:ŠJů",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:M%C4%9Bstsk%C3%A1_policie_sundav%C3%A1_boti%C4%8Dku.jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/volvo-xc90/engine.webp",
+      "title": "File:2006 Volvo XC90 V8 engine.jpg",
+      "author": "No machine-readable author provided. Sfoskett~commonswiki assumed (based on copyright claims).",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2006_Volvo_XC90_V8_engine.jpg"
+    }
+  ],
+  "volvo-xc60": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/volvo-xc60/front.webp",
+      "title": "File:Volvo XC60 (SPA) FL 1X7A0185.jpg",
+      "author": "Alexander Migl",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Volvo_XC60_(SPA)_FL_1X7A0185.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/volvo-xc60/rear.webp",
+      "title": "File:2010 Volvo XC60 rear -- 03-07-2009.jpg",
+      "author": "IFCAR",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:2010_Volvo_XC60_rear_--_03-07-2009.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/volvo-xc60/side.webp",
+      "title": "File:Volvo 2010 XC60 Right Side.jpg",
+      "author": "Tabercil from Canadian",
+      "licence": "CC BY-SA 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Volvo_2010_XC60_Right_Side.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/volvo-xc60/interior.webp",
+      "title": "File:Volvo XC60 interior.jpg",
+      "author": "TTTNIS",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:Volvo_XC60_interior.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/volvo-xc60/wheel.webp",
+      "title": "File:Volvo XC60 Concept (wheel) - Flickr - Cha già José.jpg",
+      "author": "Cha già José from Vienna, Austria",
+      "licence": "CC BY-SA 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Volvo_XC60_Concept_(wheel)_-_Flickr_-_Cha_gi%C3%A0_Jos%C3%A9.jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/volvo-xc60/engine.webp",
+      "title": "File:T6 Emblem on Engine - 2013 Volvo XC60 (8381066284).jpg",
+      "author": "Michael Sheehan",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:T6_Emblem_on_Engine_-_2013_Volvo_XC60_(8381066284).jpg"
+    }
+  ],
+  "bmw-x5": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/bmw-x5/front.webp",
+      "title": "File:BMW iX5 Hydrogen IAA 2021 1X7A0194.jpg",
+      "author": "Alexander Migl",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:BMW_iX5_Hydrogen_IAA_2021_1X7A0194.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/bmw-x5/rear.webp",
+      "title": "File:2019 BMW X5 M50d 3.0 Rear.jpg",
+      "author": "Vauxford",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2019_BMW_X5_M50d_3.0_Rear.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/bmw-x5/side.webp",
+      "title": "File:BMW X5 m50d F15 (15611581045).jpg",
+      "author": "nakhon100",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:BMW_X5_m50d_F15_(15611581045).jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/bmw-x5/interior.webp",
+      "title": "File:Front Interior - 2014 BMW X5 xDrive 35i (14856833658).jpg",
+      "author": "Michael Sheehan",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Front_Interior_-_2014_BMW_X5_xDrive_35i_(14856833658).jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/bmw-x5/wheel.webp",
+      "title": "File:Steering Wheel - 2014 BMW X5 xDrive 35i (15043066552).jpg",
+      "author": "Michael Sheehan",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Steering_Wheel_-_2014_BMW_X5_xDrive_35i_(15043066552).jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/bmw-x5/engine.webp",
+      "title": "File:BMW V8 engine X5.jpg",
+      "author": "Ahmad Ziyad Maricar from Bangsar, Malaysia",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:BMW_V8_engine_X5.jpg"
+    }
+  ],
+  "jaguar-e-pace": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/jaguar-e-pace/front.webp",
+      "title": "File:Jaguar, IAA 2017, Frankfurt (1Y7A3151).jpg",
+      "author": "Matti Blume",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Jaguar,_IAA_2017,_Frankfurt_(1Y7A3151).jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/jaguar-e-pace/rear.webp",
+      "title": "File:Jaguar E-Pace IAA 2017 - Rear and right.jpg",
+      "author": "MarcelX42",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Jaguar_E-Pace_IAA_2017_-_Rear_and_right.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/jaguar-e-pace/side.webp",
+      "title": "File:2018 Jaguar E-Pace R-Dynamic HSE Diesel Automatic Side 2.0.jpg",
+      "author": "Vauxford",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2018_Jaguar_E-Pace_R-Dynamic_HSE_Diesel_Automatic_Side_2.0.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/jaguar-e-pace/interior.webp",
+      "title": "File:The interior of Jaguar F-PACE S.jpg",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:The_interior_of_Jaguar_F-PACE_S.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/jaguar-e-pace/wheel.webp",
+      "title": "File:The tire wheel of Jaguar F-PACE S.jpg",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:The_tire_wheel_of_Jaguar_F-PACE_S.jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/jaguar-e-pace/engine.webp",
+      "title": "File:Jaguar E-Pace D150 AWD (2018) (53323065680).jpg",
+      "author": "Charles from Port Chester, New York",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Jaguar_E-Pace_D150_AWD_(2018)_(53323065680).jpg"
+    }
+  ],
+  "jaguar-f-pace": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/jaguar-f-pace/front.webp",
+      "title": "File:2017 Jaguar F-Pace 2.5t Premium rear 3.25.18.jpg",
+      "author": "Kevauto",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2017_Jaguar_F-Pace_2.5t_Premium_rear_3.25.18.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/jaguar-f-pace/rear.webp",
+      "title": "File:Jaguar F-Pace (rear 3-4).JPG",
+      "author": "El monty",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Jaguar_F-Pace_(rear_3-4).JPG"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/jaguar-f-pace/side.webp",
+      "title": "File:Cutaway Jaguar F-Pace. Spielvogel1.jpg",
+      "author": "Spielvogel For a gallery of some more of my uploaded pictures see: here. All images can be used free of charge.",
+      "licence": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:Cutaway_Jaguar_F-Pace._Spielvogel1.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/jaguar-f-pace/interior.webp",
+      "title": "File:The interior of Jaguar F-PACE S.jpg",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:The_interior_of_Jaguar_F-PACE_S.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/jaguar-f-pace/wheel.webp",
+      "title": "File:The tire wheel of Jaguar F-PACE S.jpg",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:The_tire_wheel_of_Jaguar_F-PACE_S.jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/jaguar-f-pace/engine.webp",
+      "title": "File:Giftwrapped F-Pace (50710518401).jpg",
+      "author": "Andrew Bone from Weymouth, England",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Giftwrapped_F-Pace_(50710518401).jpg"
+    }
+  ],
+  "porsche-macan": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/porsche-macan/front.webp",
+      "title": "File:Porsche, Paris Motor Show 2018, Paris (1Y7A1096).jpg",
+      "author": "Matti Blume",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche,_Paris_Motor_Show_2018,_Paris_(1Y7A1096).jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/porsche-macan/rear.webp",
+      "title": "File:Porsche Macan S, GIMS 2019, Le Grand-Saconnex (GIMS9985).jpg",
+      "author": "Matti Blume",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche_Macan_S,_GIMS_2019,_Le_Grand-Saconnex_(GIMS9985).jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/porsche-macan/side.webp",
+      "title": "File:Porsche Macan - right side.JPG",
+      "author": "Saschaporsche",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche_Macan_-_right_side.JPG"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/porsche-macan/interior.webp",
+      "title": "File:Porsche Macan interior.jpg",
+      "author": "TTTNIS",
+      "licence": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche_Macan_interior.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/porsche-macan/wheel.webp",
+      "title": "File:The tire wheel of Porsche Macan S (3BA-J1K30).jpg",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:The_tire_wheel_of_Porsche_Macan_S_(3BA-J1K30).jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/porsche-macan/engine.webp",
+      "title": "File:2025 Porsche Macan Turbo (United States) front view.jpg",
+      "author": "Charles",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2025_Porsche_Macan_Turbo_(United_States)_front_view.jpg"
+    }
+  ],
+  "hyundai-i20": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/hyundai-i20/front.webp",
+      "title": "File:Manuel Castro Hyundai I20 R5 (3).jpg",
+      "author": "Harpagornis",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Manuel_Castro_Hyundai_I20_R5_(3).jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/hyundai-i20/rear.webp",
+      "title": "File:Hyundai i20 3 door (rear).JPG",
+      "author": "Overlaet",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Hyundai_i20_3_door_(rear).JPG"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/hyundai-i20/side.webp",
+      "title": "File:Hyundai i20 WRC 2013-12-05 001.jpg",
+      "author": "Thomas Goos",
+      "licence": "CC BY 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Hyundai_i20_WRC_2013-12-05_001.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/hyundai-i20/interior.webp",
+      "title": "File:2018 Hyundai i20 facelift Interior.jpg",
+      "author": "Vauxford",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2018_Hyundai_i20_facelift_Interior.jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/hyundai-i20/engine.webp",
+      "title": "File:2010 Hyundai i20 (PB) Active 3-door hatchback (2010-10-16) 02.jpg",
+      "author": "OSX",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:2010_Hyundai_i20_(PB)_Active_3-door_hatchback_(2010-10-16)_02.jpg"
+    }
+  ],
+  "toyota-fortuner": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/toyota-fortuner/front.webp",
+      "title": "File:2015 Toyota Fortuner (New Zealand).jpg",
+      "author": "NZ Car Freak",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2015_Toyota_Fortuner_(New_Zealand).jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/toyota-fortuner/rear.webp",
+      "title": "File:Toyota Fortuner LTD 4x2 rear 20221019.jpg",
+      "author": "Ethan Llamas",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Toyota_Fortuner_LTD_4x2_rear_20221019.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/toyota-fortuner/side.webp",
+      "title": "File:PSG Fortuner SUV side view.JPG",
+      "author": "Ominae",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:PSG_Fortuner_SUV_side_view.JPG"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/toyota-fortuner/interior.webp",
+      "title": "File:Toyota Fortuner interior.jpg",
+      "author": "TTTNIS",
+      "licence": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:Toyota_Fortuner_interior.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/toyota-fortuner/wheel.webp",
+      "title": "File:2011-2015 Toyota Fortuner (Front View).jpg",
+      "author": "Kevin Foo (Foo Zhen Ning)",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2011-2015_Toyota_Fortuner_(Front_View).jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/toyota-fortuner/engine.webp",
+      "title": "File:2019 Toyota FORTUNER 2.4 2GD-FTV (190428).jpg",
+      "author": "オーバードライブ83",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2019_Toyota_FORTUNER_2.4_2GD-FTV_(190428).jpg"
+    }
+  ],
+  "toyota-corolla-cross": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/toyota-corolla-cross/front.webp",
+      "title": "File:2022 Toyota Corolla Cross L FWD, Front Left, 11-21-2021.jpg",
+      "author": "Elise240SX",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2022_Toyota_Corolla_Cross_L_FWD,_Front_Left,_11-21-2021.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/toyota-corolla-cross/rear.webp",
+      "title": "File:2020 Toyota Corolla Cross - Rear.jpg",
+      "author": "Areaseven",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2020_Toyota_Corolla_Cross_-_Rear.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/toyota-corolla-cross/side.webp",
+      "title": "File:2020 Toyota Corolla Cross - Side.jpg",
+      "author": "Areaseven",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2020_Toyota_Corolla_Cross_-_Side.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/toyota-corolla-cross/interior.webp",
+      "title": "File:2020 Toyota Corolla Cross 1.8 ZSG10R interior (20201113).jpg",
+      "author": "オーバードライブ83",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2020_Toyota_Corolla_Cross_1.8_ZSG10R_interior_(20201113).jpg"
+    },
+    {
+      "slot": "dashboard",
+      "file": "/images/vehicles/library/toyota-corolla-cross/dashboard.webp",
+      "title": "File:2020 Toyota Corolla Cross Hybrid Premium Safety (Cockpit).jpg",
+      "author": "Chanokchon",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2020_Toyota_Corolla_Cross_Hybrid_Premium_Safety_(Cockpit).jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/toyota-corolla-cross/wheel.webp",
+      "title": "File:2020 Toyota Corolla Cross 1.8 ZSG10R alloy wheel (20201113).jpg",
+      "author": "オーバードライブ83",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2020_Toyota_Corolla_Cross_1.8_ZSG10R_alloy_wheel_(20201113).jpg"
+    }
+  ],
+  "mazda-cx-5": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/mazda-cx-5/front.webp",
+      "title": "File:Mazda CX-5 - Mondial de l'Automobile de Paris 2012 - 001.jpg",
+      "author": "Thesupermat",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mazda_CX-5_-_Mondial_de_l%27Automobile_de_Paris_2012_-_001.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/mazda-cx-5/rear.webp",
+      "title": "File:Mazda CX-5 (rear quarter).jpg",
+      "author": "Overlaet",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mazda_CX-5_(rear_quarter).jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/mazda-cx-5/side.webp",
+      "title": "File:Mazda CX-5 mule (side).jpg",
+      "author": "Overlaet",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mazda_CX-5_mule_(side).jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/mazda-cx-5/interior.webp",
+      "title": "File:Mazda CX-7 interior.jpg",
+      "author": "TTTNIS",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:Mazda_CX-7_interior.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/mazda-cx-5/wheel.webp",
+      "title": "File:The tire wheel of Mazda CX-5 XD L Package 4WD (LDA-KF2P).jpg",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:The_tire_wheel_of_Mazda_CX-5_XD_L_Package_4WD_(LDA-KF2P).jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/mazda-cx-5/engine.webp",
+      "title": "File:2013 Mazda CX-5 (KE MY13) GT AWD wagon (2014-04-20).jpg",
+      "author": "EurovisionNim",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2013_Mazda_CX-5_(KE_MY13)_GT_AWD_wagon_(2014-04-20).jpg"
+    }
+  ],
+  "isuzu-d-max": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/isuzu-d-max/front.webp",
+      "title": "File:Isuzu D-Max (first generation) (front), Serdang.jpg",
+      "author": "User:Two hundred percent.",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Isuzu_D-Max_(first_generation)_(front),_Serdang.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/isuzu-d-max/rear.webp",
+      "title": "File:Isuzu D-Max (first generation) (rear), Serdang.jpg",
+      "author": "User:Two hundred percent.",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Isuzu_D-Max_(first_generation)_(rear),_Serdang.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/isuzu-d-max/side.webp",
+      "title": "File:Isuzu D-Max Autohilfe Buschmann (1).jpg",
+      "author": "Reise Reise",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Isuzu_D-Max_Autohilfe_Buschmann_(1).jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/isuzu-d-max/interior.webp",
+      "title": "File:2008 Isuzu D-Max LS-U 4-door utility 03.jpg",
+      "author": "OSX",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:2008_Isuzu_D-Max_LS-U_4-door_utility_03.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/isuzu-d-max/wheel.webp",
+      "title": "File:2019 Isuzu D-Max Double Cab 1.9 4x2 MT Hi-Ride (82).jpg",
+      "author": "Bindydad123",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2019_Isuzu_D-Max_Double_Cab_1.9_4x2_MT_Hi-Ride_(82).jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/isuzu-d-max/engine.webp",
+      "title": "File:Isuzu D-Max VGS Turbo iTeq engine (2010-10-16) 01.jpg",
+      "author": "OSX",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:Isuzu_D-Max_VGS_Turbo_iTeq_engine_(2010-10-16)_01.jpg"
+    }
+  ],
+  "volkswagen-polo-vivo": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/volkswagen-polo-vivo/front.webp",
+      "title": "File:Polo Vivo sml 09 2010.jpg",
+      "author": "Richard Seddon",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:Polo_Vivo_sml_09_2010.jpg"
+    }
+  ],
+  "toyota-hilux": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/toyota-hilux/front.webp",
+      "title": "File:Toyota Hilux 4x2 2.4 J security truck 20221015.jpg",
+      "author": "Ethan Llamas",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Toyota_Hilux_4x2_2.4_J_security_truck_20221015.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/toyota-hilux/rear.webp",
+      "title": "File:Toyota Hilux rear park assist sensor.jpg",
+      "author": "John Torcasio",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Toyota_Hilux_rear_park_assist_sensor.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/toyota-hilux/side.webp",
+      "title": "File:Toyota Hilux ministry of energy.jpg",
+      "author": "Love Krittaya",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:Toyota_Hilux_ministry_of_energy.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/toyota-hilux/interior.webp",
+      "title": "File:Toyota Hilux Vigo Champ TRD interior.jpg",
+      "author": "TTTNIS",
+      "licence": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:Toyota_Hilux_Vigo_Champ_TRD_interior.jpg"
+    },
+    {
+      "slot": "dashboard",
+      "file": "/images/vehicles/library/toyota-hilux/dashboard.webp",
+      "title": "File:2023 Toyota Hilux Champ 2.4 Diesel SWB Attractive Package (Cockpit).jpg",
+      "author": "Chanokchon",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2023_Toyota_Hilux_Champ_2.4_Diesel_SWB_Attractive_Package_(Cockpit).jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/toyota-hilux/wheel.webp",
+      "title": "File:Toyota hilux yemen.jpg",
+      "author": "Sylvan Hoover",
+      "licence": "CC BY-SA 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Toyota_hilux_yemen.jpg"
+    }
+  ],
+  "peugeot-2008": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/peugeot-2008/front.webp",
+      "title": "File:Peugeot e-2008 Automesse Ludwigsburg 2022 1X7A5883.jpg",
+      "author": "Alexander Migl",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Peugeot_e-2008_Automesse_Ludwigsburg_2022_1X7A5883.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/peugeot-2008/rear.webp",
+      "title": "File:Peugeot 2008 rear.JPG",
+      "author": "Luc106",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:Peugeot_2008_rear.JPG"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/peugeot-2008/side.webp",
+      "title": "File:Peugeot 207SW side 20080102.jpg",
+      "author": "Rudolf Stricker",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Peugeot_207SW_side_20080102.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/peugeot-2008/interior.webp",
+      "title": "File:2017 Peugeot 2008 facelift Interior.jpg",
+      "author": "Vauxford",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2017_Peugeot_2008_facelift_Interior.jpg"
+    },
+    {
+      "slot": "dashboard",
+      "file": "/images/vehicles/library/peugeot-2008/dashboard.webp",
+      "title": "File:Secma F16 - Circuit Val de Vienne - 15-11-2014 - Image Picture Photography - Organisateur - Club AGC86 Vienne - www.agc86.fr (15619630749).jpg",
+      "author": "Grand Parc - Bordeaux, France from France",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Secma_F16_-_Circuit_Val_de_Vienne_-_15-11-2014_-_Image_Picture_Photography_-_Organisateur_-_Club_AGC86_Vienne_-_www.agc86.fr_(15619630749).jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/peugeot-2008/wheel.webp",
+      "title": "File:Geneva MotorShow 2013 - Peugeot 2008 steering wheel.jpg",
+      "author": "Clément Bucco-Lechat",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Geneva_MotorShow_2013_-_Peugeot_2008_steering_wheel.jpg"
+    }
+  ],
+  "volkswagen-caddy": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/volkswagen-caddy/front.webp",
+      "title": "File:Auto VW Caddy 2011 G1.jpg",
+      "author": "George Chernilevsky",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:Auto_VW_Caddy_2011_G1.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/volkswagen-caddy/rear.webp",
+      "title": "File:Volkswagen Caddy Typ 14 rear.jpg",
+      "author": "Corvettec6r",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:Volkswagen_Caddy_Typ_14_rear.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/volkswagen-caddy/side.webp",
+      "title": "File:Volkswagen Rabbit pickup - Widok Centrum Warszawa.jpg",
+      "author": "CZmarlin — Christopher Ziemnowicz, releases all rights but a photo credit would be appreciated if this image is used anywhere other than Wikipedia. Please leave a note at Wikipedia here. Thank you!",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Volkswagen_Rabbit_pickup_-_Widok_Centrum_Warszawa.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/volkswagen-caddy/interior.webp",
+      "title": "File:1981 VW Caddy interior (5927765461).jpg",
+      "author": "dave_7 from Lethbridge, Canada",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:1981_VW_Caddy_interior_(5927765461).jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/volkswagen-caddy/engine.webp",
+      "title": "File:2013 Volkswagen Caddy (2K MY13) TDI250 van (2015-08-07) 01.jpg",
+      "author": "OSX",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:2013_Volkswagen_Caddy_(2K_MY13)_TDI250_van_(2015-08-07)_01.jpg"
+    }
+  ],
+  "toyota-land-cruiser": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/toyota-land-cruiser/front.webp",
+      "title": "File:Toyota Land Cruiser in the Desert Side-Back View 20120409 1.jpg",
+      "author": "DXR",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Toyota_Land_Cruiser_in_the_Desert_Side-Back_View_20120409_1.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/toyota-land-cruiser/rear.webp",
+      "title": "File:Toyota Land Cruiser VX.S 2018 Rear (Bahrain).jpg",
+      "author": "Mohammed Hamad",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Toyota_Land_Cruiser_VX.S_2018_Rear_(Bahrain).jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/toyota-land-cruiser/side.webp",
+      "title": "File:Side view of Toyota Land Cruiser J60 with roof tent.jpg",
+      "author": "Pittigrilli",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Side_view_of_Toyota_Land_Cruiser_J60_with_roof_tent.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/toyota-land-cruiser/interior.webp",
+      "title": "File:Toyota Land Cruiser interior (5109324444).jpg",
+      "author": "dave_7 from Lethbridge, Canada",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Toyota_Land_Cruiser_interior_(5109324444).jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/toyota-land-cruiser/wheel.webp",
+      "title": "File:The tire wheel of Toyota LAND CRUISER PRADO TX (CBA-TRJ150W-GKTEK).jpg",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:The_tire_wheel_of_Toyota_LAND_CRUISER_PRADO_TX_(CBA-TRJ150W-GKTEK).jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/toyota-land-cruiser/engine.webp",
+      "title": "File:Toyota Land Cruiser HZJ75 Fire Truck.jpg",
+      "author": "TKOIII",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Toyota_Land_Cruiser_HZJ75_Fire_Truck.jpg"
+    }
+  ],
+  "volkswagen-amarok": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/volkswagen-amarok/front.webp",
+      "title": "File:Volkswagen Amarok Mk2 IMG 7402.jpg",
+      "author": "Alexander-93",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Volkswagen_Amarok_Mk2_IMG_7402.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/volkswagen-amarok/rear.webp",
+      "title": "File:Volkswagen Amarok - tył (MSP15).JPG",
+      "author": "Jakub \"Flyz1\" Maciejewski",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Volkswagen_Amarok_-_ty%C5%82_(MSP15).JPG"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/volkswagen-amarok/side.webp",
+      "title": "File:VW Amarok (13).JPG",
+      "author": "El monty",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:VW_Amarok_(13).JPG"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/volkswagen-amarok/interior.webp",
+      "title": "File:Volkswagen Transporter 2010MY (interior view).jpg",
+      "author": "Amarok",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Volkswagen_Transporter_2010MY_(interior_view).jpg"
+    },
+    {
+      "slot": "dashboard",
+      "file": "/images/vehicles/library/volkswagen-amarok/dashboard.webp",
+      "title": "File:VW AMAROK Cockpit.JPG",
+      "author": "KarleHorn",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:VW_AMAROK_Cockpit.JPG"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/volkswagen-amarok/wheel.webp",
+      "title": "File:Volkswagen Amarok Dual Cab 2.0 BiTDI 4Motion (2014) (52715749161).jpg",
+      "author": "Charles from Port Chester, New York",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Volkswagen_Amarok_Dual_Cab_2.0_BiTDI_4Motion_(2014)_(52715749161).jpg"
+    }
+  ],
+  "mahindra-pik-up": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/mahindra-pik-up/front.webp",
+      "title": "File:Mahindra MaXX Pik Up \"Chicken King\".jpg",
+      "author": "cell105 from Pune, India, cropped, face blurred and some advertising drawn away by uploader Mr.choppers",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mahindra_MaXX_Pik_Up_%22Chicken_King%22.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/mahindra-pik-up/rear.webp",
+      "title": "File:Mahindra Pik Up 2.2 mHawk S6 Single-Cab (2021) (52722431928).jpg",
+      "author": "Charles from Port Chester, New York",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mahindra_Pik_Up_2.2_mHawk_S6_Single-Cab_(2021)_(52722431928).jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/mahindra-pik-up/engine.webp",
+      "title": "File:2022 Mahindra Pikup D140 S4.jpg",
+      "author": "RL GNZLZ",
+      "licence": "CC BY-SA 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2022_Mahindra_Pikup_D140_S4.jpg"
+    }
+  ],
+  "bmw-320i": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/bmw-320i/front.webp",
+      "title": "File:2013 BMW 320i sedan, 3.13.20.jpg",
+      "author": "Ghostofakina",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2013_BMW_320i_sedan,_3.13.20.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/bmw-320i/rear.webp",
+      "title": "File:1977 BMW 320i GR5 (quarter-rear).jpg",
+      "author": "David Merrett",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:1977_BMW_320i_GR5_(quarter-rear).jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/bmw-320i/side.webp",
+      "title": "File:BMW E90 Kirrinsannassa 2.jpg",
+      "author": "kallerna",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:BMW_E90_Kirrinsannassa_2.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/bmw-320i/interior.webp",
+      "title": "File:BMW E90 Interior.JPG",
+      "author": "Hatsukari715",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:BMW_E90_Interior.JPG"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/bmw-320i/wheel.webp",
+      "title": "File:BBS wheel of BMW 320 Gruppe 5 in BMW-Museum in Munich, Bayern.JPG",
+      "author": "Jiří Sedláček",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:BBS_wheel_of_BMW_320_Gruppe_5_in_BMW-Museum_in_Munich,_Bayern.JPG"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/bmw-320i/engine.webp",
+      "title": "File:320i M20 PL.JPG",
+      "author": "Beemwej",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:320i_M20_PL.JPG"
+    }
+  ],
+  "suzuki-swift": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/suzuki-swift/front.webp",
+      "title": "File:Suzuki Swift front-1.jpg",
+      "author": "Luftfahrrad",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Suzuki_Swift_front-1.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/suzuki-swift/rear.webp",
+      "title": "File:2018 Suzuki Swift SZ5 Boosterjet SHVS 1.0 Rear.jpg",
+      "author": "Vauxford",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2018_Suzuki_Swift_SZ5_Boosterjet_SHVS_1.0_Rear.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/suzuki-swift/side.webp",
+      "title": "File:Maruti Suzuki Swift Dzire back side logo.jpg",
+      "author": "Ramesh NG",
+      "licence": "CC BY-SA 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Maruti_Suzuki_Swift_Dzire_back_side_logo.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/suzuki-swift/interior.webp",
+      "title": "File:2011 Suzuki Swift Interior.jpg",
+      "author": "Aaron Dominguez",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2011_Suzuki_Swift_Interior.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/suzuki-swift/wheel.webp",
+      "title": "File:The tire wheel of Suzuki SWIFT HYBRID RS (DAA-ZC53S).jpg",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:The_tire_wheel_of_Suzuki_SWIFT_HYBRID_RS_(DAA-ZC53S).jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/suzuki-swift/engine.webp",
+      "title": "File:Suzuki SWIFT Sport (CBA-ZC32S) front.JPG",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Suzuki_SWIFT_Sport_(CBA-ZC32S)_front.JPG"
+    }
+  ],
+  "nissan-navara": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/nissan-navara/front.webp",
+      "title": "File:20200512 Nissan Navara 01.jpg",
+      "author": "Kahvilokki",
+      "licence": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:20200512_Nissan_Navara_01.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/nissan-navara/rear.webp",
+      "title": "File:Nissan Navara rear 20070518.jpg",
+      "author": "Rudolf Stricker",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Nissan_Navara_rear_20070518.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/nissan-navara/side.webp",
+      "title": "File:Manacor - Porto Cristo - Calle de la Mar 02 ies.jpg",
+      "author": "Frank Vincentz",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Manacor_-_Porto_Cristo_-_Calle_de_la_Mar_02_ies.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/nissan-navara/interior.webp",
+      "title": "File:03636jfAtate Cecilia Parish Church Palayan City Ecijafvf 20.JPG",
+      "author": "Judgefloro",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:03636jfAtate_Cecilia_Parish_Church_Palayan_City_Ecijafvf_20.JPG"
+    },
+    {
+      "slot": "dashboard",
+      "file": "/images/vehicles/library/nissan-navara/dashboard.webp",
+      "title": "File:2020 Nissan Navara Double-Cab 4WD PRO-4X (Cockpit).jpg",
+      "author": "Chanokchon",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2020_Nissan_Navara_Double-Cab_4WD_PRO-4X_(Cockpit).jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/nissan-navara/wheel.webp",
+      "title": "File:Wildcat pop-up camper (1) ACC Berlin 2017.JPG",
+      "author": "Travelarz",
+      "licence": "CC BY-SA 3.0 pl",
+      "source": "https://commons.wikimedia.org/wiki/File:Wildcat_pop-up_camper_(1)_ACC_Berlin_2017.JPG"
+    }
+  ],
+  "ford-ranger": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/ford-ranger/front.webp",
+      "title": "File:Taman Serinsim Sabah Ford Ranger-01.jpg",
+      "author": "CEphoto, Uwe Aranas",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Taman_Serinsim_Sabah_Ford_Ranger-01.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/ford-ranger/rear.webp",
+      "title": "File:1994 Ford Ranger Splash 4x2 Regular Cab, rear left, 09-24-2022.jpg",
+      "author": "MercurySable99",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:1994_Ford_Ranger_Splash_4x2_Regular_Cab,_rear_left,_09-24-2022.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/ford-ranger/side.webp",
+      "title": "File:1989-92 Ford Ranger XLT, front side left.jpg",
+      "author": "Mr.choppers",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:1989-92_Ford_Ranger_XLT,_front_side_left.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/ford-ranger/interior.webp",
+      "title": "File:Ford Ranger Interior.jpg",
+      "author": "Midnight Runner",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Ford_Ranger_Interior.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/ford-ranger/wheel.webp",
+      "title": "File:1987 Ford Ranger XLT SuperCab.jpg",
+      "author": "E.Zorrilla",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:1987_Ford_Ranger_XLT_SuperCab.jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/ford-ranger/engine.webp",
+      "title": "File:Ford Ranger 2.5 Engine.jpg",
+      "author": "FarGah1",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Ford_Ranger_2.5_Engine.jpg"
+    }
+  ],
+  "volkswagen-polo": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/volkswagen-polo/front.webp",
+      "title": "File:Volkswagen Polo II Classic IMG 4492.jpg",
+      "author": "Alexander Migl",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Volkswagen_Polo_II_Classic_IMG_4492.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/volkswagen-polo/rear.webp",
+      "title": "File:Volkswagen Polo VI (2021) IMG 5322.jpg",
+      "author": "Alexander Migl",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Volkswagen_Polo_VI_(2021)_IMG_5322.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/volkswagen-polo/side.webp",
+      "title": "File:VW Polo 6N (Side).jpg",
+      "author": "Stefan-Xp",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:VW_Polo_6N_(Side).jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/volkswagen-polo/interior.webp",
+      "title": "File:Volkswagen Polo V interior.jpg",
+      "author": "TTTNIS",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:Volkswagen_Polo_V_interior.jpg"
+    },
+    {
+      "slot": "dashboard",
+      "file": "/images/vehicles/library/volkswagen-polo/dashboard.webp",
+      "title": "File:VW Polo 6N (Cockpit).jpg",
+      "author": "Stefan-Xp",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:VW_Polo_6N_(Cockpit).jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/volkswagen-polo/wheel.webp",
+      "title": "File:Volkswagen Polo Coupe Cambridge 1981.jpg",
+      "author": "Charles01",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Volkswagen_Polo_Coupe_Cambridge_1981.jpg"
+    }
+  ],
+  "audi-a3": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/audi-a3/front.webp",
+      "title": "File:Audi A3 Cabriolet, Baujahr 2008 (2008-10-21).jpg",
+      "author": "Spurzem - Lothar Spurzem",
+      "licence": "CC BY-SA 2.0 de",
+      "source": "https://commons.wikimedia.org/wiki/File:Audi_A3_Cabriolet,_Baujahr_2008_(2008-10-21).jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/audi-a3/rear.webp",
+      "title": "File:Audi A3 rear 20070324.jpg",
+      "author": "Rudolf Stricker",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:Audi_A3_rear_20070324.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/audi-a3/side.webp",
+      "title": "File:Audi A3 Side-view.JPG",
+      "author": "No machine-readable author provided. Luc106 assumed (based on copyright claims).",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:Audi_A3_Side-view.JPG"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/audi-a3/interior.webp",
+      "title": "File:Rear View of an Audi A3.JPG",
+      "author": "André Rösti",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Rear_View_of_an_Audi_A3.JPG"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/audi-a3/wheel.webp",
+      "title": "File:The tire wheel of Audi A3 Sportback 1.4TFSI sport (DBA-8VCXS).jpg",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:The_tire_wheel_of_Audi_A3_Sportback_1.4TFSI_sport_(DBA-8VCXS).jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/audi-a3/engine.webp",
+      "title": "File:Audi A3 1.6 (36502318).jpg",
+      "author": "datatw",
+      "licence": "CC BY-SA 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Audi_A3_1.6_(36502318).jpg"
+    }
+  ],
+  "kia-sportage": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/kia-sportage/front.webp",
+      "title": "File:Kia Sportage Plug-in-Hybrid (NQ5) IAA 2021 1X7A0113.jpg",
+      "author": "Alexander Migl",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Kia_Sportage_Plug-in-Hybrid_(NQ5)_IAA_2021_1X7A0113.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/kia-sportage/rear.webp",
+      "title": "File:Kia Sportage II (Chinese facelift) 002.jpg",
+      "author": "Jengtingchen",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Kia_Sportage_II_(Chinese_facelift)_002.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/kia-sportage/side.webp",
+      "title": "File:Kia Sportage (Chinese Market).jpg",
+      "author": "Jengtingchen",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Kia_Sportage_(Chinese_Market).jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/kia-sportage/interior.webp",
+      "title": "File:Kia Sportage JA interior.JPG",
+      "author": "Corvettec6r",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Kia_Sportage_JA_interior.JPG"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/kia-sportage/wheel.webp",
+      "title": "File:2016 Kia Sportage - Wheel.JPG",
+      "author": "Areaseven",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2016_Kia_Sportage_-_Wheel.JPG"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/kia-sportage/engine.webp",
+      "title": "File:Kia Sportage engine.jpg",
+      "author": "P199",
+      "licence": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:Kia_Sportage_engine.jpg"
+    }
+  ],
+  "ford-everest": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/ford-everest/front.webp",
+      "title": "File:Ford Everest Concept 01 -- Auto China -- 2014-04-23.jpg",
+      "author": "Navigator84",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Ford_Everest_Concept_01_--_Auto_China_--_2014-04-23.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/ford-everest/rear.webp",
+      "title": "File:Ford Everest (first generation) (rear), Serdang.jpg",
+      "author": "User:Two hundred percent.",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Ford_Everest_(first_generation)_(rear),_Serdang.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/ford-everest/side.webp",
+      "title": "File:Ford Everest parked rear side.jpg",
+      "author": "Ominae",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Ford_Everest_parked_rear_side.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/ford-everest/interior.webp",
+      "title": "File:2022 Ford Everest Titanium 4WD 04.jpg",
+      "author": "MoCars",
+      "licence": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:2022_Ford_Everest_Titanium_4WD_04.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/ford-everest/wheel.webp",
+      "title": "File:Commons logo mosaic 19x35.jpg",
+      "author": "lots",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Commons_logo_mosaic_19x35.jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/ford-everest/engine.webp",
+      "title": "File:2022 Ford Everest Titanium 4WD 06.jpg",
+      "author": "MoCars",
+      "licence": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:2022_Ford_Everest_Titanium_4WD_06.jpg"
+    }
+  ],
+  "suzuki-jimny": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/suzuki-jimny/front.webp",
+      "title": "File:Suzuki Jimny (4th generation) 1X7A6312.jpg",
+      "author": "Alexander Migl",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Suzuki_Jimny_(4th_generation)_1X7A6312.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/suzuki-jimny/rear.webp",
+      "title": "File:Suzuki Jimny rear 20070902.jpg",
+      "author": "Rudolf Stricker",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Suzuki_Jimny_rear_20070902.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/suzuki-jimny/side.webp",
+      "title": "File:1981 Suzuki SS80 Alto side.jpg",
+      "author": "Mr.choppers",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:1981_Suzuki_SS80_Alto_side.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/suzuki-jimny/interior.webp",
+      "title": "File:2019 Suzuki Jimny AllGrip Interior.jpg",
+      "author": "Vauxford",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2019_Suzuki_Jimny_AllGrip_Interior.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/suzuki-jimny/wheel.webp",
+      "title": "File:The tire wheel of Suzuki Jimny SIERRA JC (3BA-JB74W-GJCR-J).jpg",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:The_tire_wheel_of_Suzuki_Jimny_SIERRA_JC_(3BA-JB74W-GJCR-J).jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/suzuki-jimny/engine.webp",
+      "title": "File:3rd generation Suzuki Jimny engine room.jpg",
+      "author": "TTTNIS",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:3rd_generation_Suzuki_Jimny_engine_room.jpg"
+    }
+  ],
+  "mitsubishi-triton": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/mitsubishi-triton/front.webp",
+      "title": "File:Mitsubishi Triton 2.4 GLX 4x2 2024 (interior).jpg",
+      "author": "Ethan Llamas",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mitsubishi_Triton_2.4_GLX_4x2_2024_(interior).jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/mitsubishi-triton/rear.webp",
+      "title": "File:Mitsubishi Triton (first generation) (rear), Serdang.jpg",
+      "author": "User:Two hundred percent.",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mitsubishi_Triton_(first_generation)_(rear),_Serdang.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/mitsubishi-triton/side.webp",
+      "title": "File:2015 Mitsubishi Triton GLX (17377699731).jpg",
+      "author": "TuRbO_J from Adelaide, Australia",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2015_Mitsubishi_Triton_GLX_(17377699731).jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/mitsubishi-triton/interior.webp",
+      "title": "File:2019 Mitsubishi Triton Exceed 4x4 2.4 KL1TJ interior (20190722).jpg",
+      "author": "オーバードライブ83",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2019_Mitsubishi_Triton_Exceed_4x4_2.4_KL1TJ_interior_(20190722).jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/mitsubishi-triton/wheel.webp",
+      "title": "File:DSC 0144 (532844184).jpg",
+      "author": "Tom Reynolds from Melbourne, Australia",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:DSC_0144_(532844184).jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/mitsubishi-triton/engine.webp",
+      "title": "File:1999 Mitsubishi Triton (MK) GLX 4-door utility (2015-05-28) 01.jpg",
+      "author": "OSX",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:1999_Mitsubishi_Triton_(MK)_GLX_4-door_utility_(2015-05-28)_01.jpg"
+    }
+  ],
+  "toyota-prado": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/toyota-prado/front.webp",
+      "title": "File:Toyota Land Cruiser Prado, Baku (P1090223).jpg",
+      "author": "Matti Blume",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Toyota_Land_Cruiser_Prado,_Baku_(P1090223).jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/toyota-prado/rear.webp",
+      "title": "File:Toyota Land Cruiser Prado (second generation) (rear), Serdang.jpg",
+      "author": "User:Two hundred percent.",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Toyota_Land_Cruiser_Prado_(second_generation)_(rear),_Serdang.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/toyota-prado/side.webp",
+      "title": "File:Toyota Land Cruiser Prado (second generation) (front), Serdang.jpg",
+      "author": "User:Two hundred percent.",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Toyota_Land_Cruiser_Prado_(second_generation)_(front),_Serdang.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/toyota-prado/interior.webp",
+      "title": "File:Toyota Land Cruiser Prado 150 interior.jpg",
+      "author": "TTTNIS",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:Toyota_Land_Cruiser_Prado_150_interior.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/toyota-prado/wheel.webp",
+      "title": "File:The tire wheel of Toyota LAND CRUISER PRADO TX\"L Package\" (LDA-GDJ150W-GKTEY).jpg",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:The_tire_wheel_of_Toyota_LAND_CRUISER_PRADO_TX%22L_Package%22_(LDA-GDJ150W-GKTEY).jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/toyota-prado/engine.webp",
+      "title": "File:2001 Toyota Land Cruiser Prado (VZJ95R) 50th Anniversary 5-door wagon (2008-08-25).jpg",
+      "author": "MartinHansV",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:2001_Toyota_Land_Cruiser_Prado_(VZJ95R)_50th_Anniversary_5-door_wagon_(2008-08-25).jpg"
+    }
+  ],
+  "bmw-x1": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/bmw-x1/front.webp",
+      "title": "File:2018 BMW X1 sDrive18i xLine 1.5 Front.jpg",
+      "author": "Vauxford",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2018_BMW_X1_sDrive18i_xLine_1.5_Front.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/bmw-x1/rear.webp",
+      "title": "File:2015 Brilliance-BMW X1 (rear).jpg",
+      "author": "User3204",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2015_Brilliance-BMW_X1_(rear).jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/bmw-x1/side.webp",
+      "title": "File:BMW-X1-sDrive-20d-side.jpg",
+      "author": "Markridoo",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:BMW-X1-sDrive-20d-side.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/bmw-x1/interior.webp",
+      "title": "File:BMW X1 sDrive 18i interior.jpg",
+      "author": "TTTNIS",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:BMW_X1_sDrive_18i_interior.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/bmw-x1/wheel.webp",
+      "title": "File:2016 BMW X1 sDrive20d Front Wheel - 190 hp - 4 cyl - 2000 cc - Kolkata 2017-01-29 4150.JPG",
+      "author": "Biswarup Ganguly",
+      "licence": "CC BY 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2016_BMW_X1_sDrive20d_Front_Wheel_-_190_hp_-_4_cyl_-_2000_cc_-_Kolkata_2017-01-29_4150.JPG"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/bmw-x1/engine.webp",
+      "title": "File:2010 BMW X1 sDrive 2.0d SE - Flickr - The Car Spy (16).jpg",
+      "author": "The Car Spy",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2010_BMW_X1_sDrive_2.0d_SE_-_Flickr_-_The_Car_Spy_(16).jpg"
+    }
+  ],
+  "audi-q3": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/audi-q3/front.webp",
+      "title": "File:Audi Q3 1Y7A4914.jpg",
+      "author": "Alexander Migl",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Audi_Q3_1Y7A4914.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/audi-q3/rear.webp",
+      "title": "File:Audi Q3 rear.JPG",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:Audi_Q3_rear.JPG"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/audi-q3/side.webp",
+      "title": "File:2013-03-05 Geneva Motor Show 7909.JPG",
+      "author": "Norbert Aepli, Switzerland (User:Noebu)",
+      "licence": "CC BY 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2013-03-05_Geneva_Motor_Show_7909.JPG"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/audi-q3/interior.webp",
+      "title": "File:Audi Q3 S line interior.jpg",
+      "author": "TTTNIS",
+      "licence": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:Audi_Q3_S_line_interior.jpg"
+    },
+    {
+      "slot": "dashboard",
+      "file": "/images/vehicles/library/audi-q3/dashboard.webp",
+      "title": "File:Audi RS Q3 Cockpit Interieur Innenraum.JPG",
+      "author": "Kickaffe (Mario von Berg)",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Audi_RS_Q3_Cockpit_Interieur_Innenraum.JPG"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/audi-q3/wheel.webp",
+      "title": "File:Audi Q3 40 TFSI quattro (2021) (53325707992).jpg",
+      "author": "Charles from Port Chester, New York",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Audi_Q3_40_TFSI_quattro_(2021)_(53325707992).jpg"
+    }
+  ],
+  "mercedes-benz-gle": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/mercedes-benz-gle/front.webp",
+      "title": "File:Mercedes-AMG GLE 43 (P1070799).jpg",
+      "author": "Matti Blume",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mercedes-AMG_GLE_43_(P1070799).jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/mercedes-benz-gle/rear.webp",
+      "title": "File:Mercedes-Benz M-GLE-Class timeline.jpg",
+      "author": "Vajotwo and Luc106 This image was created with PhotoScape.",
+      "licence": "CC BY 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_M-GLE-Class_timeline.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/mercedes-benz-gle/side.webp",
+      "title": "File:GLE 250 d front side.jpg",
+      "author": "Ominae",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:GLE_250_d_front_side.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/mercedes-benz-gle/interior.webp",
+      "title": "File:Mercedes-AMG GLE63 S 4MATIC (W166) interior.JPG",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mercedes-AMG_GLE63_S_4MATIC_(W166)_interior.JPG"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/mercedes-benz-gle/wheel.webp",
+      "title": "File:The tire wheel of Mercedes-Benz GLE 450 d 4MATIC Sports Edition Black Stars (W167).jpg",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:The_tire_wheel_of_Mercedes-Benz_GLE_450_d_4MATIC_Sports_Edition_Black_Stars_(W167).jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/mercedes-benz-gle/engine.webp",
+      "title": "File:Mercedes-Benz GLE Coupé (C167) (48820508557).jpg",
+      "author": "Rutger van der Maar from Leiden, The Netherlands",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_GLE_Coup%C3%A9_(C167)_(48820508557).jpg"
+    }
+  ],
+  "bmw-m340i": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/bmw-m340i/front.webp",
+      "title": "File:BMW M340i G21 xDrive Touring 2023.jpg",
+      "author": "Ethan Llamas",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:BMW_M340i_G21_xDrive_Touring_2023.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/bmw-m340i/rear.webp",
+      "title": "File:BMW M340i xDrive G20 rear view in Brunei.jpg",
+      "author": "AIMHO'S REBELLION 8490s",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:BMW_M340i_xDrive_G20_rear_view_in_Brunei.jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/bmw-m340i/engine.webp",
+      "title": "File:BMW 3-Series (G20) M340i (2021) (53492076621).jpg",
+      "author": "Charles from Port Chester, New York",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:BMW_3-Series_(G20)_M340i_(2021)_(53492076621).jpg"
+    }
+  ],
+  "bmw-x3": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/bmw-x3/front.webp",
+      "title": "File:BMW X3 (G08) China.jpg",
+      "author": "Dinkun Chen",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:BMW_X3_(G08)_China.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/bmw-x3/rear.webp",
+      "title": "File:BMW X3 rear 20071102.jpg",
+      "author": "Rudolf Stricker",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:BMW_X3_rear_20071102.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/bmw-x3/side.webp",
+      "title": "File:BMW X3 E83 red side (2).jpg",
+      "author": "Fiver, der Hellseher",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:BMW_X3_E83_red_side_(2).jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/bmw-x3/interior.webp",
+      "title": "File:2017 BMW X3 xDrive35d M Sport Automatic Interior.jpg",
+      "author": "Vauxford",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2017_BMW_X3_xDrive35d_M_Sport_Automatic_Interior.jpg"
+    },
+    {
+      "slot": "dashboard",
+      "file": "/images/vehicles/library/bmw-x3/dashboard.webp",
+      "title": "File:2018 BMW X3 xDrive 20d M Sport (Cockpit).jpg",
+      "author": "Chanokchon",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2018_BMW_X3_xDrive_20d_M_Sport_(Cockpit).jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/bmw-x3/wheel.webp",
+      "title": "File:BMW X3 M Competition (G01, 2022) (52228107749).jpg",
+      "author": "Charles from Port Chester, New York",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:BMW_X3_M_Competition_(G01,_2022)_(52228107749).jpg"
+    }
+  ],
+  "mercedes-benz-v-class": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/mercedes-benz-v-class/front.webp",
+      "title": "File:MERCEDES BENZ V-CLASS (W447) China (2).jpg",
+      "author": "Dinkun Chen",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:MERCEDES_BENZ_V-CLASS_(W447)_China_(2).jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/mercedes-benz-v-class/rear.webp",
+      "title": "File:Mercedes-Benz V350 Grand Edition (W639) rear.JPG",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_V350_Grand_Edition_(W639)_rear.JPG"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/mercedes-benz-v-class/side.webp",
+      "title": "File:Mercedes-Benz V-Class van rear.jpg",
+      "author": "Ominae",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_V-Class_van_rear.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/mercedes-benz-v-class/interior.webp",
+      "title": "File:Mercedes-Benz V-Class interior.jpg",
+      "author": "TTTNIS",
+      "licence": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_V-Class_interior.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/mercedes-benz-v-class/wheel.webp",
+      "title": "File:Mercedes Benz G Class W463 in Lane 11, Xindong Street 20140420.jpg",
+      "author": "玄史生",
+      "licence": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mercedes_Benz_G_Class_W463_in_Lane_11,_Xindong_Street_20140420.jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/mercedes-benz-v-class/engine.webp",
+      "title": "File:2001 Mercedes-Benz V 200 (W 638) van (2016-01-04) 01.jpg",
+      "author": "OSX",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:2001_Mercedes-Benz_V_200_(W_638)_van_(2016-01-04)_01.jpg"
+    }
+  ],
+  "mahindra-scorpio": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/mahindra-scorpio/front.webp",
+      "title": "File:Mahindra Scorpio (124712669).jpg",
+      "author": "Thorsten Vieth from Bangalore, India",
+      "licence": "CC BY-SA 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mahindra_Scorpio_(124712669).jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/mahindra-scorpio/rear.webp",
+      "title": "File:Mahindra Scorpio (first generation) (front), Kuala Lumpur.jpg",
+      "author": "User:Two hundred percent.",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mahindra_Scorpio_(first_generation)_(front),_Kuala_Lumpur.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/mahindra-scorpio/side.webp",
+      "title": "File:Mahindra Scorpio S11 .jpg",
+      "author": "devansh02",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mahindra_Scorpio_S11_.jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/mahindra-scorpio/engine.webp",
+      "title": "File:2022 Mahindra Pikup D140 S4.jpg",
+      "author": "RL GNZLZ",
+      "licence": "CC BY-SA 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2022_Mahindra_Pikup_D140_S4.jpg"
+    }
+  ],
+  "suzuki-fronx": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/suzuki-fronx/front.webp",
+      "title": "File:Suzuki Fronx in Hamamatsu Sta.jpg",
+      "author": "IXTA9839",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Suzuki_Fronx_in_Hamamatsu_Sta.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/suzuki-fronx/rear.webp",
+      "title": "File:Suzuki FRONX PROTOTYPE.jpg",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Suzuki_FRONX_PROTOTYPE.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/suzuki-fronx/side.webp",
+      "title": "File:Suzuki Fronx (54381289130).jpg",
+      "author": "Jason Lawrence from New York",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Suzuki_Fronx_(54381289130).jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/suzuki-fronx/interior.webp",
+      "title": "File:Osaka Auto Messe 2025 (161) - Suzuki FRONX 2WD (4AA-WDB3S-XBSK-ZN).jpg",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:Osaka_Auto_Messe_2025_(161)_-_Suzuki_FRONX_2WD_(4AA-WDB3S-XBSK-ZN).jpg"
+    }
+  ],
+  "nissan-magnite": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/nissan-magnite/front.webp",
+      "title": "File:2021 Nissan Magnite Premium (Indonesia) front view.jpg",
+      "author": "Andra Febrian",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2021_Nissan_Magnite_Premium_(Indonesia)_front_view.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/nissan-magnite/rear.webp",
+      "title": "File:2021 Nissan Magnite Premium (Indonesia) rear view.jpg",
+      "author": "Andra Febrian",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2021_Nissan_Magnite_Premium_(Indonesia)_rear_view.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/nissan-magnite/side.webp",
+      "title": "File:Nissan Magnite 01.jpg",
+      "author": "Ganesh Mohan T",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Nissan_Magnite_01.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/nissan-magnite/interior.webp",
+      "title": "File:2021 Nissan Magnite Premium (Indonesia) interior.jpg",
+      "author": "Andra Febrian",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2021_Nissan_Magnite_Premium_(Indonesia)_interior.jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/nissan-magnite/engine.webp",
+      "title": "File:2021 Nissan Magnite Premium 1.0 DD0 HRA0 engine (20211117).jpg",
+      "author": "オーバードライブ83",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2021_Nissan_Magnite_Premium_1.0_DD0_HRA0_engine_(20211117).jpg"
+    }
+  ],
+  "honda-fit": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/honda-fit/front.webp",
+      "title": "File:Japanese car accident.jpg",
+      "author": "Shuets Udono",
+      "licence": "CC BY-SA 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Japanese_car_accident.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/honda-fit/rear.webp",
+      "title": "File:Honda FIT 13G (GK3) rear.jpg",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:Honda_FIT_13G_(GK3)_rear.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/honda-fit/side.webp",
+      "title": "File:Honda Jazz (first generation) (rear), Serdang.jpg",
+      "author": "User:Two hundred percent.",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Honda_Jazz_(first_generation)_(rear),_Serdang.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/honda-fit/interior.webp",
+      "title": "File:2007 Honda Fit 3.JPG",
+      "author": "Hatsukari715",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:2007_Honda_Fit_3.JPG"
+    },
+    {
+      "slot": "dashboard",
+      "file": "/images/vehicles/library/honda-fit/dashboard.webp",
+      "title": "File:1st gen Honda Fit cockpit.jpg",
+      "author": "photo: Qurren (talk) Taken with Canon IXY Digital 70 (Digital IXUS 60)",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:1st_gen_Honda_Fit_cockpit.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/honda-fit/wheel.webp",
+      "title": "File:The tire wheel of Honda FIT HYBRID CROSS STYLE (DAA-GP5).jpg",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:The_tire_wheel_of_Honda_FIT_HYBRID_CROSS_STYLE_(DAA-GP5).jpg"
+    }
+  ],
+  "mercedes-benz-c-class": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/mercedes-benz-c-class/front.webp",
+      "title": "File:DTM Mercedes w204 Schneider amk.jpg",
+      "author": "user:AngMoKio",
+      "licence": "CC BY-SA 2.5",
+      "source": "https://commons.wikimedia.org/wiki/File:DTM_Mercedes_w204_Schneider_amk.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/mercedes-benz-c-class/rear.webp",
+      "title": "File:Mercedes-Benz C-Class-W204-SW Rear-view.JPG",
+      "author": "No machine-readable author provided. Luc106 assumed (based on copyright claims).",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_C-Class-W204-SW_Rear-view.JPG"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/mercedes-benz-c-class/side.webp",
+      "title": "File:Mercedes-Benz C T.jpg",
+      "author": "Thomas doerfer",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_C_T.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/mercedes-benz-c-class/interior.webp",
+      "title": "File:Mercedes-Benz C-Class W205 JPN 003.JPG",
+      "author": "CEFICEFI",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_C-Class_W205_JPN_003.JPG"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/mercedes-benz-c-class/wheel.webp",
+      "title": "File:Mercedes C Class (W204 C-Class) front.jpg",
+      "author": "Pedro Simões from Lisboa, Portugal",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mercedes_C_Class_(W204_C-Class)_front.jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/mercedes-benz-c-class/engine.webp",
+      "title": "File:Mercedes-Benz written character C 180 bordeaux.jpg",
+      "author": "Matti Blume, MB-one 13:51, 10 April 2006 (UTC)",
+      "licence": "CC BY-SA 2.0 de",
+      "source": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_written_character_C_180_bordeaux.jpg"
+    }
+  ],
+  "toyota-corolla": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/toyota-corolla/front.webp",
+      "title": "File:Fuel gauge (Toyota Corolla).jpg",
+      "author": "Petar Milošević",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Fuel_gauge_(Toyota_Corolla).jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/toyota-corolla/rear.webp",
+      "title": "File:2003 Toyota Corolla Altis (Rear).jpg",
+      "author": "Eagle6355",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2003_Toyota_Corolla_Altis_(Rear).jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/toyota-corolla/side.webp",
+      "title": "File:Toyota Corolla KE25 side view.jpg",
+      "author": "Gwafton",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Toyota_Corolla_KE25_side_view.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/toyota-corolla/interior.webp",
+      "title": "File:Toyota Corolla 2016 speedometer.jpg",
+      "author": "Kskhh",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Toyota_Corolla_2016_speedometer.jpg"
+    },
+    {
+      "slot": "dashboard",
+      "file": "/images/vehicles/library/toyota-corolla/dashboard.webp",
+      "title": "File:2019 Toyota Corolla Altis Hybrid High (Cockpit).jpg",
+      "author": "Chanokchon",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2019_Toyota_Corolla_Altis_Hybrid_High_(Cockpit).jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/toyota-corolla/wheel.webp",
+      "title": "File:69 Toyota Corolla (11810499183).jpg",
+      "author": "Greg Gjerdingen from Willmar, USA",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:69_Toyota_Corolla_(11810499183).jpg"
+    }
+  ],
+  "renault-kiger": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/renault-kiger/front.webp",
+      "title": "File:Renault Kiger FL 202103.jpg",
+      "author": "Premkudva",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Renault_Kiger_FL_202103.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/renault-kiger/rear.webp",
+      "title": "File:Renault Kiger R 202103.jpg",
+      "author": "Premkudva",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Renault_Kiger_R_202103.jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/renault-kiger/engine.webp",
+      "title": "File:Renault Kiger 1.0 Energy Zen (2021) (52720615141).jpg",
+      "author": "Charles from Port Chester, New York",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Renault_Kiger_1.0_Energy_Zen_(2021)_(52720615141).jpg"
+    }
+  ],
+  "hyundai-tucson": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/hyundai-tucson/front.webp",
+      "title": "File:Hyundai Tucson (NX4) PHEV IMG 4375.jpg",
+      "author": "Alexander Migl",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Hyundai_Tucson_(NX4)_PHEV_IMG_4375.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/hyundai-tucson/rear.webp",
+      "title": "File:Hyundai Tucson facelift (rear).jpg",
+      "author": "JustAnotherCarDesigner",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Hyundai_Tucson_facelift_(rear).jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/hyundai-tucson/side.webp",
+      "title": "File:Hyundai Tucson FIFA World Cup 2006.jpg",
+      "author": "User:Kandschwar",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Hyundai_Tucson_FIFA_World_Cup_2006.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/hyundai-tucson/interior.webp",
+      "title": "File:Hyundai Tucson interior view.jpg",
+      "author": "Corvettec6r",
+      "licence": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:Hyundai_Tucson_interior_view.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/hyundai-tucson/wheel.webp",
+      "title": "File:Hyundai Tucson (3307885068).jpg",
+      "author": "Tony Hisgett from Birmingham, UK",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Hyundai_Tucson_(3307885068).jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/hyundai-tucson/engine.webp",
+      "title": "File:Hyundai fire engine on Skarbówka street in Kraków (1).jpg",
+      "author": "SuperTank17",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Hyundai_fire_engine_on_Skarb%C3%B3wka_street_in_Krak%C3%B3w_(1).jpg"
+    }
+  ],
+  "audi-q5": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/audi-q5/front.webp",
+      "title": "File:Audi Q5 BW 1.jpg",
+      "author": "Berthold Werner",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Audi_Q5_BW_1.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/audi-q5/rear.webp",
+      "title": "File:2017 Audi Q5 (FY) rear (silver) 1.jpg",
+      "author": "Steinfeld-feld",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2017_Audi_Q5_(FY)_rear_(silver)_1.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/audi-q5/side.webp",
+      "title": "File:2009 Audi Q5 SE TDi Quattro - Flickr - The Car Spy (7).jpg",
+      "author": "The Car Spy",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2009_Audi_Q5_SE_TDi_Quattro_-_Flickr_-_The_Car_Spy_(7).jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/audi-q5/interior.webp",
+      "title": "File:AUDI Q5 e-tron INTERIOR (2).jpg",
+      "author": "Dinkun Chen",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:AUDI_Q5_e-tron_INTERIOR_(2).jpg"
+    },
+    {
+      "slot": "dashboard",
+      "file": "/images/vehicles/library/audi-q5/dashboard.webp",
+      "title": "File:Q5 cockpit (3280776898).jpg",
+      "author": "Mike Babcock from Peterborough, Ontario, Canada",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Q5_cockpit_(3280776898).jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/audi-q5/wheel.webp",
+      "title": "File:2019 Audi Q5 Sport 2.0 TFSI Quattro (9).jpg",
+      "author": "Bindydad123",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2019_Audi_Q5_Sport_2.0_TFSI_Quattro_(9).jpg"
+    }
+  ],
+  "volkswagen-tiguan": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/volkswagen-tiguan/front.webp",
+      "title": "File:VW Tiguan TDI 2.0, Bj. 2008-06 (Sp).jpg",
+      "author": "Spurzem - Lothar Spurzem",
+      "licence": "CC BY-SA 2.0 de",
+      "source": "https://commons.wikimedia.org/wiki/File:VW_Tiguan_TDI_2.0,_Bj._2008-06_(Sp).jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/volkswagen-tiguan/rear.webp",
+      "title": "File:Volkswagen Tiguan GTE rear.jpg",
+      "author": "Rutger van der Maar",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Volkswagen_Tiguan_GTE_rear.jpg"
+    },
+    {
+      "slot": "side",
+      "file": "/images/vehicles/library/volkswagen-tiguan/side.webp",
+      "title": "File:Volkswagen Tiguan (front side quarter).jpg",
+      "author": "Overlaet",
+      "licence": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Volkswagen_Tiguan_(front_side_quarter).jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/volkswagen-tiguan/interior.webp",
+      "title": "File:VOLKSWAGEN TIGUAN X INTERIOR.jpg",
+      "author": "Dinkun Chen",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:VOLKSWAGEN_TIGUAN_X_INTERIOR.jpg"
+    },
+    {
+      "slot": "wheel",
+      "file": "/images/vehicles/library/volkswagen-tiguan/wheel.webp",
+      "title": "File:The tire wheel of Volkswagen TIGUAN TSI R-Line (ABA-5NCZE).jpg",
+      "author": "Tokumeigakarinoaoshima",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:The_tire_wheel_of_Volkswagen_TIGUAN_TSI_R-Line_(ABA-5NCZE).jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/volkswagen-tiguan/engine.webp",
+      "title": "File:VW Tiguan engine.jpg",
+      "author": "Tony Hisgett from Birmingham, UK",
+      "licence": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:VW_Tiguan_engine.jpg"
+    }
+  ],
+  "kia-sonet": [
+    {
+      "slot": "front",
+      "file": "/images/vehicles/library/kia-sonet/front.webp",
+      "title": "File:Kia Sonet 04.jpg",
+      "author": "Ganesh Mohan T",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Kia_Sonet_04.jpg"
+    },
+    {
+      "slot": "rear",
+      "file": "/images/vehicles/library/kia-sonet/rear.webp",
+      "title": "File:2022 Kia Sonet GL 1.5AT gray rear view in Brunei.jpg",
+      "author": "AIMHO'S REBELLION 8490s",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2022_Kia_Sonet_GL_1.5AT_gray_rear_view_in_Brunei.jpg"
+    },
+    {
+      "slot": "interior",
+      "file": "/images/vehicles/library/kia-sonet/interior.webp",
+      "title": "File:2022 Kia Sonet GLS 1.5AT red and black interior view in Brunei.jpg",
+      "author": "AIMHO'S REBELLION 8490s",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2022_Kia_Sonet_GLS_1.5AT_red_and_black_interior_view_in_Brunei.jpg"
+    },
+    {
+      "slot": "engine",
+      "file": "/images/vehicles/library/kia-sonet/engine.webp",
+      "title": "File:2022 Kia Sonet GL 1.5AT gray engine view in Brunei.jpg",
+      "author": "AIMHO'S REBELLION 8490s",
+      "licence": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:2022_Kia_Sonet_GL_1.5AT_gray_engine_view_in_Brunei.jpg"
+    }
+  ]
+}

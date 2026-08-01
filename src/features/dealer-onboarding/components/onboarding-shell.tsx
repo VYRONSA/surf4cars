@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 
-import { SurfLogo } from "@/components/brand";
+import { SurfWordmark } from "@/components/brand";
 import { Text } from "@/components/ui/typography";
 import { OnboardingProgress } from "@/features/dealer-onboarding/components/onboarding-progress";
 import { onboardingStyles } from "@/features/dealer-onboarding/components/onboarding-shared";
@@ -14,7 +14,7 @@ export interface OnboardingShellProps {
 }
 
 export function OnboardingShell({ children }: OnboardingShellProps) {
-  const { isSuccessStep } = useOnboarding();
+  const { isSuccessStep, isSaving, lastSavedAt } = useOnboarding();
 
   return (
     <div className={onboardingStyles.shell}>
@@ -22,13 +22,21 @@ export function OnboardingShell({ children }: OnboardingShellProps) {
       <div className={onboardingStyles.shellAccentGlow} aria-hidden />
 
       <header className="relative z-10 border-b border-[var(--color-border-subtle)] px-4 py-4 lg:px-6">
-        <div className="mx-auto flex max-w-4xl items-center gap-3">
-          <SurfLogo variant="onboarding" />
+        <div className="mx-auto flex max-w-4xl items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-3">
+          <SurfWordmark size="compact" />
           <div className="min-w-0">
             <Text variant="caption" tone="muted" className="block truncate">
               Dealer Onboarding
             </Text>
           </div>
+          </div>
+
+          {!isSuccessStep && (
+            <Text variant="caption" tone="muted" className="shrink-0">
+              {isSaving ? "Saving..." : lastSavedAt ? "Saved" : "Autosave on"}
+            </Text>
+          )}
         </div>
       </header>
 

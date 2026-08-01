@@ -1,14 +1,13 @@
 import type { VehicleCondition } from "@/domain/vehicle/types/vehicle-core.types";
 
 export const UPLOAD_STEPS = [
-  { id: "identification", label: "Identification", shortLabel: "Vehicle" },
-  { id: "pricing", label: "Pricing", shortLabel: "Pricing" },
-  { id: "specifications", label: "Specifications", shortLabel: "Specs" },
-  { id: "features", label: "Features", shortLabel: "Features" },
-  { id: "media", label: "Media", shortLabel: "Media" },
-  { id: "description", label: "Description", shortLabel: "Description" },
-  { id: "publishing", label: "Publishing", shortLabel: "Publish" },
-  { id: "review", label: "Review", shortLabel: "Review" },
+  { id: "media", label: "Vehicle Photos", shortLabel: "Photos" },
+  { id: "specifications", label: "Licence Disc", shortLabel: "Licence" },
+  { id: "identification", label: "Vehicle Identification", shortLabel: "Identify" },
+  { id: "features", label: "SURF Review", shortLabel: "Review" },
+  { id: "description", label: "Description Builder", shortLabel: "Copy" },
+  { id: "pricing", label: "Pricing Workspace", shortLabel: "Pricing" },
+  { id: "review", label: "Review & Publish", shortLabel: "Publish" },
 ] as const;
 
 export type UploadStepId = (typeof UPLOAD_STEPS)[number]["id"];
@@ -24,6 +23,10 @@ export interface UploadMediaItem {
   readonly previewUrl: string;
   readonly isPrimary: boolean;
   readonly uploadProgress: number;
+  readonly width?: number;
+  readonly height?: number;
+  readonly angleTag?: "front" | "rear" | "left" | "right" | "interior" | "dashboard" | "engine" | "boot" | "wheel" | "other";
+  readonly fingerprint?: string;
 }
 
 export interface UploadIdentificationData {
@@ -61,6 +64,54 @@ export interface UploadSpecificationsData {
   readonly colour: string;
 }
 
+export interface UploadLicenceDiscData {
+  readonly fileName: string;
+  readonly fileUrl: string;
+  readonly analysisStatus: "idle" | "pending" | "complete";
+  readonly analysisMessage: string;
+  readonly extractedRegistration: string;
+  readonly extractedVin: string;
+  readonly extractedExpiryDate: string;
+}
+
+export interface UploadVehicleIdentificationData {
+  readonly analysisStatus: "idle" | "pending" | "complete";
+  readonly analysisMessage: string;
+  readonly provider: "none" | "openai" | "anthropic" | "internal";
+}
+
+export interface UploadIntelligenceReviewData {
+  readonly status: "idle" | "pending" | "complete";
+  readonly qualityScore: number;
+  readonly missingInformation: readonly string[];
+  readonly missingPhotos: readonly string[];
+  readonly suggestedImprovements: readonly string[];
+}
+
+export interface UploadDescriptionBuilderData {
+  readonly title: string;
+  readonly description: string;
+  readonly highlights: readonly string[];
+  readonly seoTitle: string;
+  readonly seoDescription: string;
+  readonly generationStatus: "idle" | "pending" | "complete";
+  readonly generationMessage: string;
+}
+
+export interface UploadPricingWorkspaceData {
+  readonly recommendedPriceCents: number | null;
+  readonly confidence: string;
+  readonly marketPosition: string;
+  readonly status: "idle" | "pending" | "complete";
+  readonly statusMessage: string;
+}
+
+export interface UploadPublishResult {
+  readonly status: "idle" | "pending" | "published" | "failed";
+  readonly message: string;
+  readonly vehicleId: string | null;
+}
+
 export interface UploadPublishingData {
   readonly mode: UploadPublishMode;
   readonly scheduledDate: string;
@@ -83,6 +134,12 @@ export interface UploadFormData {
   readonly media: readonly UploadMediaItem[];
   readonly description: string;
   readonly publishing: UploadPublishingData;
+  readonly licenceDisc: UploadLicenceDiscData;
+  readonly identificationAi: UploadVehicleIdentificationData;
+  readonly intelligenceReview: UploadIntelligenceReviewData;
+  readonly descriptionBuilder: UploadDescriptionBuilderData;
+  readonly pricingWorkspace: UploadPricingWorkspaceData;
+  readonly publishResult: UploadPublishResult;
 }
 
 export interface UploadDraftMeta {
@@ -96,6 +153,10 @@ export interface UploadContextSnapshot {
   readonly currentStepIndex: number;
   readonly completedSteps: readonly UploadStepId[];
   readonly draftId: string;
+  readonly revision: number;
+  readonly updatedAt: string;
+  readonly dealershipId: string | null;
+  readonly sourceTabId?: string;
 }
 
 export const INITIAL_UPLOAD_DATA: UploadFormData = {
@@ -146,5 +207,47 @@ export const INITIAL_UPLOAD_DATA: UploadFormData = {
     whatsapp: false,
     tiktok: false,
     email: false,
+  },
+  licenceDisc: {
+    fileName: "",
+    fileUrl: "",
+    analysisStatus: "idle",
+    analysisMessage: "Awaiting OCR analysis",
+    extractedRegistration: "",
+    extractedVin: "",
+    extractedExpiryDate: "",
+  },
+  identificationAi: {
+    analysisStatus: "idle",
+    analysisMessage: "Awaiting AI analysis",
+    provider: "none",
+  },
+  intelligenceReview: {
+    status: "idle",
+    qualityScore: 0,
+    missingInformation: [],
+    missingPhotos: [],
+    suggestedImprovements: [],
+  },
+  descriptionBuilder: {
+    title: "",
+    description: "",
+    highlights: [],
+    seoTitle: "",
+    seoDescription: "",
+    generationStatus: "idle",
+    generationMessage: "Awaiting AI analysis",
+  },
+  pricingWorkspace: {
+    recommendedPriceCents: null,
+    confidence: "pending-live-market-data",
+    marketPosition: "Awaiting live market data",
+    status: "idle",
+    statusMessage: "Awaiting live market data",
+  },
+  publishResult: {
+    status: "idle",
+    message: "",
+    vehicleId: null,
   },
 };

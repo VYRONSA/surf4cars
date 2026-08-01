@@ -1,6 +1,8 @@
 "use client";
 
-import { SurfLogo } from "@/components/brand";
+import { useRouter } from "next/navigation";
+
+import { SurfWordmark } from "@/components/brand";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icons";
 import {
@@ -15,6 +17,7 @@ import {
 import { DropdownMenu } from "@/components/ui/navigation";
 import { useShell } from "@/components/shell/context";
 import { GlobalSearchTrigger } from "@/components/shell/global-search";
+import { logoutCurrentSession } from "@/features/authentication";
 import { cn } from "@/utils";
 
 export interface AppHeaderProps {
@@ -22,6 +25,7 @@ export interface AppHeaderProps {
 }
 
 export function AppHeader({ className }: AppHeaderProps) {
+  const router = useRouter();
   const {
     toggleSidebar,
     toggleCommandPalette,
@@ -29,6 +33,12 @@ export function AppHeader({ className }: AppHeaderProps) {
     showSidebar,
     portal,
   } = useShell();
+
+  const signOutPath = portal === "dealer"
+    ? "/auth/sign-in?portal=dealer"
+    : portal === "buyer"
+      ? "/auth/sign-in?portal=buyer"
+      : "/";
 
   return (
     <header
@@ -62,7 +72,7 @@ export function AppHeader({ className }: AppHeaderProps) {
       )}
 
       <div className="flex min-w-0 items-center gap-2">
-        <SurfLogo variant="shell" />
+        <SurfWordmark size="header" />
         <div className="hidden min-w-0 sm:block">
           <p className="truncate text-[length:var(--text-caption)] capitalize text-[var(--color-muted-foreground)]">
             {portal === "public" ? "Marketplace" : `${portal} portal`}
@@ -132,7 +142,16 @@ export function AppHeader({ className }: AppHeaderProps) {
           items={[
             { id: "profile", label: "Profile", disabled: true },
             { id: "settings", label: "Settings", disabled: true },
-            { id: "sign-out", label: "Sign out", disabled: true },
+            {
+              id: "sign-out",
+              label: "Sign out",
+              destructive: true,
+              onSelect: () => {
+                void logoutCurrentSession().finally(() => {
+                  router.replace(signOutPath);
+                });
+              },
+            },
           ]}
         />
       </div>

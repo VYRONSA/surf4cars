@@ -21,12 +21,10 @@ export function UploadNavigation({
   validationError,
   className,
 }: UploadNavigationProps) {
-  const { prevStep, nextStep, isFirstStep, isLastStep, saveDraft, isSaving } = useUploadWizard();
+  const { prevStep, continueToNextStep, isFirstStep, isLastStep, saveDraft, isSaving } = useUploadWizard();
 
   function handleContinue() {
-    const canProceed = onContinue?.();
-    if (canProceed === false) return;
-    nextStep();
+    continueToNextStep(onContinue);
   }
 
   return (
@@ -48,7 +46,7 @@ export function UploadNavigation({
               Previous
             </button>
           )}
-          <button type="button" onClick={saveDraft} className={uploadPolish.secondaryButton}>
+          <button type="button" onClick={() => { void saveDraft().catch(() => {}); }} className={uploadPolish.secondaryButton}>
             <Icon icon={Download} size="sm" aria-hidden />
             {isSaving ? "Saving…" : "Save Draft"}
           </button>

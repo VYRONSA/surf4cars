@@ -29,7 +29,9 @@ export function AppShell({
 }: AppShellProps) {
   return (
     <ShellProvider portal={portal} showSidebar={showSidebar}>
-      <div className={cn("flex min-h-dvh flex-col bg-[var(--color-background)]", className)}>
+      {/* Unfilled on purpose — the base colour and the page wash both come from `body`. Repainting the
+          background here made this an opaque pane over the wash. See public-layout.tsx for the detail. */}
+      <div className={cn("flex min-h-dvh flex-col", className)}>
         <AppHeader />
         <div className="flex flex-1 overflow-hidden">
           <AppSidebar />

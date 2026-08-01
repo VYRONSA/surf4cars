@@ -70,6 +70,12 @@ export const PERMISSIONS = {
   "admin:support:manage": "Manage support tickets",
   "admin:moderation:manage": "Content moderation",
   "admin:cms:manage": "Platform CMS",
+  /**
+   * Approving brand photography. Held separately from CMS because it is not content editing: an
+   * approval puts an image into the brand permanently and is the one platform action reserved to
+   * creative direction rather than delegated to whoever is on the CMS today.
+   */
+  "admin:creative:approve": "Approve brand media and creative direction",
   "admin:advertising:manage": "Advertising and featured listings",
   "admin:seo:manage": "Platform SEO",
   "admin:analytics:view": "Platform analytics",
@@ -89,6 +95,18 @@ export const PERMISSIONS = {
   "developer:docs:view": "View API documentation",
   "developer:env:view": "View environment configuration",
   "developer:monitoring:view": "View monitoring dashboards",
+
+  // Operations
+  "operations:view": "View SURF Operations Centre",
+  "operations:create": "Create operational records",
+  "operations:edit": "Edit operational records",
+  "operations:delete": "Delete operational records",
+  "operations:approve": "Approve operational workflows",
+  "operations:reject": "Reject operational workflows",
+  "operations:suspend": "Suspend dealer and operational entities",
+  "operations:restore": "Restore suspended dealer and operational entities",
+  "operations:export": "Export operations data",
+  "operations:manage": "Manage operations settings and controls",
 } as const;
 
 export type Permission = keyof typeof PERMISSIONS;
@@ -152,6 +170,7 @@ export const ROLE_PERMISSIONS: Record<UserTypeId, readonly Permission[]> = {
     "admin:support:manage",
     "admin:moderation:manage",
     "admin:cms:manage",
+    "admin:creative:approve",
     "admin:advertising:manage",
     "admin:seo:manage",
     "admin:analytics:view",
@@ -171,6 +190,88 @@ export const ROLE_PERMISSIONS: Record<UserTypeId, readonly Permission[]> = {
     "developer:docs:view",
     "developer:env:view",
     "developer:monitoring:view",
+  ],
+  "platform-owner": [
+    "operations:view",
+    "operations:create",
+    "operations:edit",
+    "operations:delete",
+    "operations:approve",
+    "operations:reject",
+    "operations:suspend",
+    "operations:restore",
+    "operations:export",
+    "operations:manage",
+  ],
+  "operations-director": [
+    "operations:view",
+    "operations:create",
+    "operations:edit",
+    "operations:delete",
+    "operations:approve",
+    "operations:reject",
+    "operations:suspend",
+    "operations:restore",
+    "operations:export",
+    "operations:manage",
+  ],
+  "dealer-success": [
+    "operations:view",
+    "operations:create",
+    "operations:edit",
+    "operations:approve",
+    "operations:reject",
+    "operations:suspend",
+    "operations:restore",
+    "operations:export",
+  ],
+  marketplace: [
+    "operations:view",
+    "operations:create",
+    "operations:edit",
+    "operations:approve",
+    "operations:reject",
+    "operations:export",
+  ],
+  revenue: [
+    "operations:view",
+    "operations:create",
+    "operations:edit",
+    "operations:approve",
+    "operations:reject",
+    "operations:export",
+  ],
+  finance: [
+    "operations:view",
+    "operations:create",
+    "operations:edit",
+    "operations:approve",
+    "operations:reject",
+    "operations:export",
+  ],
+  support: [
+    "operations:view",
+    "operations:create",
+    "operations:edit",
+    "operations:approve",
+    "operations:reject",
+    "operations:export",
+  ],
+  marketing: [
+    "operations:view",
+    "operations:create",
+    "operations:edit",
+    "operations:approve",
+    "operations:reject",
+    "operations:export",
+  ],
+  moderation: [
+    "operations:view",
+    "operations:create",
+    "operations:edit",
+    "operations:approve",
+    "operations:reject",
+    "operations:export",
   ],
 };
 
