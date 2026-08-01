@@ -1,4 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { NotificationHealthCard } from "@/features/notifications";
 import { getOperationsDashboardData } from "@/features/operations/server/operations-dashboard.service";
 import { logOperationsAuditEvent } from "@/features/operations/server/operations-audit.service";
 import { readPlatformStore } from "@/lib/local-persistence/platform-store";
@@ -71,6 +72,11 @@ export async function OperationsDashboardPage() {
           </Card>
         ))}
       </div>
+
+      {/* Above Recent Activity, deliberately. An enquiry that never reached a dealership is the most
+          expensive thing that can go wrong on this platform, and it is invisible from every other
+          panel on this page. */}
+      <NotificationHealthCard />
 
       <div className="grid gap-4 xl:grid-cols-[1.3fr_1fr]">
         <Card variant="glass" padding="md" className="border-[var(--color-border-subtle)]">

@@ -97,8 +97,91 @@ export function validateEnvironment(): ConfigValidationResult {
     });
   }
 
+  issues.push(...validateNotificationEnvironment(isProduction));
+
   return {
     valid: issues.every((issue) => issue.severity !== "error"),
     issues,
   };
+}
+
+/**
+ * Email delivery configuration.
+ *
+ * A warning rather than an error, and the distinction is the point: a deployment with no email
+ * provider still records every enquiry and still shows it to the dealership. It is degraded, not
+ * broken, and failing the health check outright would say the platform cannot take enquiries when
+ * it certainly can. What it cannot do is tell anybody — which is exactly what these messages say.
+ *
+ * `mock` in production is the exception and is an error. It is the one setting that looks configured,
+ * reports every send as successful, and delivers nothing.
+ */
+function validateNotificationEnvironment(isProduction: boolean): readonly ConfigIssue[] {
+  const issues: ConfigIssue[] = [];
+  const provider = (process.env.EMAIL_PROVIDER ?? "").trim().toLowerCase();
+
+  if (!provider) {
+    issues.push({
+      severity: "warning",
+      variable: "EMAIL_PROVIDER",
+      message:
+        "No email provider set. Enquiries are recorded and visible to dealers, but no dealership is notified.",
+    });
+    return issues;
+  }
+
+  if (provider === "mock") {
+    issues.push({
+      severity: isProduction ? "error" : "warning",
+      variable: "EMAIL_PROVIDER",
+      message: isProduction
+        ? "EMAIL_PROVIDER=mock in production. Nothing is delivered and every send is reported as successful."
+        : "EMAIL_PROVIDER=mock — sends are simulated, nothing leaves the machine.",
+    });
+    return issues;
+  }
+
+  if (provider === "ses") {
+    issues.push({
+      severity: "error",
+      variable: "EMAIL_PROVIDER",
+      message: "Amazon SES is not implemented in this build. Use resend or sendgrid.",
+    });
+    return issues;
+  }
+
+  if (provider !== "resend" && provider !== "sendgrid") {
+    issues.push({
+      severity: "error",
+      variable: "EMAIL_PROVIDER",
+      message: `"${provider}" is not a known provider. Use resend, sendgrid or ses.`,
+    });
+    return issues;
+  }
+
+  if (!process.env.EMAIL_API_KEY) {
+    issues.push({
+      severity: "error",
+      variable: "EMAIL_API_KEY",
+      message: `EMAIL_PROVIDER is "${provider}" but no API key is set. No notification can be sent.`,
+    });
+  }
+  if (!process.env.EMAIL_FROM) {
+    issues.push({
+      severity: "error",
+      variable: "EMAIL_FROM",
+      message: `EMAIL_PROVIDER is "${provider}" but no sender address is set.`,
+    });
+  }
+
+  if (isProduction && !process.env.NOTIFICATION_CRON_SECRET) {
+    issues.push({
+      severity: "warning",
+      variable: "NOTIFICATION_CRON_SECRET",
+      message:
+        "The retry endpoint is disabled. A notification that fails its first attempt will never be retried.",
+    });
+  }
+
+  return issues;
 }
