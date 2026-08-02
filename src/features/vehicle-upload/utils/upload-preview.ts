@@ -1,6 +1,5 @@
 import type { UploadFormData } from "@/features/vehicle-upload/types/upload.types";
 import type { ShowcaseVehicleListing } from "@/features/search/config/search-showcase-listings";
-import { PREMIUM_IMAGES } from "@/config/images";
 import { resolveListingTitle, resolvePrimaryListingMedia } from "@/features/vehicle-upload/utils/listing-summary";
 
 function formatPrice(value: string): string {
@@ -40,7 +39,15 @@ export function buildPreviewListing(data: UploadFormData): ShowcaseVehicleListin
     location: "",
     financeEstimate: data.pricing.monthlyFinanceEstimate || undefined,
     aiMatchScore: 0,
-    imageSrc: primary?.previewUrl ?? PREMIUM_IMAGES.vehicles.details,
+    /*
+      No stock photograph standing in for the dealer's car.
+      ====================================================
+      The preview filled an empty listing with a mountain-road Porsche, so a dealer with no
+      photographs saw a beautiful listing that was not theirs — and had no reason to add any. The
+      card's own `PhotographPending` state is what a buyer would actually see, which is the entire
+      point of a preview.
+    */
+    imageSrc: primary?.previewUrl ?? "",
     imagePosition: "center 40%",
     featured: data.publishing.featuredListing,
   };

@@ -55,7 +55,7 @@ function VehicleUploadContent() {
             <p className="mt-2 max-w-2xl text-[length:var(--text-body-sm)] leading-[var(--leading-relaxed)] text-[var(--color-muted-foreground)] lg:text-[length:var(--text-body-md)]">
               {editingVehicleId
                 ? "Update an existing inventory listing with the same AI-assisted builder and publish workflow."
-                : "The fastest guided workflow in South Africa to create, validate, enrich, and publish inventory-ready listings."}
+                : "Seven steps from photographs to a published listing. Your progress saves as you go."}
             </p>
           </div>
           {lastSavedAt && (

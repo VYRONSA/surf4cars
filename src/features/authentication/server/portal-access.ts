@@ -26,6 +26,24 @@ interface AccessDenied {
 
 export type PortalAccessResult = AccessAllowed | AccessDenied;
 
+/**
+ * The signed-in Supabase user id, or null.
+ *
+ * Split out from `resolvePortalAccess` because the dealer layout needs the *identity* to resolve which
+ * dealership the person works for — a question nothing in the platform asked until PCP-035.
+ */
+export async function resolveAuthenticatedUserId(): Promise<string | null> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(AUTH_TOKEN_COOKIE)?.value;
+  if (!token || !isSupabaseConfigured()) return null;
+
+  const supabase = createSupabaseServerClient(token);
+  if (!supabase) return null;
+
+  const auth = await supabase.auth.getUser();
+  return auth.data.user?.id ?? null;
+}
+
 function getPortalRequiredPermissions(portal: Portal): readonly string[] {
   if (portal === "dealer") return ["dealer:dashboard:view"];
   if (portal === "buyer") return ["buyer:dashboard:view"];

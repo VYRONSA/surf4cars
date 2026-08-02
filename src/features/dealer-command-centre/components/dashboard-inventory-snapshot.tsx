@@ -17,6 +17,9 @@ export interface DashboardInventorySnapshotProps {
 }
 
 export function DashboardInventorySnapshot({ items }: DashboardInventorySnapshotProps) {
+  /* Whether the dealership has any stock at all, not just any in this category. */
+  const hasInventory = items.some((group) => group.items.length > 0);
+
   return (
     <section className={dashboardPolish.section} aria-labelledby="dashboard-inventory-heading">
       <h2 id="dashboard-inventory-heading" className={dashboardPolish.sectionTitle}>
@@ -29,11 +32,20 @@ export function DashboardInventorySnapshot({ items }: DashboardInventorySnapshot
             <h3 className="mb-3 text-[length:var(--text-body-sm)] font-semibold">{group.label}</h3>
             {group.availability === "coming-soon" ? (
               <p className="rounded-[var(--radius-xl)] border border-dashed border-[var(--color-border)] p-4 text-center text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
-                {group.message ?? "Coming Soon"}
+                {group.message ?? "Nothing to show yet."}
               </p>
             ) : group.items.length === 0 ? (
+              /*
+                "Your inventory is in good shape" is only true if there is an inventory.
+                =====================================================================
+                A dealership with nothing published saw six of these cards congratulating it on stock
+                it does not have. An empty category means one of two different things and the copy has
+                to say which, because the action a dealer should take is opposite in each case.
+              */
               <p className="rounded-[var(--radius-xl)] border border-dashed border-[var(--color-border)] p-4 text-center text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
-                No vehicles in this category — your inventory is in good shape.
+                {hasInventory
+                  ? "No vehicles need attention here."
+                  : "Nothing here yet — this fills in once you have listings."}
               </p>
             ) : (
               <ul className="space-y-2">

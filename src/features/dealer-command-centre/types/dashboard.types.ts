@@ -1,8 +1,10 @@
 export interface DashboardDealerProfile {
   readonly name: string;
-  readonly subscription: string;
+  /** Null when no package is recorded — the field is omitted rather than filled with a placeholder. */
+  readonly subscription: string | null;
   readonly profileCompletion: number;
-  readonly lastLogin: string;
+  /** Null always, today: nothing records a sign-in timestamp. */
+  readonly lastLogin: string | null;
 }
 
 export type DashboardAvailability = "live" | "coming-soon";

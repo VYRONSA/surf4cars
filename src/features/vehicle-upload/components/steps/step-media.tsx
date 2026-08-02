@@ -141,7 +141,7 @@ export function StepMedia() {
         }}
         role="button"
         tabIndex={0}
-        aria-label="Upload vehicle photos. Drag and drop or press to browse."
+        aria-label="Add photographs. Drag them in, or press to choose from this device."
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
@@ -153,22 +153,22 @@ export function StepMedia() {
           <Icon icon={Upload} size="lg" tone="primary" aria-hidden />
         </div>
         <div>
-          <p className="text-[length:var(--text-body-lg)] font-semibold">Drop photos here</p>
+          <p className="text-[length:var(--text-body-lg)] font-semibold">Drop your photographs here</p>
           <p className="mt-1 text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
-            JPG or PNG · Drag and drop or upload from mobile/camera · Reorder and set primary image
+            JPG or PNG · Drag to reorder · The first photograph is the one buyers see in search
           </p>
         </div>
         <Button type="button" variant="primary" size="lg" onClick={() => photoInputRef.current?.click()}>
-          Browse Files
+          Choose photographs
         </Button>
         <div className="flex flex-wrap items-center justify-center gap-2">
           <Button type="button" variant="outline" size="sm" onClick={() => mobileInputRef.current?.click()}>
             <Icon icon={Smartphone} size="xs" aria-hidden />
-            Mobile Upload
+            Send from a phone
           </Button>
           <Button type="button" variant="outline" size="sm" onClick={() => cameraInputRef.current?.click()}>
             <Icon icon={ImageIcon} size="xs" aria-hidden />
-            Camera Upload
+            Take a photograph
           </Button>
         </div>
         <input

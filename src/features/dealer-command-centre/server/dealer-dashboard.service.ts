@@ -490,9 +490,11 @@ export async function getDealerDashboardData(
   return {
     dealer: {
       name: dealership?.tradingName ?? dealership?.businessName ?? "Dealer Dashboard",
-      subscription: dealership?.subscriptionPackage ?? "Coming Soon",
+      subscription: dealership?.subscriptionPackage?.trim() || null,
       profileCompletion: calculateProfileCompletion(dealership),
-      lastLogin: "Coming Soon",
+      /* Nothing records a sign-in timestamp. A dealer reading "Last login: Coming Soon" learns
+         only that we are showing them a field we cannot fill. */
+      lastLogin: null,
     },
     kpis,
     aiInsights,

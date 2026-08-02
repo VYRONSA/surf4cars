@@ -38,13 +38,24 @@ export function DashboardHeader({ dealer, onRefresh, isRefreshing }: DashboardHe
           <h1 className="mt-1 text-[length:var(--text-h3)] font-semibold tracking-[var(--tracking-heading)] lg:text-[length:var(--text-h2)]">
             {dealer.name}
           </h1>
-          <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
-            <span>
-              Subscription:{" "}
-              <strong className="text-[var(--color-foreground)]">{dealer.subscription}</strong>
-            </span>
-            <span>Last login: {dealer.lastLogin}</span>
-          </div>
+          {/*
+            "Subscription: Coming Soon · Last login: Coming Soon" used to render here.
+            ========================================================================
+            A product roadmap phrase in the position of a data value, on the first line a dealer reads
+            every morning. Nothing tracks last sign-in, and a dealership without a subscription package
+            recorded has no subscription to report — so both are omitted rather than filled.
+          */}
+          {(dealer.subscription || dealer.lastLogin) && (
+            <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
+              {dealer.subscription && (
+                <span>
+                  Subscription:{" "}
+                  <strong className="text-[var(--color-foreground)]">{dealer.subscription}</strong>
+                </span>
+              )}
+              {dealer.lastLogin && <span>Last login: {dealer.lastLogin}</span>}
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center">

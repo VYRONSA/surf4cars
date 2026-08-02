@@ -152,8 +152,12 @@ function PreviewFrame({
           <p className="line-clamp-2 text-[length:var(--text-body-sm)] font-semibold">{title}</p>
           <p className="text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">{price} · {mileage}</p>
           <div className="grid grid-cols-2 gap-2 text-[length:var(--text-caption)]">
-            <div className="rounded-[var(--radius-md)] bg-[var(--color-surface-sunken)] px-3 py-2">Finance ready</div>
-            <div className="rounded-[var(--radius-md)] bg-[var(--color-surface-sunken)] px-3 py-2">AI enriched</div>
+            {/* "Finance ready" and "AI enriched" rendered on every preview regardless of the listing —
+                two claims about a vehicle the dealer had not finished describing. A preview that
+                flatters an empty listing removes the reason to complete it. */}
+            <div className="rounded-[var(--radius-md)] bg-[var(--color-surface-sunken)] px-3 py-2">
+              This is what buyers see
+            </div>
           </div>
         </div>
       </div>
