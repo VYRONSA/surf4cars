@@ -230,15 +230,46 @@ function toInventoryRecommendation(rec: {
   };
 }
 
+/**
+ * Is the inventory schema genuinely absent — or did a real write just fail?
+ *
+ * WHY THIS TEST WAS DANGEROUS
+ * ===========================
+ * It used to return true for any message containing `inventory_vehicle_`, `relation` or
+ * `does not exist`. Postgres names the table in *every* constraint violation, so this matched:
+ *
+ *   null value in column "provenance" of relation "inventory_vehicle_media" violates not-null…
+ *   new row violates row-level security policy for table "inventory_vehicles"
+ *   duplicate key value violates unique constraint …
+ *
+ * Each of those is a genuine, meaningful failure. Every one was being read as "the database has not
+ * been migrated", and the caller silently fell back to the local JSON store and returned success.
+ *
+ * PCP-038 found the consequence, live: `addVehicleMedia` omitted the `provenance` column, which is
+ * `not null` with no default. Every photograph a dealer added through that path failed, was
+ * swallowed here, was written to an ephemeral local file instead, and the dealer was told it had
+ * worked. On a serverless deployment that file does not survive the request.
+ *
+ * That is precisely the two rules this platform is built on — "never claim success" and "never
+ * silently discard customer data" — broken by a substring match.
+ *
+ * So the test is now narrow: only a genuinely missing relation or an unmigrated schema cache
+ * qualifies, and any message that names a constraint violation is explicitly excluded first.
+ */
 function isMissingInventoryTableError(error: unknown): boolean {
   if (!(error instanceof Error)) return false;
   const message = error.message.toLowerCase();
+
+  /* A violated constraint is a real failure and must reach the caller. Checked first, because these
+     messages also name the relation and would otherwise match the patterns below. */
+  if (/violates|null value in column|duplicate key|invalid input|out of range|permission denied/.test(message)) {
+    return false;
+  }
+
   return (
-    message.includes("schema cache") ||
-    message.includes("inventory_vehicles") ||
-    message.includes("inventory_vehicle_") ||
-    message.includes("does not exist") ||
-    message.includes("relation")
+    message.includes("schema cache")
+    || message.includes("could not find the table")
+    || /relation ".*" does not exist/.test(message)
   );
 }
 
@@ -1251,6 +1282,31 @@ export async function addVehicleMedia(
     return addVehicleMediaToLocalStore(dealershipId, vehicleId, payload, accessToken);
   }
 
+  /*
+    The vehicle must belong to the dealership the caller was authorised for.
+    ======================================================================
+    The route checks that the caller may act for `dealershipId`. It does not — and cannot — check
+    that `vehicleId` is one of that dealership's vehicles, because the id arrives in the path. Without
+    this lookup, a dealer authorised for their own forecourt could attach a photograph to any vehicle
+    on the platform by posting to another dealership's vehicle id.
+
+    It was not exploitable when PCP-038 found it, but only by accident: every insert below was failing
+    on the missing `provenance` column. Fixing that without adding this check would have opened it.
+  */
+  const { data: owned, error: ownershipError } = await supabase
+    .from("inventory_vehicles")
+    .select("id")
+    .eq("id", vehicleId)
+    .eq("dealership_id", dealershipId)
+    .maybeSingle();
+
+  if (ownershipError && !isMissingInventoryTableError(new Error(ownershipError.message))) {
+    throw new Error(ownershipError.message);
+  }
+  if (!owned) {
+    throw new Error("That vehicle does not belong to this dealership.");
+  }
+
   const { data: existing, error: existingError } = await supabase
     .from("inventory_vehicle_media")
     .select("id, sort_order")
@@ -1279,6 +1335,12 @@ export async function addVehicleMedia(
     quality_status: payload.qualityStatus ?? "review",
     processing_status: "uploaded",
     ai_enhancement_status: "not-started",
+    /* `provenance` is `not null` with no default, deliberately: PCP-015D decided that writing an
+       image requires deciding where it came from, because 1 000 unlabelled images had accumulated
+       without anyone choosing. Omitting it here made every insert fail. A photograph a dealership
+       adds to its own listing is `dealer` — a photograph of the actual vehicle, the only category
+       shown to a buyer without qualification. */
+    provenance: "dealer",
     created_at: new Date().toISOString(),
   });
 
