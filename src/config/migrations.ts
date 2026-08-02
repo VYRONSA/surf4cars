@@ -31,6 +31,7 @@ export const MIGRATION_MANIFEST: readonly MigrationDescriptor[] = [
   { id: "20260804100000_pcp030_recoverable_unconfigured", description: "Unconfigured notifications become due once a provider is set" },
   { id: "20260805090000_prp006_rate_limit_windows", description: "Durable rate limit windows for unauthenticated endpoints" },
   { id: "20260806090000_pcp032_dealer_verification", description: "Real dealership verification state, replacing a hardcoded verified flag" },
+  { id: "20260807090000_pcp036_dealer_migration", description: "Dealer import batches and rows — reversible migration with retained source" },
 ] as const;
 
 /** The migration this build expects to be the most recent one applied. */
@@ -64,6 +65,8 @@ export const REQUIRED_TABLES: readonly string[] = [
   "editorial_placements",
   "enquiry_notifications",
   "rate_limit_windows",
+  "vehicle_import_batches",
+  "vehicle_import_rows",
 ] as const;
 
 /** Storage buckets the media pipeline expects to exist. */
