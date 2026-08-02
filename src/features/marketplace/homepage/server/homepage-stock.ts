@@ -5,6 +5,8 @@ import { getVehicleEngine } from "@/services/vehicle-engine/vehicle-engine.servi
 import { toShowcaseVehicleListing } from "@/services/vehicle-engine/vehicle-projection.service";
 import type { ShowcaseVehicleListing } from "@/features/search/config/search-showcase-listings";
 import { createLogger } from "@/lib/observability/logger";
+import { createDomainServerClient } from "@/lib/supabase/service-client";
+import { slugify } from "@/utils/slugify";
 
 import { buildSearchFacets, EMPTY_FACETS, type SearchFacets } from "./homepage-facets";
 
@@ -60,6 +62,16 @@ export interface DealerSpotlight {
   readonly stockCount: number;
   readonly verified: boolean;
   readonly inventory: readonly ShowcaseVehicleListing[];
+  /** Route to the dealership's own page. Null when the slug cannot be resolved. */
+  readonly href: string | null;
+  /** The dealership's own mark. Null when they have not supplied one — never a generated stand-in. */
+  readonly logoUrl: string | null;
+  /**
+   * What this dealership is known for, written by the Founder in the placement's story field.
+   * Null when unwritten; nothing is inferred from their stock, because "mostly sells bakkies" is a
+   * statistic about a forecourt, not a speciality a dealership would claim for itself.
+   */
+  readonly speciality: string | null;
 }
 
 const EMPTY: HomepageStock = {
@@ -206,34 +218,71 @@ export async function loadHomepageStock(): Promise<HomepageStock> {
         ].filter((section) => section.listings.length > 0);
 
     /**
-     * The spotlight dealership.
+     * The spotlight dealership — an approved placement, or nothing.
      *
-     * Chosen on stock depth, because that is the only claim the platform can actually stand behind
-     * today — "most vehicles on the marketplace" is true or it is not. It is deliberately not a paid
-     * placement dressed as an editorial choice, and when advertising does fund this slot the reason a
-     * dealership appears here should change with it, visibly.
+     * WHY THIS NO LONGER PICKS A WINNER ITSELF
+     * =======================================
+     * It used to choose whichever dealership had the deepest stock, on the honest reasoning that
+     * "most vehicles on the marketplace" is a claim the platform can stand behind. That was right
+     * while the slot was editorial.
+     *
+     * It is now specified as a commercial placement that Premium and Platinum dealerships will be
+     * able to buy. The moment money can reach a slot, an algorithm choosing its occupant is a
+     * liability: it either overrules a paid placement or silently becomes one, and neither is
+     * something a Founder can defend to the dealership that paid.
+     *
+     * So the rule is the one the brief states — **always requires Founder or Editorial approval
+     * before publication**. No approved placement means no spotlight section, not a fallback pick.
+     * A commercial slot that fills itself when nobody has approved anything is an advertisement the
+     * platform gave away.
      */
-    const byDealer = new Map<string, ShowcaseVehicleListing[]>();
-    for (const listing of listings) {
-      if (!listing.dealer) continue;
-      const existing = byDealer.get(listing.dealer);
-      if (existing) existing.push(listing);
-      else byDealer.set(listing.dealer, [listing]);
-    }
+    const spotlightSlot = editorial.value.find(
+      (entry) => entry.slot.kind === "dealer-spotlight" && entry.slot.published,
+    );
+    const approvedPlacement = spotlightSlot?.placements.find(
+      (placement) => placement.published && placement.subjectKind === "dealership",
+    );
 
-    const deepest = [...byDealer.entries()].sort((a, b) => b[1].length - a[1].length)[0];
-    const spotlight: DealerSpotlight | null = deepest
-      ? {
-          dealer: deepest[0],
-          location: deepest[1][0]?.location ?? "",
-          stockCount: deepest[1].length,
-          verified: deepest[1].some((listing) => listing.verified),
-          inventory: selectFeatured(
-            [...deepest[1]].sort((a, b) => b.aiMatchScore - a.aiMatchScore),
-            SPOTLIGHT_GRID,
-          ).listings,
+    let spotlight: DealerSpotlight | null = null;
+
+    if (approvedPlacement) {
+      /* The placement names a dealership id; a listing carries only the dealership's name. Resolving
+         the id here rather than matching on a name the placement never held keeps the approval
+         authoritative — the Founder approved a business, not a string. */
+      const supabase = createDomainServerClient();
+      const { data: dealershipRow } = supabase
+        ? await supabase
+            .from("dealerships")
+            .select("id, business_name, trading_name, city, logo_data_url")
+            .eq("id", approvedPlacement.subjectId)
+            .maybeSingle()
+        : { data: null };
+
+      if (dealershipRow) {
+        const displayName = (dealershipRow.trading_name || dealershipRow.business_name || "") as string;
+        const owned = listings.filter((listing) => listing.dealer === displayName);
+
+        /* An approved dealership with nothing publishable renders nothing rather than an empty frame
+           with a name in it. The approval is not in question; the stock is. */
+        if (owned.length > 0) {
+          spotlight = {
+            dealer: displayName,
+            location: (dealershipRow.city as string | null) ?? owned[0]?.location ?? "",
+            stockCount: owned.length,
+            verified: owned.some((listing) => listing.verified),
+            /* Same slug rule as the dealer profile route resolves against — never a second builder. */
+            href: displayName ? `/dealers/${slugify(displayName)}` : null,
+            /* Null when the dealership has not supplied a mark. Nothing is generated to fill it. */
+            logoUrl: (dealershipRow.logo_data_url as string | null) ?? null,
+            speciality: approvedPlacement.story,
+            inventory: selectFeatured(
+              [...owned].sort((a, b) => b.aiMatchScore - a.aiMatchScore),
+              SPOTLIGHT_GRID,
+            ).listings,
+          };
         }
-      : null;
+      }
+    }
 
     return {
       featured,

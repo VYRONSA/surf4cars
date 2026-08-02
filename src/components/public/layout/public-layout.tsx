@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 
 import { PublicFooter } from "@/components/public/footer/public-footer";
+import { BackNavigationBar } from "@/components/navigation/back-navigation-bar";
 import { PublicHeader } from "@/components/public/header/public-header";
 import { cn } from "@/utils";
 
@@ -40,6 +41,8 @@ export function PublicExperienceLayout({
     */
     <div className={cn("flex min-h-dvh flex-col", className)}>
       <PublicHeader />
+      {/* Hides itself on the homepage; every other public screen gets it. */}
+      <BackNavigationBar />
       <main
         id="main-content"
         className="flex flex-1 flex-col"

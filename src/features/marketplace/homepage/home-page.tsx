@@ -52,28 +52,36 @@ export async function HomePage() {
       <HomeHeroV2 vehicleCount={total} facets={facets} />
 
       {/*
-        Photography follows photography.
-        ===============================
-        The marque rail used to sit here, directly under the hero — ten white rounded tiles in a row
-        with a stock count beside each. Coming off a full-bleed cinematic frame that is a hard drop:
-        it is the most application-like element on the page, and it read as a filter bar rather than
-        as editorial. The first thing after a magazine cover should be the opening spread, not the
-        index.
+        Stock first. Everything editorial waits.
+        =======================================
+        Two things used to sit between the hero and any browsable inventory: a curated "This week's
+        featured vehicles" spread, and the lifestyle collections. Both are good sections and both
+        answer a question the visitor has not asked yet.
 
-        The rail still earns its place — a buyer who arrives knowing the marque wants it — so it
-        moves below the featured vehicles rather than being deleted. First the cars, then the ways in.
+        Somebody arriving on a car marketplace is asking one thing — *show me cars I can buy* — and a
+        magazine spread of five hand-picked vehicles answers "here is what we think you should want".
+        The order now answers the visitor first and the editor second: real stock, then the ways in,
+        then the curation for people still browsing rather than shopping.
+
+        The section is unchanged in substance — it was already reading live published inventory — but
+        it now presents as stock rather than as a collection: a uniform grid, and a route to the full
+        marketplace rather than a curatorial rationale.
       */}
       <HomeFeaturedEditorial
-        eyebrow="Featured"
-        title="This week's featured vehicles"
-        description="Chosen for how completely they are presented — full galleries, full specifications, nothing hidden."
+        eyebrow="Available now"
+        title="Cars you can buy today"
+        description={
+          total > 0
+            ? `${total.toLocaleString("en-ZA")} vehicles listed by South African dealerships, every one with a full gallery and specification.`
+            : undefined
+        }
         listings={featured}
+        viewAllHref="/search"
+        layout="uniform"
         priority
       />
 
       <HomeBrandRail brands={brands} />
-
-      <HomeLifestyleCollections />
 
       {/*
         Every published collection, in the Founder's order.
@@ -95,6 +103,9 @@ export async function HomePage() {
           layout="uniform"
         />
       ))}
+
+      {/* Editorial lives here now — past the stock, for visitors still browsing rather than shopping. */}
+      <HomeLifestyleCollections />
 
       {spotlight && <HomeDealerSpotlight spotlight={spotlight} />}
 

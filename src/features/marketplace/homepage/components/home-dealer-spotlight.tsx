@@ -72,17 +72,49 @@ export function HomeDealerSpotlight({ spotlight }: HomeDealerSpotlightProps) {
                 )}
               </div>
 
-              <h2
-                id="spotlight-heading"
-                className="mt-4 max-w-2xl text-[length:var(--text-h2)] font-semibold leading-[1.08] tracking-[-0.02em] text-[var(--color-foreground)]"
-              >
-                {spotlight.dealer}
-              </h2>
+              <div className="mt-4 flex items-center gap-4">
+                {/* The dealership's own mark, and nothing in its place when they have not supplied
+                    one — a generated monogram would be us inventing their branding. */}
+                {spotlight.logoUrl ? (
+                  <span className="inline-flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-[var(--radius-lg)] bg-[var(--color-glass-strong)] backdrop-blur-[var(--glass-blur-sm)]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={spotlight.logoUrl}
+                      alt=""
+                      className="size-full object-contain p-2"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </span>
+                ) : null}
+                <h2
+                  id="spotlight-heading"
+                  className="max-w-2xl text-[length:var(--text-h2)] font-semibold leading-[1.08] tracking-[-0.02em] text-[var(--color-foreground)]"
+                >
+                  {spotlight.dealer}
+                </h2>
+              </div>
 
-              <p className="mt-3 max-w-xl text-[length:var(--text-body-lg)] leading-relaxed text-[var(--color-muted-foreground)]">
-                {formattedStock} vehicles on the marketplace, every listing photographed in full and
-                checked before it went live.
+              {/* Written by the Founder on the placement. Absent rather than inferred from stock. */}
+              {spotlight.speciality ? (
+                <p className="mt-3 max-w-xl text-[length:var(--text-body-lg)] leading-relaxed text-[var(--color-muted-foreground)]">
+                  {spotlight.speciality}
+                </p>
+              ) : null}
+
+              <p className="mt-3 max-w-xl text-[length:var(--text-body-md)] text-[var(--color-muted-foreground)]">
+                {formattedStock} vehicles on the marketplace.
               </p>
+
+              {spotlight.href ? (
+                <Link
+                  href={spotlight.href}
+                  className="motion-button mt-6 inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-lg)] bg-[var(--color-foreground)] px-6 py-3 text-[length:var(--text-button)] font-semibold text-[var(--color-background)] transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
+                >
+                  Visit {spotlight.dealer}
+                  <Icon icon={ArrowRight} aria-hidden className="size-4" />
+                </Link>
+              ) : null}
             </div>
           </div>
 

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { BackNavigationBar } from "@/components/navigation/back-navigation-bar";
 import { PublicExperienceLayout } from "@/components/public/layout/public-layout";
 import { AppShell } from "@/components/shell/app-shell/app-shell";
 import type { ShellPortal } from "@/components/shell/context";
@@ -20,6 +21,8 @@ export function SurfOsLayout({
 }: SurfOsLayoutProps) {
   return (
     <AppShell portal={portal} showSidebar={showSidebar}>
+      {/* Every portal screen gets a Back control from the shell, so no page can ship without one. */}
+      <BackNavigationBar />
       <PageContainer variant={pageVariant}>{children}</PageContainer>
     </AppShell>
   );
