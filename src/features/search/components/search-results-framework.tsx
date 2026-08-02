@@ -3,6 +3,8 @@
 import type { ReactNode } from "react";
 
 import { PublicPagination } from "@/components/public/pagination";
+import { SearchNarrowResults } from "@/features/search/components/search-narrow-results";
+import type { SearchIntelligence } from "@/features/search/server/search-intelligence";
 import { SearchCatalogueHeader } from "@/features/search/components/search-catalogue-header";
 import { SearchMobileFiltersDrawer } from "@/features/search/components/search-mobile-filters-drawer";
 import { SearchNoResults } from "@/features/search/components/search-empty-states";
@@ -22,6 +24,8 @@ export interface SearchResultsFrameworkProps {
   readonly subheading?: string;
   /** The collection the buyer asked for, when they asked for one. Read only by the empty state. */
   readonly emptySubject?: string;
+  /** Why a nearly-empty search is nearly empty. Null when the search is healthy. */
+  readonly intelligence?: SearchIntelligence | null;
 }
 
 export function SearchResultsFramework(props: SearchResultsFrameworkProps) {
@@ -60,6 +64,7 @@ function SearchResultsFrameworkInner({
   heading = "Every vehicle",
   subheading,
   emptySubject,
+  intelligence,
 }: SearchResultsFrameworkProps) {
   /* `mt-16` on the pagination already gives the catalogue its closing breath; another 128px below it
      left roughly 190px of empty page above the footer, which reads as the grid having failed to load
@@ -80,6 +85,17 @@ function SearchResultsFrameworkInner({
           left two thirds of the page blank beside it — the single largest piece of dead space on the
           marketplace, on the page where a disappointed buyer is paying most attention.
         */}
+        {/*
+          The explanation goes above the results, not instead of them.
+          ===========================================================
+          A search returning two cars is not empty — it has two cars, and they might be the right
+          ones. The panel says why the list is short and names the filter to relax; the cars still
+          show underneath. Placing it inside the empty branch only would have left the four-result
+          case unexplained, which is the case a buyer is most likely to misread as "this marketplace
+          is small".
+        */}
+        <SearchNarrowResults intelligence={intelligence ?? null} className="mt-8" />
+
         {resultsSlot ? (
           /* Wider gutters than the old two-column layout allowed, and three cards across at every
              desktop width. The photograph is the product; it gets the room. */
@@ -91,7 +107,7 @@ function SearchResultsFrameworkInner({
             {resultsSlot}
           </div>
         ) : (
-          <div aria-live="polite">{emptySlot ?? <SearchNoResults subject={emptySubject} />}</div>
+          <div aria-live="polite" className="mt-2">{emptySlot ?? <SearchNoResults subject={emptySubject} />}</div>
         )}
 
         {/* No pagination for nothing. It rendered a red, current-page "1" under an empty result set,

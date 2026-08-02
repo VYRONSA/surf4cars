@@ -55,6 +55,21 @@ export interface DealerContact {
   readonly longitude: number | null;
 }
 
+export interface DealerStockProfile {
+  readonly vehicleCount: number;
+  /** Marques stocked, most-held first. */
+  readonly marques: readonly { readonly name: string; readonly count: number }[];
+  readonly medianPriceRand: number;
+  readonly lowestPriceRand: number;
+  readonly highestPriceRand: number;
+  /** Median model year across their listings — a proxy for how new the stock runs. */
+  readonly medianYear: number;
+  /** Distinct cities their stock sits in. */
+  readonly locations: readonly string[];
+  /** Listed in the last 30 days. */
+  readonly addedRecently: number;
+}
+
 export interface DealerPublicProfile {
   readonly id: string;
   readonly slug: string;
@@ -87,6 +102,15 @@ export interface DealerPublicProfile {
   /** Best-presented stock, through the shared presentation layer. */
   readonly featured: readonly ShowcaseVehicleListing[];
   readonly inventory: readonly ShowcaseVehicleListing[];
+  /**
+   * Facts about this dealership's stock, counted from live listings.
+   *
+   * Everything here is arithmetic over vehicles a buyer can click through to right now. Nothing is
+   * supplied by the dealership and nothing is scored. The stat row above it used to carry a
+   * hardcoded rating, review count and years in business; these replace that with the same amount of
+   * information and none of the invention.
+   */
+  readonly stockProfile: DealerStockProfile | null;
   /** Null until the dealer writes one. Never generated. */
   readonly story: string | null;
   readonly services: readonly string[] | null;
@@ -215,6 +239,55 @@ const genuineCover = (value: string | null): string | null => {
   return SHARED_PLACEHOLDER_MEDIA.includes(trimmed) ? null : trimmed;
 };
 
+/** Below this, a median is one car's price with a statistical hat on. */
+const MIN_FOR_STOCK_PROFILE = 4;
+
+function buildStockProfile(
+  records: readonly Awaited<ReturnType<ReturnType<typeof getVehicleEngine>["listPublishable"]>>[number][],
+): DealerStockProfile | null {
+  if (records.length < MIN_FOR_STOCK_PROFILE) return null;
+
+  const middle = (values: readonly number[]): number => {
+    const sorted = [...values].sort((a, b) => a - b);
+    const mid = Math.floor(sorted.length / 2);
+    return sorted.length % 2 === 0
+      ? Math.round(((sorted[mid - 1] ?? 0) + (sorted[mid] ?? 0)) / 2)
+      : (sorted[mid] ?? 0);
+  };
+
+  const prices = records.map((r) => Math.round(r.pricing.sellingPriceCents / 100)).filter((n) => n > 0);
+  const years = records.map((r) => r.core.year).filter((n): n is number => Boolean(n));
+
+  const marqueCounts = new Map<string, number>();
+  for (const record of records) {
+    const make = record.core.make?.trim();
+    if (make) marqueCounts.set(make, (marqueCounts.get(make) ?? 0) + 1);
+  }
+
+  const cities = [...new Set(records.map((r) => r.dealer.location?.trim()).filter(Boolean))] as string[];
+
+  const thirtyDaysAgo = Date.now() - 30 * 86_400_000;
+  const addedRecently = records.filter((r) => {
+    const added = Date.parse(r.dealer.dateAdded ?? "");
+    return Number.isFinite(added) && added >= thirtyDaysAgo;
+  }).length;
+
+  if (prices.length === 0) return null;
+
+  return {
+    vehicleCount: records.length,
+    marques: [...marqueCounts.entries()]
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name)),
+    medianPriceRand: middle(prices),
+    lowestPriceRand: Math.min(...prices),
+    highestPriceRand: Math.max(...prices),
+    medianYear: years.length > 0 ? middle(years) : 0,
+    locations: cities.sort(),
+    addedRecently,
+  };
+}
+
 const toNumber = (value: string | null): number | null => {
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : null;
@@ -273,6 +346,16 @@ export async function loadDealerProfile(slug: string): Promise<DealerPublicProfi
     );
     const inventory = selectFeatured(theirs, INVENTORY_GRID, featuredSelection.usedImages).listings;
 
+    /*
+      Measured, or absent.
+      ===================
+      Computed from the same `published` records the count comes from, so the profile can never say
+      "12 vehicles" beside a median drawn from a different set. Below four listings the medians are
+      one or two cars wearing a statistic's clothes, and the block does not render.
+    */
+    const theirRecords = published.filter((record) => record.tenantId === row.id);
+    const stockProfile = buildStockProfile(theirRecords);
+
     return {
       id: row.id,
       slug,
@@ -295,6 +378,7 @@ export async function loadDealerProfile(slug: string): Promise<DealerPublicProfi
       coverImage: genuineCover(row.cover_data_url),
       isDemonstration: row.is_demonstration === true,
       vehiclesInStock: theirs.length,
+      stockProfile,
       listedSince: row.created_at ? new Date(row.created_at).getFullYear().toString() : null,
       contact: {
         telephone: clean(row.telephone),

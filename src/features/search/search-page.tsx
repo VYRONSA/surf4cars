@@ -3,6 +3,7 @@ import { SearchResultsFramework } from "@/features/search/components/search-resu
 import { VehicleListingCard } from "@/features/search/components/vehicle-listing-card";
 import { getVehicleSearchService } from "@/services/vehicle-engine";
 import { buildVehicleSearchQuery, parseSearchState } from "@/features/search/utils/search-query";
+import { loadSearchIntelligence } from "@/features/search/server/search-intelligence";
 
 export interface SearchPageProps {
   readonly searchParams?: Record<string, string | string[] | undefined>;
@@ -21,6 +22,10 @@ export async function SearchPage({ searchParams }: SearchPageProps) {
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const { heading, subheading, isFiltered } = buildSearchHeading(searchState);
 
+  /* Only computed when the result set is small enough for the question to be worth asking — it costs
+     one extra query per active filter. A healthy search does not pay for it. */
+  const intelligence = await loadSearchIntelligence(searchState, total);
+
   return (
     <SearchResultsFramework
       // Total matches, not the page length — otherwise a paged result set reports "1 results".
@@ -31,6 +36,7 @@ export async function SearchPage({ searchParams }: SearchPageProps) {
       heading={heading}
       subheading={subheading}
       emptySubject={isFiltered ? heading : undefined}
+      intelligence={intelligence}
       // Omitted when empty so the framework can fall through to its no-results state; an empty
       // fragment is truthy and would suppress it.
       resultsSlot={

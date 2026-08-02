@@ -69,6 +69,35 @@ function Stat({
   );
 }
 
+const formatRand = (value: number) =>
+  `R ${Math.round(value).toLocaleString("en-ZA").replace(/,/g, " ")}`;
+
+/** One counted fact. `dt`/`dd` because that is what these are — a term and its value. */
+function StockFact({
+  label,
+  value,
+  detail,
+}: {
+  readonly label: string;
+  readonly value: string;
+  readonly detail: string;
+}) {
+  return (
+    <div>
+      <dt className="text-[length:var(--text-caption)] uppercase tracking-[0.16em] text-[var(--color-muted)]">
+        {label}
+      </dt>
+      <dd className="mt-2 text-[length:var(--text-h4)] font-semibold tabular-nums tracking-[-0.02em] text-[var(--color-foreground)]">
+        {value}
+      </dd>
+      <dd className="mt-1.5 text-[length:var(--text-body-sm)] leading-relaxed text-[var(--color-muted-foreground)]">
+        {detail}
+      </dd>
+      <ProvenanceNote kind="platform" className="mt-2.5" />
+    </div>
+  );
+}
+
 function ContactRow({
   icon,
   label,
@@ -268,6 +297,65 @@ export function DealerProfilePage({ dealer }: DealerProfilePageProps) {
             />
           </div>
         </section>
+
+        {/* ── Stock intelligence ─────────────────────────────────────────────────────────────── */}
+        {dealer.stockProfile && (
+          <section aria-labelledby="dealer-stock-heading">
+            <p className="text-[length:var(--text-caption)] uppercase tracking-[0.22em] text-[var(--color-muted)]">
+              Their stock
+            </p>
+            <h2
+              id="dealer-stock-heading"
+              className="mt-3 text-[length:var(--text-h2)] font-semibold tracking-[-0.02em] text-[var(--color-foreground)]"
+            >
+              What they carry
+            </h2>
+            {/*
+              Every figure below is counted from the listings on this page.
+              ===========================================================
+              This section exists because the stat row above it used to carry a 4.8 rating, 24
+              reviews and eight years in business — none of it measured from anything. A buyer
+              assessing a dealership wants to know what kind of stock they hold, and that is a
+              question the marketplace can answer exactly.
+            */}
+            <p className="mt-3 max-w-2xl text-[length:var(--text-body-md)] leading-relaxed text-[var(--color-muted-foreground)]">
+              Counted from the {dealer.stockProfile.vehicleCount} vehicles they have published on
+              SURF4CARS right now.
+            </p>
+
+            <dl className="mt-8 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
+              <StockFact
+                label="Typical asking price"
+                value={formatRand(dealer.stockProfile.medianPriceRand)}
+                detail={`${formatRand(dealer.stockProfile.lowestPriceRand)} to ${formatRand(dealer.stockProfile.highestPriceRand)}`}
+              />
+              {dealer.stockProfile.medianYear > 0 && (
+                <StockFact
+                  label="Typical model year"
+                  value={String(dealer.stockProfile.medianYear)}
+                  detail="Median across their listings"
+                />
+              )}
+              <StockFact
+                label="Marques stocked"
+                value={String(dealer.stockProfile.marques.length)}
+                detail={dealer.stockProfile.marques
+                  .slice(0, 4)
+                  .map((marque) => marque.name)
+                  .join(", ")}
+              />
+              <StockFact
+                label="Added in 30 days"
+                value={String(dealer.stockProfile.addedRecently)}
+                detail={
+                  dealer.stockProfile.addedRecently === 0
+                    ? "Nothing new this month"
+                    : "New to the marketplace"
+                }
+              />
+            </dl>
+          </section>
+        )}
 
         {/* ── Story ──────────────────────────────────────────────────────────────────────────── */}
         <section aria-labelledby="dealer-story-heading">
