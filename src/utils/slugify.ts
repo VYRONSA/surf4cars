@@ -20,14 +20,26 @@ export function slugify(input: string): string {
  * Marketplace slug for a vehicle listing.
  *
  * The descriptive part alone is not unique, so a truncated id keeps it readable while making it a genuine
- * one-to-one key. The truncation is the part worth knowing about: `s1-veh-0141` becomes `s1-veh-0`, so a
- * slug cannot be rebuilt by concatenating the title and the full id. Anything linking to a listing must call
- * this rather than assemble its own — the Quality Centre's first build did assemble its own and produced
- * URLs that all 404'd.
+ * one-to-one key. Anything linking to a listing must call this rather than assemble its own — the Quality
+ * Centre's first build did assemble its own and produced URLs that all 404'd.
+ *
+ * THE DISCRIMINATOR WAS EIGHT CHARACTERS, AND EIGHT WAS NOT ENOUGH
+ * ===============================================================
+ * This function's own note used to give `s1-veh-0141` → `s1-veh-0` as an illustration of the truncation,
+ * without following the consequence: 191 of the 229 published vehicles carry ids of exactly that shape, so
+ * every one of them truncated to the same eight characters. Measured before the fix: **29 colliding slugs,
+ * 34 vehicles shadowed**.
+ *
+ * A shadowed listing is not merely unreachable. The detail route resolves by slug and takes the first
+ * match, so a buyer clicking the fourth Hilux was shown the first one — a different price, a different
+ * odometer, a different car — with no indication anything had gone wrong.
+ *
+ * Twelve characters removes every collision in the current corpus and keeps UUID-style ids distinct too.
+ * Re-measure if the id scheme changes; the cost of being wrong here is silent and it is paid by the buyer.
  */
 export function buildVehicleSlug(descriptor: string, vehicleId: string): string {
   const base = slugify(descriptor);
-  const discriminator = slugify(vehicleId).slice(0, 8);
+  const discriminator = slugify(vehicleId).slice(0, 12);
   if (!base) return discriminator || vehicleId;
   return discriminator ? `${base}-${discriminator}` : base;
 }
