@@ -169,8 +169,21 @@ function isTransientDraftSaveError(error: unknown): boolean {
   return ["failed to fetch", "network", "timeout", "502", "503", "504"].some((token) => message.includes(token));
 }
 
+/**
+ * Instrumentation for the listing wizard, kept out of production builds.
+ *
+ * It was attaching `window.__pcp001eUploadDebug` in every environment — the production guard below
+ * covered only the console line, not the array. So a shipped build accumulated a rolling window of
+ * upload events, with their metadata, on the global object of every dealer's browser.
+ *
+ * Nobody else can read it: it lives in the dealer's own session and never leaves the page. It is
+ * removed because debug scaffolding named after a programme id has no business in a build customers
+ * use, not because it leaked. The call sites stay — they cost nothing once this returns early, and
+ * they are genuinely useful when the wizard misbehaves in development.
+ */
 function appendUploadDebugEvent(event: string, meta: Record<string, unknown> = {}) {
   if (typeof window === "undefined") return;
+  if (process.env.NODE_ENV === "production") return;
 
   const target = window as typeof window & {
     __pcp001eUploadDebug?: Array<{ readonly ts: string; readonly event: string; readonly meta: Record<string, unknown> }>;
@@ -184,9 +197,9 @@ function appendUploadDebugEvent(event: string, meta: Record<string, unknown> = {
 
   target.__pcp001eUploadDebug = [...(target.__pcp001eUploadDebug ?? []).slice(-59), entry];
 
-  if (process.env.NODE_ENV !== "production") {
-    console.info("[upload-debug]", entry);
-  }
+  /* No environment check here any more — the function returns early in production, so reaching this
+     line already means the build is a development or test one. */
+  console.info("[upload-debug]", entry);
 }
 
 function hasManualDescriptionBuilderCompletion(data: UploadFormData): boolean {

@@ -91,7 +91,22 @@ async function checkDatabase(): Promise<HealthCheck> {
           signal: AbortSignal.timeout(PROBE_TIMEOUT_MS),
           cache: "no-store",
         });
-        return { table, ok: response.ok, status: response.status };
+
+        /*
+          A refusal is not an absence.
+
+          This probe runs as `anon` and asked for `select=*`. PCP-038 replaced the table-wide SELECT
+          grant on `dealerships` and `inventory_vehicles` with an explicit column allow-list, so `*`
+          now returns 401 for those two — and this check reported the platform's two most important
+          tables as *missing*, taking the whole deployment to `unhealthy`. On a host that gates
+          traffic on health, a correct security change would have taken the site down.
+
+          A 401 or 403 is positive evidence the table exists: PostgREST resolved the relation and
+          then declined on privilege. Only a genuine "no such relation" — 404, or PostgREST's
+          PGRST205 schema-cache miss — means unmigrated.
+        */
+        const present = response.ok || response.status === 401 || response.status === 403;
+        return { table, ok: present, status: response.status };
       }),
     );
     return results;
