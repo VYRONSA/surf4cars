@@ -31,9 +31,15 @@ const log = createLogger("import-planner");
  *
  * READINESS COMES FROM THE EXISTING ENGINE
  * ========================================
- * `buildListingReadiness` is the same function the dealer workspace uses. The brief is explicit:
- * never create a second scoring engine. A migrated vehicle and a hand-entered one are scored by the
- * same code, which is the only way the number means anything after the import is finished.
+ * `buildListingReadiness` is the engine built in PCP-035. The brief is explicit: never create a
+ * second scoring engine. A migrated vehicle and a hand-entered one must be scored by the same code,
+ * or the number means nothing once the import is finished.
+ *
+ * Worth stating plainly: at the time of writing the import planner is its *only* caller. PCP-035
+ * built the engine and did not wire it into the inventory screens, so a dealer sees a readiness
+ * figure for imported stock and none for stock they entered by hand. That is a gap in the workspace,
+ * not a reason to fork the calculation here — forking it is precisely how two spellings of
+ * `onboarding_status` came about.
  */
 
 /** Below this share of the readiness score a listing cannot sensibly be published. */
