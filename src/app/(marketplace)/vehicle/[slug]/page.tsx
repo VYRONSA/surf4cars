@@ -9,6 +9,7 @@ import {
   VehicleDetailPage,
 } from "@/features/vehicle";
 import { loadMarketInsight } from "@/features/vehicle/server/market-insight";
+import { loadVehicleIntelligence } from "@/features/vehicle/server/vehicle-intelligence";
 import { loadVehicleEquipment } from "@/services/equipment";
 import { getVehicleEngine } from "@/services/vehicle-engine";
 
@@ -82,6 +83,14 @@ export default async function VehicleDetailRoute({ params }: VehicleDetailRouteP
     loadVehicleEquipment(vehicle.id),
   ]);
 
+  /* Intelligence needs the equipment count, so it runs after rather than beside. One extra pass over
+     an already-cached corpus; the alternative is threading the count through a second read path. */
+  const intelligence = await loadVehicleIntelligence({
+    id: vehicle.id,
+    priceNumeric: vehicle.priceNumeric,
+    equipmentCount: equipment.length,
+  });
+
   return (
     <>
       <script
@@ -94,7 +103,12 @@ export default async function VehicleDetailRoute({ params }: VehicleDetailRouteP
         data-testid="vehicle-breadcrumb-structured-data"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildVehicleBreadcrumbStructuredData(vehicle)) }}
       />
-      <VehicleDetailPage vehicle={vehicle} marketInsight={marketInsight} equipment={equipment} />
+      <VehicleDetailPage
+        vehicle={vehicle}
+        marketInsight={marketInsight}
+        equipment={equipment}
+        intelligence={intelligence}
+      />
     </>
   );
 }

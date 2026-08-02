@@ -26,6 +26,9 @@ const log = createLogger("market-insight");
  */
 const MINIMUM_COMPARABLES = 4;
 
+/** Kept identical to `vehicle-intelligence.ts` — the two are rendered on the same page. */
+const COMPARABLE_YEAR_WINDOW = 3;
+
 export interface MarketInsight {
   readonly make: string;
   readonly model: string;
@@ -64,18 +67,28 @@ export async function loadMarketInsight(vehicle: {
   readonly model: string;
   readonly priceNumeric: number;
   readonly mileage: string;
+  readonly year?: number;
 }): Promise<MarketInsight | null> {
   if (!vehicle.make || !vehicle.model) return null;
 
   try {
     const all = await getVehicleEngine().listPublishable();
 
+    /*
+      Matched on year as well as model.
+      =================================
+      This compared every listing of the model regardless of age, and on a 2026 against a set running
+      back to 2018 it reported "R315 000 above the median". Price falls with age: that is not a market
+      position, it is an eight-year spread. `vehicle-intelligence.ts` carries the same window, and the
+      two must not disagree — they are shown on the same page.
+    */
     const comparables = all.filter(
       (record: UnifiedVehicleRecord) =>
         record.id !== vehicle.id &&
         isMarketplaceVisible(record) &&
         record.core.make === vehicle.make &&
-        record.core.model === vehicle.model,
+        record.core.model === vehicle.model &&
+        Math.abs((record.core.year ?? 0) - (vehicle.year ?? 0)) <= COMPARABLE_YEAR_WINDOW,
     );
 
     if (comparables.length < MINIMUM_COMPARABLES) return null;

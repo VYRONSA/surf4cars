@@ -2,6 +2,13 @@ import { VehicleDetailDealer } from "@/features/vehicle/components/vehicle-detai
 import { VehicleDetailDescription } from "@/features/vehicle/components/vehicle-detail-description";
 import { VehicleDetailEnquiry } from "@/features/vehicle/components/vehicle-detail-enquiry";
 import { VehicleDetailEquipment } from "@/features/vehicle/components/vehicle-detail-equipment";
+import {
+  VehicleDetailEvidence,
+  VehicleDetailPriceIntelligence,
+  VehicleDetailSignals,
+  VehicleDetailSimilarIntelligence,
+} from "@/features/vehicle/components/vehicle-detail-intelligence";
+import type { VehicleIntelligence } from "@/features/vehicle/server/vehicle-intelligence";
 import { VehicleDetailFinanceCalculator } from "@/features/vehicle/components/vehicle-detail-finance-calculator";
 import { VehicleDetailGalleryStrip } from "@/features/vehicle/components/vehicle-detail-gallery-strip";
 import { VehicleDetailHighlights } from "@/features/vehicle/components/vehicle-detail-highlights";
@@ -24,6 +31,8 @@ export interface VehicleDetailPageProps {
   readonly marketInsight?: MarketInsight | null;
   /** From the equipment read path. Empty renders the honest empty state. */
   readonly equipment?: readonly VehicleEquipmentEntry[];
+  /** Derived from live comparable stock. Null when nothing defensible can be said. */
+  readonly intelligence?: VehicleIntelligence | null;
 }
 
 /**
@@ -54,6 +63,7 @@ export function VehicleDetailPage({
   vehicle,
   marketInsight = null,
   equipment = [],
+  intelligence = null,
 }: VehicleDetailPageProps) {
   return (
     <VehicleGalleryProvider images={vehicle.gallery} title={vehicle.title}>
@@ -83,6 +93,23 @@ export function VehicleDetailPage({
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-16 xl:grid-cols-[minmax(0,1fr)_360px]">
           <div className="order-2 min-w-0 space-y-16 lg:order-none lg:space-y-20">
             <VehicleDetailHighlights vehicle={vehicle} insight={marketInsight} />
+
+            {/*
+              Intelligence before specification, deliberately.
+              ==============================================
+              A specification table answers "what is it"; these three answer "should I". A buyer who
+              has already decided reads the table, and a buyer who has not is the one this page has
+              to serve first. Each section renders nothing when it has nothing defensible to say, so
+              on a thin listing the order collapses to the old one.
+            */}
+            <VehicleDetailSignals signals={intelligence?.signals ?? []} />
+            <VehicleDetailPriceIntelligence price={intelligence?.price ?? null} priceNumeric={vehicle.priceNumeric} />
+            <VehicleDetailEvidence evidence={intelligence?.evidence ?? []} />
+            <VehicleDetailSimilarIntelligence
+              similar={intelligence?.similar ?? []}
+              basis={intelligence?.similarBasis ?? null}
+            />
+
             <VehicleDetailSpecs specGroups={vehicle.specGroups} />
             <VehicleDetailEquipment equipment={equipment} dealerName={vehicle.dealer.name} />
             <VehicleDetailMarketInsight insight={marketInsight} price={vehicle.priceNumeric} />
