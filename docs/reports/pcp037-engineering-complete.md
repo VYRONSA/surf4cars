@@ -149,7 +149,7 @@ These are the only items where the Founder Rule's "do not partially build it" ge
 
 | # | Item | Exact dependency |
 |---|---|---|
-| 1 | **Photograph pipeline for imports** | Nothing. It is buildable — but see the provenance decision below, which is a founder call and blocks it |
+| 1 | **Photograph pipeline for imports** | Blocked on the provenance decision below |
 | 2 | **Media provenance for a migrated photograph** | **Founder decision.** `inventory_vehicle_media.provenance` allows `dealer \| library \| manufacturer`, with no default. A migrated photo does not fit: the dealer supplied it, but through a third-party feed we have not verified. `'dealer'` slightly overclaims; adding `'imported'` is honest and needs a fourth gallery label. The wrong choice is invisible — it renders identically and misstates provenance on every migrated image |
 | 3 | **Enquiry delivery** | Production email provider. `EMAIL_PROVIDER`, `EMAIL_API_KEY`, `EMAIL_FROM`, a verified sending domain, and `NOTIFICATION_CRON_SECRET` for retries |
 | 4 | **Dealer contact details** | Real dealerships. Management is now built; `telephone`, `whatsapp`, `email`, `website` remain NULL on all 128 dealerships and all 128 branches because no dealer has supplied one |

@@ -1,12 +1,12 @@
 # SURF4CARS — Launch Certificate
 
-**Date:** 2026-08-02 · **Programme:** PCP-039 · **Basis:** 206 automated checks, all passing, plus
+**Date:** 2026-08-02 · **Programme:** PCP-039 (revised) · **Basis:** 209 automated checks, all passing, plus
 direct measurement against a production build and the live database.
 
 ```bash
 npm run build && npx next start -p 3100
 APP_URL=http://localhost:3100 node scripts/verify-production-smoke.mjs   # 46 ✓
-APP_URL=http://localhost:3100 node scripts/verify-security-posture.mjs   # 42 ✓
+APP_URL=http://localhost:3100 node scripts/verify-security-posture.mjs   # 45 ✓
 node scripts/verify-import-execution.mjs   # 22 ✓   node scripts/verify-dealer-ownership.mjs  # 22 ✓
 node scripts/verify-dealer-migration.mjs   # 38 ✓   node scripts/verify-marketplace-trust.mjs # 36 ✓
 npx tsc --noEmit && npx eslint src/                                      # clean
@@ -33,7 +33,7 @@ Not built, and deliberately: the photograph pipeline (blocked on a founder decis
 manifest (a product decision), and the seven PCP-037 priorities recorded as not attempted in
 `pcp037-engineering-complete.md`. None of them blocks a launch; all are named rather than implied.
 
-## Security — **COMPLETE, less one statement**
+## Security — **COMPLETE**
 
 PCP-038 found two Critical defects and both are fixed and regression-tested. PCP-039 found and fixed
 a third that PCP-038's own fix had caused.
@@ -52,9 +52,15 @@ Verified sound: 16 tenant tables invisible to anonymous callers, all anonymous w
 dealer and operations endpoint 401/403, every guarded page redirecting, unpublished stock unreachable
 by id and by slug, invitation tokens hashed and single-use, no secrets in the repository.
 
-**One finding remains open: M1.** It is one SQL statement, it is written out in the checklist, and it
-cannot be run from here — proven, not assumed: two ownership-requiring statements fail on that one
-table while the identical statement succeeds on a control table in the same migration lineage.
+**No finding remains open.** M1 — the last one — was closed in this revision, after the founder
+checked it against the live database and found what the audit had missed: the object is a **view**,
+not a table, which is why `CREATE POLICY` failed. The audit had inferred a table-ownership problem
+from two failures and one success, and that inference propagated into four documents as a founder
+action that was never needed.
+
+The exposure was real, and closing it needed three parts — a first attempt that merely revoked
+`anon` from the view broke the public dealer profile *and* left the base table leaking the same 128
+ids. Now: 43 ids visible, exactly the anon-visible set, 0 hidden, at both objects.
 
 ## Infrastructure — **NOT COMPLETE** (outside this repository)
 
@@ -122,21 +128,21 @@ Only decisions engineering cannot make.
 
 # READY AFTER FOUNDER ACTIONS
 
-Not *ready for production*, because one security finding is open and no dealership can be notified of
-an enquiry. Not *not ready*, because neither is an engineering defect and both have a defined,
-short path.
+Not *ready for production*, because no dealership can be notified of an enquiry: there is no email
+provider, no verified sending domain and no scheduler. Not *not ready*, because that is configuration
+rather than an engineering defect, and every remaining item is on a short, defined path.
+
+**There are no open security findings and no known engineering defects.**
 
 **The blocking actions, in order:**
 
-1. **Run the M1 policy statement** as `postgres` in the Supabase SQL editor
-   (`docs/reports/launch-checklist.md`, Security), then `node scripts/verify-security-posture.mjs`.
-2. **Configure email** — `EMAIL_PROVIDER`, `EMAIL_API_KEY`, `EMAIL_FROM`, and verify the sending
+1. **Configure email** — `EMAIL_PROVIDER`, `EMAIL_API_KEY`, `EMAIL_FROM`, and verify the sending
    domain with the provider. Without this an enquiry reaches nobody.
-3. **Set `NOTIFICATION_CRON_SECRET`** and point a scheduler at
+2. **Set `NOTIFICATION_CRON_SECRET`** and point a scheduler at
    `/api/v1/internal/notifications/retry` every five minutes, or a first-attempt failure is permanent.
-4. **Set `NEXT_PUBLIC_APP_URL` at build time** to the production origin, and add that origin to the
+3. **Set `NEXT_PUBLIC_APP_URL` at build time** to the production origin, and add that origin to the
    Supabase Auth redirect allow-list, or sign-in and password reset break after deploy.
-5. **Decide the media provenance question**, which unblocks the photograph pipeline.
+4. **Decide the media provenance question**, which unblocks the photograph pipeline.
 
 **Everything after that is operational, not engineering:** onboarding real dealerships, collecting
 real contact details, commissioning photography, and acquiring buyers.

@@ -101,39 +101,56 @@ cards on the first search page.
 
 ## Medium
 
-### M1 — Provenance table lets an anonymous caller enumerate every dealership — **NOT FIXED, blocked**
+### M1 — Anonymous callers could enumerate every dealership — **FIXED in PCP-039** ⚠ *this entry was wrong twice*
 
-`dealership_field_provenance_read` is `using (true)`, while the policy's own comment claims the table
-is "readable by anyone who can read the dealership itself". Those are not the same rule.
+**The exposure was real.** `dealership_field_provenance` returned 640 rows to an anonymous caller,
+exposing the ids of all 128 dealerships — including the 85 the marketplace deliberately does not
+show. No names, contact details or stock leaked, and the dealership rows themselves stayed correctly
+hidden (0 of 15 hidden dealerships were reachable directly by id).
 
-The table holds a row per dealership field, so **an anonymous caller can read the ids of all 128
-dealerships — including the 85 the marketplace deliberately does not show** — and therefore
-enumerate and count every dealership on the platform. No names, contact details or stock leak; the
-dealership rows themselves remain correctly hidden (verified: 0 of 15 hidden dealerships were
-reachable directly by id).
+**Both the diagnosis and the proposed fix in this report were wrong.** Corrected in PCP-039 after the
+founder checked it against the live database:
 
-**Why it is not fixed.** `CREATE POLICY` and `ALTER TABLE … ENABLE ROW LEVEL SECURITY` both fail on
-this one table under the credentials `supabase db push` uses. The same statements succeed on
-`dealership_ownership_events`, a table created by a migration in the same lineage — which isolates
-the cause to that table's ownership rather than to the policy expression. This is infrastructure
-outside the repository.
+> `dealership_field_provenance` is a **VIEW**, not a table. It selects from `verification_claims`.
 
-The corrected policy is written and ready. It needs to be run once by the table owner, e.g. in the
-Supabase SQL editor as `postgres`:
+That single fact invalidates everything this section originally concluded:
 
-```sql
-drop policy if exists dealership_field_provenance_read on public.dealership_field_provenance;
+| This report said | Actually |
+|---|---|
+| `CREATE POLICY` fails because the migration role does not own the table | It fails because Postgres rejects `CREATE POLICY` on a **view** |
+| A control statement succeeding elsewhere proves an ownership difference | It proved an **object-kind** difference. The control was a table |
+| The fix is a policy on `dealership_field_provenance` | A view cannot carry a policy |
+| Blocked — needs the `postgres` owner in the SQL editor | Not blocked at all. It was applied from this repository |
 
-create policy dealership_field_provenance_read
-  on public.dealership_field_provenance
-  for select
-  using (
-    exists (select 1 from public.dealerships d where d.id = dealership_field_provenance.dealership_id)
-  );
-```
+The "ownership" conclusion was reached by observing two failures and one success and inferring the
+only difference I had thought to test. It was a plausible reading of real evidence, and it was wrong,
+and it then propagated into three other documents as a launch blocker requiring founder action.
 
-It defers to the dealership row's own RLS rather than restating the visibility rule, so there is no
-second copy to keep in step. No recursion: provenance → dealerships → inventory_vehicles terminates.
+**And the first attempt at the real fix was also wrong.** Revoking `anon`'s access to the view looked
+minimal and certain. It was neither:
+
+- It broke the public dealer profile. `loadPublishableFields` reads the view through
+  `createSupabaseServerClient()` with no token — the anon key — and **fails closed**. A dealership's
+  genuine telephone number and website would have been silently suppressed the day one was supplied.
+  Invisible today only because 0 of 128 dealerships have supplied any.
+- It did not close the leak. `verification_claims`, the base table, returned the same 640 rows and the
+  same 128 ids to `anon` on its own `for select using (true)` policy. Closing the view alone moves a
+  leak; it does not remove one.
+
+**What actually fixed it** (`20260811091000_pcp039_scope_verification_claims`), three parts because
+fewer would not have worked:
+
+1. Restore `anon`'s grant on the view — the dealer profile legitimately needs it.
+2. `alter view … set (security_invoker = true)` — a view does not inherit its base table's RLS unless
+   told to; by default it runs with its owner's privileges, so a policy underneath it would have had
+   no effect on an anonymous reader.
+3. Scope `verification_claims_read` to claims whose subject is a dealership the caller can already
+   see, deferring to `dealerships_public_read` rather than restating the visibility rule.
+
+**Verified after the change:** the view and the base table each expose 43 distinct dealership ids —
+exactly the anon-visible set — and **0 hidden**. The service role still reads all 128 for the Quality
+Centre and Verification Workspace, and the public dealer profile's provenance read still returns 200.
+Asserted by three checks in `verify-security-posture.mjs` so neither half can regress.
 
 ### M2 — Two unauthenticated endpoints accept a dealership id — **NOT FIXED, low impact confirmed**
 
@@ -251,15 +268,14 @@ Surfaced by the integrity sweep; they belong to the photography programme, not t
 
 ## Would I deploy to production today?
 
-**On the security posture: yes, with M1 done first.**
+**On the security posture: yes.** M1 — the last open finding — was fixed in PCP-039 once the founder
+established that the object was a view. There is no outstanding security work.
 
 C1 and C2 were the findings that mattered, and both are fixed and asserted by a regression suite. C1
 in particular would have been invisible in production: dealers uploading photographs, the interface
 confirming success, nothing stored, and no error anywhere to investigate. It is the exact failure
 mode AGENTS.md warns about — silent, plausible, and discovered only by someone measuring rather than
 trusting.
-
-M1 is one SQL statement and needs a credential this repository does not have.
 
 **On production readiness generally: the blockers are unchanged from PCP-037** and none of them are
 security. No email provider configured, no dealer contact details, 80 published vehicles with no

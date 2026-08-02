@@ -47,42 +47,32 @@ node scripts/verify-dealer-migration.mjs   # 38    node scripts/verify-marketpla
 | ✅ | Ownership model | Claim reviewed by a human, transfer restricted to active team members, invitation tokens hashed and single-use, every refusal asserted |
 | ✅ | Secrets | `.env*` gitignored, only `.env.example` tracked, no key patterns in tracked source |
 | ✅ | Cross-tenant media write | Fixed and asserted (PCP-038 C2) |
-| ⛔ | **M1 — `dealership_field_provenance` policy is `USING (true)`** | **The one remaining security finding.** Lets an anonymous caller enumerate the ids of all 128 dealerships, including the 85 the marketplace hides. No names, contact details or stock leak. **Cannot be applied from this repository** — see below |
+| ✅ | Dealership enumeration (PCP-038 "M1") | **Closed in PCP-039.** Was: anon read 640 rows exposing all 128 dealership ids, 85 of them hidden. Now 43 — exactly the anon-visible set — and 0 hidden, at both the view and its base table. See below |
 | ⚠ | Residual: `owner_user_id` readable by any signed-in account | Closing it needs the ownership lookup moved to a `security definer` function. Recorded in PCP-038 M4; a wrong change locks every dealer out |
 
-### M1 — why it is ⛔ and not ⚠
+### The M1 entry was wrong, and how
 
-Proven this session, not assumed:
+PCP-038 reported this as blocked, needing the `postgres` owner. The founder checked it against the
+live database and found the reason it could not be fixed:
 
-- `ALTER TABLE … ENABLE ROW LEVEL SECURITY` on that table → fails
-- `COMMENT ON TABLE` on that table → fails
-- `COMMENT ON TABLE` on `dealership_ownership_events` → **succeeds**
+> `dealership_field_provenance` is a **VIEW**, not a table. It selects from `verification_claims`.
 
-Both failing statements require table ownership; the control succeeds on a table in the same
-migration lineage. The migration role does not own `dealership_field_provenance`. There is no
-`psql`, no `pg` client and no stored database password in this repository.
+Postgres rejects `CREATE POLICY` and `ALTER TABLE … ENABLE ROW LEVEL SECURITY` on a view. PCP-038 saw
+those two failures, saw the same statements succeed on a table, and concluded "different owner". The
+real difference was the object kind. That inference then travelled into three documents as a founder
+action that was never needed.
 
-**Founder action — run once in the Supabase SQL editor as `postgres`:**
+**The exposure was real, and closing it took three parts** — the first attempt was also wrong:
 
-```sql
-drop policy if exists dealership_field_provenance_read on public.dealership_field_provenance;
+- Revoking `anon` from the view broke the public dealer profile, which reads it with the anon key and
+  fails closed, silently suppressing dealer contact details. And it did not work: the base table
+  returned the same 128 ids on its own `using (true)` policy.
+- The fix restores the grant, sets `security_invoker = true` on the view so it applies the caller's
+  permissions rather than its owner's, and scopes `verification_claims_read` to claims about
+  dealerships the caller can already see.
 
-create policy dealership_field_provenance_read
-  on public.dealership_field_provenance
-  for select
-  using (
-    exists (select 1 from public.dealerships d where d.id = dealership_field_provenance.dealership_id)
-  );
-```
-
-Then confirm it took effect:
-
-```bash
-node scripts/verify-security-posture.mjs
-```
-
-It defers to the dealership row's own RLS rather than restating the visibility rule, so there is no
-second copy to keep in step. No recursion — provenance → dealerships → inventory_vehicles terminates.
+**Verified:** 43 ids visible, 0 hidden, at the view *and* the base table; service role unaffected;
+dealer profile provenance read still 200. Three regression checks in `verify-security-posture.mjs`.
 
 ## Data
 
@@ -178,10 +168,10 @@ informative.
 
 | State | Count |
 |---|---|
-| ✅ Complete | 33 |
+| ✅ Complete | 34 |
 | ⚠ Founder action required | 24 |
-| ⛔ Blocked | 6 |
+| ⛔ Blocked | 5 |
 
-**Of the six ⛔, exactly one is a security finding (M1), and it is one SQL statement.** The other five
-are a founder decision (media provenance), a product decision (PWA), and three things that cannot be
-demonstrated without production infrastructure (backup restore, storage restore, production timings).
+**No ⛔ is a security finding.** The remaining five are a founder decision (media provenance), a
+product decision (PWA), and three things that cannot be demonstrated without production
+infrastructure (backup restore, storage restore, production timings).

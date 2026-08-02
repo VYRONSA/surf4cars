@@ -1,0 +1,12 @@
+-- PCP-039 — first attempt at closing the dealership enumeration exposure. Superseded immediately by
+-- 20260811091000, which undoes this line and fixes the leak where it actually lives.
+--
+-- Left in place, rather than rewritten, because it is what ran against the database and a migration
+-- history that quietly disagrees with the database is worse than one that records a wrong turn.
+--
+-- The wrong turn: revoking anon's access to the view looked minimal and certain. It was neither.
+-- `loadPublishableFields` in the public dealer profile reads this view with the anon key, and fails
+-- closed — so this line silently stopped a dealer's genuine contact details from ever publishing.
+-- And it did not close the leak: the base table `verification_claims` returns the same 128 dealership
+-- ids to anon on its own.
+revoke select on public.dealership_field_provenance from anon;

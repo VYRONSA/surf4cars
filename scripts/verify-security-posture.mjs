@@ -99,6 +99,41 @@ check(
   `${[...new Set((anonVehicles ?? []).map((v) => v.lifecycle_status))].join(",")}`,
 );
 
+/*
+  Dealership enumeration — PCP-038's "M1", fixed in PCP-039.
+
+  Both objects are checked, because closing one moves the leak rather than removing it: the view has
+  no policies of its own and, before this was fixed, ran with its owner's privileges; the base table
+  `verification_claims` returned the same 128 dealership ids to anon on a `using (true)` policy.
+  A regression in either direction has to fail here.
+*/
+console.log("\nDealership enumeration is closed at both the view and its base table");
+const anonVisibleDealerships = new Set(
+  (await fetch(`${DB}/rest/v1/dealerships?select=id&limit=2000`, { headers: ah }).then((r) => (r.ok ? r.json() : []))).map(
+    (d) => d.id,
+  ),
+);
+for (const [label, query, idField] of [
+  ["dealership_field_provenance (view)", "dealership_field_provenance?select=dealership_id&limit=2000", "dealership_id"],
+  ["verification_claims (base table)", "verification_claims?select=subject_kind,subject_id&limit=2000", "subject_id"],
+]) {
+  const response = await fetch(`${DB}/rest/v1/${query}`, { headers: ah });
+  const rows = response.ok ? await response.json() : [];
+  const ids = new Set(rows.map((r) => r[idField]).filter(Boolean));
+  const hidden = [...ids].filter((id) => !anonVisibleDealerships.has(id));
+  check(
+    `anon cannot enumerate hidden dealerships via ${label}`,
+    hidden.length === 0,
+    `${ids.size} ids visible, ${hidden.length} of them hidden`,
+  );
+}
+/* The fix must not have closed it by breaking the read the public dealer profile depends on. */
+const profileProbe = await fetch(
+  `${DB}/rest/v1/dealership_field_provenance?select=field,provenance&dealership_id=eq.${[...anonVisibleDealerships][0]}`,
+  { headers: ah },
+);
+check("the public dealer profile can still read provenance for a visible dealership", profileProbe.ok, `HTTP ${profileProbe.status}`);
+
 console.log("\nData integrity");
 const vehicles = await fetch(`${DB}/rest/v1/inventory_vehicles?select=id,dealership_id,branch_id&limit=1000`, { headers: sh }).then((r) => r.json());
 const branches = await fetch(`${DB}/rest/v1/dealership_branches?select=id,dealership_id&limit=1000`, { headers: sh }).then((r) => r.json());
