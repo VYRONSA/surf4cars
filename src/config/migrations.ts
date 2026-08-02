@@ -34,6 +34,10 @@ export const MIGRATION_MANIFEST: readonly MigrationDescriptor[] = [
   { id: "20260807090000_pcp036_dealer_migration", description: "Dealer import batches and rows — reversible migration with retained source" },
   { id: "20260808090000_pcp037_dealership_ownership", description: "Ownership claims, staff invitation tokens and the append-only ownership audit" },
   { id: "20260808091000_pcp037_vehicle_identifiers_nullable", description: "VIN, registration and stock number may be NULL — not supplied is not an empty string" },
+  { id: "20260809090000_pcp038_integrity_and_exposure", description: "Branch must belong to the dealership; composite foreign key" },
+  { id: "20260809092000_pcp038_probe", description: "Diagnostic probe isolating a table-ownership issue (reversed below)" },
+  { id: "20260809093000_pcp038_probe_cleanup", description: "Reverses the diagnostic probe" },
+  { id: "20260809094000_pcp038_anon_column_grants", description: "Anonymous callers get an explicit column allow-list, not every column" },
 ] as const;
 
 /** The migration this build expects to be the most recent one applied. */
