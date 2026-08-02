@@ -1,16 +1,16 @@
-import { OperationsComingSoonPanel } from "@/features/operations/components/operations-coming-soon-panel";
+import { OperationsUnavailablePanel } from "@/features/operations/components/operations-unavailable-panel";
 import { logOperationsAuditEvent } from "@/features/operations/server/operations-audit.service";
 import { readPlatformStore } from "@/lib/local-persistence/platform-store";
 
-interface OperationsComingSoonPageProps {
+interface OperationsUnavailablePageProps {
   readonly moduleName: string;
   readonly moduleDescription: string;
 }
 
-export async function OperationsComingSoonPage({
+export async function OperationsUnavailablePage({
   moduleName,
   moduleDescription,
-}: OperationsComingSoonPageProps) {
+}: OperationsUnavailablePageProps) {
   const store = await readPlatformStore();
   const primaryDealershipId = store.dealerships[0]?.id;
 
@@ -35,7 +35,7 @@ export async function OperationsComingSoonPage({
           {moduleName}
         </h1>
       </div>
-      <OperationsComingSoonPanel title={`${moduleName} is coming soon`} description={moduleDescription} />
+      <OperationsUnavailablePanel title={`${moduleName} has no data yet`} description={moduleDescription} />
     </section>
   );
 }

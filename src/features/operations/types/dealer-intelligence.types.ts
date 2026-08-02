@@ -15,7 +15,7 @@ export type DealerIntelligenceVerificationStatus =
   | "rejected"
   | "duplicate";
 
-export type DealerIntelligenceSourceMode = "live" | "manual" | "coming-soon";
+export type DealerIntelligenceSourceMode = "live" | "manual" | "unavailable";
 
 export interface DealerIntelligenceSourceReadiness {
   readonly id: string;
@@ -163,7 +163,7 @@ export interface DealerIntelligenceOverviewCard {
   readonly label: string;
   readonly value: string;
   readonly detail: string;
-  readonly availability: "live" | "manual" | "coming-soon";
+  readonly availability: "live" | "manual" | "unavailable";
 }
 
 export interface DealerIntelligenceWorkspaceData {

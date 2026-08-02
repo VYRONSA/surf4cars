@@ -5,7 +5,7 @@ export interface ExecutiveKpi {
   readonly label: string;
   readonly value: string;
   readonly detail: string;
-  readonly availability: "live" | "coming-soon";
+  readonly availability: "live" | "unavailable";
 }
 
 export interface GrowthTrendRow {
@@ -16,7 +16,7 @@ export interface GrowthTrendRow {
   readonly monthly: string;
   readonly quarterly: string;
   readonly annual: string;
-  readonly availability: "live" | "coming-soon";
+  readonly availability: "live" | "unavailable";
   readonly detail: string;
 }
 
@@ -26,7 +26,7 @@ export interface ExecutiveModuleSnapshot {
   readonly health: string;
   readonly growthSignal: string;
   readonly operationalSignal: string;
-  readonly availability: "live" | "coming-soon";
+  readonly availability: "live" | "unavailable";
 }
 
 export interface ExecutiveAiInsight {
@@ -34,13 +34,13 @@ export interface ExecutiveAiInsight {
   readonly label: string;
   readonly value: string;
   readonly detail: string;
-  readonly availability: "live" | "coming-soon";
+  readonly availability: "live" | "unavailable";
 }
 
 export interface ExecutiveForecastExtension {
   readonly id: string;
   readonly label: string;
-  readonly status: "framework" | "coming-soon";
+  readonly status: "framework" | "unavailable";
   readonly detail: string;
   readonly extensionPoint: string;
 }
@@ -48,7 +48,7 @@ export interface ExecutiveForecastExtension {
 export interface ExecutiveReportRow {
   readonly id: string;
   readonly name: string;
-  readonly status: "ready" | "coming-soon";
+  readonly status: "ready" | "unavailable";
   readonly source: string;
   readonly detail: string;
 }
@@ -84,7 +84,7 @@ export interface BusinessIntelligenceWorkspaceData {
   readonly sourceReadiness: readonly {
     readonly id: string;
     readonly label: string;
-    readonly mode: "live" | "manual" | "coming-soon";
+    readonly mode: "live" | "manual" | "unavailable";
     readonly detail: string;
   }[];
 }

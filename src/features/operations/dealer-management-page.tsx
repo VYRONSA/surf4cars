@@ -60,7 +60,7 @@ function statusVariant(
   if (status === "pending" || status === "under-review") return "warning";
   if (status === "rejected" || status === "suspended") return "danger";
   if (status === "verification-required") return "info";
-  if (status === "coming-soon") return "outline";
+  if (status === "unavailable") return "outline";
   return "default";
 }
 
@@ -83,7 +83,7 @@ function renderOverview(data: Awaited<ReturnType<typeof getDealerManagementData>
             </CardHeader>
             <CardContent>
               <p className="text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">{card.detail}</p>
-              {card.availability === "coming-soon" && <Badge variant="outline" className="mt-2">Coming Soon</Badge>}
+              {card.availability === "unavailable" && <Badge variant="outline" className="mt-2">No data yet</Badge>}
             </CardContent>
           </Card>
         ))}
@@ -196,7 +196,7 @@ function renderTimelineList(events: readonly DealerTimelineEvent[]) {
   );
 }
 
-function renderComingSoon(section: DealerManagementSection, detail: string) {
+function renderUnavailable(section: DealerManagementSection, detail: string) {
   return (
     <Card variant="glass" padding="md" className="border-[var(--color-border-subtle)]">
       <CardHeader>
@@ -204,7 +204,7 @@ function renderComingSoon(section: DealerManagementSection, detail: string) {
         <CardDescription>{section.description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <EmptyState title={`${section.label} is coming soon`} description={detail} />
+        <EmptyState title={`${section.label} has no data yet`} description={detail} />
       </CardContent>
     </Card>
   );
@@ -266,7 +266,7 @@ export async function DealerManagementPage({ sectionId }: DealerManagementPagePr
           <TableCell>{item.subscription}</TableCell>
           <TableCell>{item.branchCount}</TableCell>
           <TableCell>{item.userCount}</TableCell>
-          <TableCell>{item.healthScore ?? "Coming Soon"}</TableCell>
+          <TableCell>{item.healthScore ?? "No data yet"}</TableCell>
         </TableRow>
       )),
       "No dealerships found",
@@ -316,8 +316,8 @@ export async function DealerManagementPage({ sectionId }: DealerManagementPagePr
           <TableCell>{item.subscription}</TableCell>
           <TableCell>{item.lifecycle}</TableCell>
           <TableCell>
-            {item.subscription === "Coming Soon"
-              ? <Badge variant="outline">Coming Soon</Badge>
+            {item.subscription === "No data yet"
+              ? <Badge variant="outline">No data yet</Badge>
               : <Badge variant="success">Assigned</Badge>}
           </TableCell>
         </TableRow>
@@ -326,7 +326,7 @@ export async function DealerManagementPage({ sectionId }: DealerManagementPagePr
       "Subscription assignments will appear once package assignment is complete.",
     );
   } else if (sectionId === "billing") {
-    sectionBody = renderComingSoon(
+    sectionBody = renderUnavailable(
       section,
       "Billing lifecycle and transaction-level telemetry will be connected when Revenue Centre billing integrations are promoted into SOC dealer management.",
     );
@@ -365,19 +365,19 @@ export async function DealerManagementPage({ sectionId }: DealerManagementPagePr
       "Health signals will appear once dealer records are available.",
     );
   } else if (sectionId === "notes") {
-    sectionBody = renderComingSoon(
+    sectionBody = renderUnavailable(
       section,
       "Operations notes workspace will be enabled once shared note entities are promoted for operations-only use.",
     );
   } else if (sectionId === "timeline") {
     sectionBody = renderTimelineList(data.timeline);
   } else if (sectionId === "documents") {
-    sectionBody = renderComingSoon(
+    sectionBody = renderUnavailable(
       section,
       "Dealer KYC, compliance, and operational documents will be available after document service integration.",
     );
   } else if (sectionId === "contracts") {
-    sectionBody = renderComingSoon(
+    sectionBody = renderUnavailable(
       section,
       "Contract management is pending integration with legal agreement lifecycle systems.",
     );

@@ -45,7 +45,7 @@ function deriveAiInsights(item: {
   readonly hasVehicle: boolean;
   readonly hasDealer: boolean;
   readonly hasApplicantEmail: boolean;
-}): { readonly state: "available" | "coming-soon"; readonly entries: readonly string[] } {
+}): { readonly state: "available" | "unavailable"; readonly entries: readonly string[] } {
   const entries: string[] = [];
 
   if (!item.hasApplicantEmail) {
@@ -66,8 +66,8 @@ function deriveAiInsights(item: {
 
   if (entries.length === 0) {
     return {
-      state: "coming-soon",
-      entries: ["Coming Soon"],
+      state: "unavailable",
+      entries: ["No data yet"],
     };
   }
 
@@ -379,9 +379,9 @@ export async function getApplicationsCentreWorkspaceData(): Promise<OperationsAp
       {
         id: "future-sources",
         label: "Future Source Types",
-        value: "Coming Soon",
+        value: "No data yet",
         detail: "Insurance, warranty, trade-in, valuation, support, and marketplace request ingestion is scaffolded for future integration.",
-        availability: "coming-soon",
+        availability: "unavailable",
       },
     ],
     sourceReadiness: [
@@ -406,7 +406,7 @@ export async function getApplicationsCentreWorkspaceData(): Promise<OperationsAp
       {
         id: "additional-request-types",
         label: "Insurance, Warranty, Trade-In, Valuation, Support, Marketplace",
-        mode: "coming-soon",
+        mode: "unavailable",
         detail: "Framework-ready. No additional request persistence exists yet in current platform services.",
       },
     ],

@@ -186,7 +186,7 @@ export function DealerIntelligenceWorkspace({ data, sectionId }: DealerIntellige
           <Card variant="glass" padding="md" className="border-[var(--color-border-subtle)]">
             <CardHeader>
               <CardTitle>Discovery Source Readiness</CardTitle>
-              <CardDescription>Each source explicitly states Live, Manual, or Coming Soon.</CardDescription>
+              <CardDescription>Each source explicitly states Live, Manual, or No data yet.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">

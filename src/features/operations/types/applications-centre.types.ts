@@ -94,9 +94,9 @@ export interface OperationsApplicationQueueItem {
   readonly createdAt: string;
   readonly updatedAt: string;
   readonly summary: string;
-  readonly sourceAvailability: "live" | "manual" | "coming-soon";
+  readonly sourceAvailability: "live" | "manual" | "unavailable";
   readonly aiInsights: {
-    readonly state: "available" | "coming-soon";
+    readonly state: "available" | "unavailable";
     readonly entries: readonly string[];
   };
   readonly timeline: readonly OperationsApplicationTimelineItem[];
@@ -117,12 +117,12 @@ export interface OperationsApplicationsWorkspaceData {
     readonly label: string;
     readonly value: string;
     readonly detail: string;
-    readonly availability: "live" | "coming-soon";
+    readonly availability: "live" | "unavailable";
   }[];
   readonly sourceReadiness: readonly {
     readonly id: string;
     readonly label: string;
-    readonly mode: "live" | "manual" | "coming-soon";
+    readonly mode: "live" | "manual" | "unavailable";
     readonly detail: string;
   }[];
 }

@@ -63,9 +63,9 @@ export async function OperationsDashboardPage() {
             </CardHeader>
             <CardContent>
               <p className="text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">{widget.detail}</p>
-              {widget.availability === "coming-soon" && (
+              {widget.availability === "unavailable" && (
                 <p className="mt-2 inline-flex rounded-[var(--radius-pill)] bg-[var(--color-primary-muted)] px-2 py-0.5 text-[length:var(--text-caption)] font-medium text-[var(--color-primary-text)]">
-                  Coming Soon
+                  No data yet
                 </p>
               )}
             </CardContent>

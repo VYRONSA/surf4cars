@@ -4,12 +4,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Icon } from "@/components/ui/icons";
 import { ArrowRight, Sparkles } from "@/components/ui/icons/registry";
 
-interface OperationsComingSoonPanelProps {
+interface OperationsUnavailablePanelProps {
   readonly title: string;
   readonly description: string;
 }
 
-export function OperationsComingSoonPanel({ title, description }: OperationsComingSoonPanelProps) {
+export function OperationsUnavailablePanel({ title, description }: OperationsUnavailablePanelProps) {
   return (
     <div className="relative overflow-hidden rounded-[var(--radius-2xl)] bg-[radial-gradient(circle_at_top_right,rgba(0,112,255,0.14),transparent_45%),linear-gradient(180deg,var(--color-surface-raised),var(--color-background))] p-4 sm:p-6">
       <div className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full bg-[radial-gradient(circle,rgba(0,112,255,0.20),rgba(0,112,255,0))]" />

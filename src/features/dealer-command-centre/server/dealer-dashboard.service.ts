@@ -149,7 +149,7 @@ function formatRelativeTimestamp(iso: string): string {
 }
 
 function formatPercentage(value: number | null): string {
-  if (value === null || Number.isNaN(value)) return "Coming Soon";
+  if (value === null || Number.isNaN(value)) return "No data yet";
   return `${Math.round(value)}%`;
 }
 
@@ -195,12 +195,12 @@ function calculateProfileCompletion(dealership: {
   return Math.round((completed / checkpoints.length) * 100);
 }
 
-function buildComingSoonSeries(id: string, label: string, message: string) {
+function buildUnavailableSeries(id: string, label: string, message: string) {
   return {
     id,
     label,
     values: [],
-    availability: "coming-soon" as const,
+    availability: "unavailable" as const,
     message,
   };
 }
@@ -392,7 +392,7 @@ export async function getDealerDashboardData(
     {
       id: "expiring",
       label: "Expiring Listings",
-      availability: "coming-soon",
+      availability: "unavailable",
       message: "Featured listing expiry telemetry is not available yet.",
       items: [],
     },
@@ -480,19 +480,19 @@ export async function getDealerDashboardData(
     { id: "enquiries", label: "Enquiries Today", value: formatNumber(recentLeadCount), status: recentLeadCount > 0 ? "good" : "neutral", availability: "live" },
     { id: "test-drives", label: "Test Drive Requests", value: formatNumber(testDriveCount), status: testDriveCount > 0 ? "good" : "neutral", availability: "live" },
     { id: "finance", label: "Finance Requests", value: formatNumber(financeCount), status: financeCount > 0 ? "good" : "neutral", availability: "live" },
-    { id: "conversion", label: "Conversion Rate (30d)", value: formatPercentage(conversionRate), status: conversionRate !== null && conversionRate >= 10 ? "good" : "neutral", availability: conversionRate === null ? "coming-soon" : "live" },
-    { id: "response-time", label: "Lead Response Time", value: "Coming Soon", status: "neutral", availability: "coming-soon" },
+    { id: "conversion", label: "Conversion Rate (30d)", value: formatPercentage(conversionRate), status: conversionRate !== null && conversionRate >= 10 ? "good" : "neutral", availability: conversionRate === null ? "unavailable" : "live" },
+    { id: "response-time", label: "Lead Response Time", value: "No data yet", status: "neutral", availability: "unavailable" },
     { id: "featured", label: "Featured Listings", value: formatNumber(featuredListings), status: featuredListings > 0 ? "good" : "neutral", availability: "live" },
   ];
 
-  const marketAverageDaysToSell = marketDashboard?.metrics.find((metric) => metric.id === "average-days-to-sell")?.displayValue ?? "Coming Soon";
+  const marketAverageDaysToSell = marketDashboard?.metrics.find((metric) => metric.id === "average-days-to-sell")?.displayValue ?? "No data yet";
 
   return {
     dealer: {
       name: dealership?.tradingName ?? dealership?.businessName ?? "Dealer Dashboard",
       subscription: dealership?.subscriptionPackage?.trim() || null,
       profileCompletion: calculateProfileCompletion(dealership),
-      /* Nothing records a sign-in timestamp. A dealer reading "Last login: Coming Soon" learns
+      /* Nothing records a sign-in timestamp. A dealer reading "Last login: No data yet" learns
          only that we are showing them a field we cannot fill. */
       lastLogin: null,
     },
@@ -505,11 +505,11 @@ export async function getDealerDashboardData(
     health,
     recommendations: [
       ...marketplaceRecommendations,
-      ...(marketAverageDaysToSell !== "Coming Soon" ? [`Average days to sell is currently ${marketAverageDaysToSell}.`] : []),
+      ...(marketAverageDaysToSell !== "No data yet" ? [`Average days to sell is currently ${marketAverageDaysToSell}.`] : []),
     ].slice(0, 5),
     activities,
     charts: {
-      views: buildComingSoonSeries("views", "Views", "Live listing view telemetry is not connected yet."),
+      views: buildUnavailableSeries("views", "Views", "Live listing view telemetry is not connected yet."),
       enquiries: {
         id: "enquiries",
         label: "Enquiries",
@@ -533,8 +533,8 @@ export async function getDealerDashboardData(
         values: buildCumulativeMonthlySeries(activeStoreVehicles.map((vehicle) => ({ createdAt: vehicle.createdAt })), 12),
         availability: "live",
       },
-      leadSources: [{ label: "Coming Soon", value: 0, availability: "coming-soon", message: "Live lead-source attribution is not connected yet." }],
-      dailyTraffic: buildComingSoonSeries("daily-traffic", "Daily Traffic", "Live traffic telemetry is not connected yet."),
+      leadSources: [{ label: "No data yet", value: 0, availability: "unavailable", message: "Live lead-source attribution is not connected yet." }],
+      dailyTraffic: buildUnavailableSeries("daily-traffic", "Daily Traffic", "Live traffic telemetry is not connected yet."),
       monthlySales: {
         id: "monthly-sales",
         label: "Monthly Sales",

@@ -7,7 +7,7 @@ export interface DashboardDealerProfile {
   readonly lastLogin: string | null;
 }
 
-export type DashboardAvailability = "live" | "coming-soon";
+export type DashboardAvailability = "live" | "unavailable";
 
 export interface DashboardKpi {
   readonly id: string;

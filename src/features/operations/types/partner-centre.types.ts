@@ -30,7 +30,7 @@ export interface PartnerSummaryCard {
   readonly label: string;
   readonly value: string;
   readonly detail: string;
-  readonly availability: "live" | "coming-soon";
+  readonly availability: "live" | "unavailable";
 }
 
 export interface PartnerMetric {
@@ -38,7 +38,7 @@ export interface PartnerMetric {
   readonly label: string;
   readonly value: string;
   readonly detail: string;
-  readonly availability: "live" | "coming-soon";
+  readonly availability: "live" | "unavailable";
 }
 
 export interface PartnerContact {
@@ -47,7 +47,7 @@ export interface PartnerContact {
   readonly role: string;
   readonly email: string;
   readonly telephone: string;
-  readonly availability: "live" | "coming-soon";
+  readonly availability: "live" | "unavailable";
 }
 
 export interface PartnerLeadDistributionFramework {
@@ -58,7 +58,7 @@ export interface PartnerLeadDistributionFramework {
   readonly availabilityModel: string;
   readonly performanceModel: string;
   readonly extensionPoints: readonly string[];
-  readonly status: "framework" | "coming-soon";
+  readonly status: "framework" | "unavailable";
 }
 
 export interface PartnerIntegrationFramework {
@@ -68,7 +68,7 @@ export interface PartnerIntegrationFramework {
   readonly lastSync: string;
   readonly version: string;
   readonly authenticationMethod: string;
-  readonly status: "framework" | "coming-soon";
+  readonly status: "framework" | "unavailable";
 }
 
 export interface PartnerTimelineItem {
@@ -119,7 +119,7 @@ export interface PartnerProfile {
   readonly integration: PartnerIntegrationFramework;
   readonly internalNotes: string;
   readonly timeline: readonly PartnerTimelineItem[];
-  readonly sourceAvailability: "live" | "manual" | "coming-soon";
+  readonly sourceAvailability: "live" | "manual" | "unavailable";
 }
 
 export interface PartnerDirectoryRow {
@@ -147,7 +147,7 @@ export interface PartnerCentreWorkspaceData {
   readonly sourceReadiness: readonly {
     readonly id: string;
     readonly label: string;
-    readonly mode: "live" | "manual" | "coming-soon";
+    readonly mode: "live" | "manual" | "unavailable";
     readonly detail: string;
   }[];
 }

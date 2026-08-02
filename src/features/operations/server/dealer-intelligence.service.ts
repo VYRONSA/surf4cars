@@ -427,13 +427,13 @@ export async function getDealerIntelligenceWorkspaceData(): Promise<DealerIntell
       {
         id: "website-crawling",
         label: "Website Discovery and Change Crawling",
-        mode: "coming-soon",
+        mode: "unavailable",
         detail: "Architecture ready. Automated crawling is intentionally not implemented in SOC-003.",
       },
       {
         id: "external-data-ingest",
         label: "External Registry and Third-Party Sources",
-        mode: "coming-soon",
+        mode: "unavailable",
         detail: "Architecture ready for future integrations. No third-party APIs connected in SOC-003.",
       },
     ],

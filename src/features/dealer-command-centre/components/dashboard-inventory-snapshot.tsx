@@ -30,7 +30,7 @@ export function DashboardInventorySnapshot({ items }: DashboardInventorySnapshot
         {items.map((group) => (
           <div key={group.id} className={cn(dashboardPolish.panel, "p-4 lg:p-5")}>
             <h3 className="mb-3 text-[length:var(--text-body-sm)] font-semibold">{group.label}</h3>
-            {group.availability === "coming-soon" ? (
+            {group.availability === "unavailable" ? (
               <p className="rounded-[var(--radius-xl)] border border-dashed border-[var(--color-border)] p-4 text-center text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
                 {group.message ?? "Nothing to show yet."}
               </p>

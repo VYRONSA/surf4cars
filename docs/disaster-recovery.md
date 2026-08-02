@@ -20,7 +20,7 @@ ordered to protect `leads` first.**
 | Database (all 21 tables) | Supabase Postgres | Supabase automated backups | **Needs configuration** — retention depends on plan |
 | Uploaded media and documents | Supabase Storage, 4 buckets | Supabase | **Needs configuration** — verify storage is included in the plan's backup |
 | Application code | GitHub | git | Ready |
-| Schema | `db/migrations/` in git | git | Ready — the schema is reproducible from an empty database |
+| Schema | `supabase/migrations/` in git | git | Ready — the schema is reproducible from an empty database |
 | Environment variables | Vercel | Nothing | **Needs configuration** — see below |
 
 ### The gap nobody notices until it matters
@@ -111,7 +111,7 @@ asymmetry is the sharp edge in this system:
   Old code queries a column that no longer exists and every request fails.
 
 So: **a rollback is only safe if the migrations since the bad deploy were additive.** Check
-`db/migrations/` for anything since the last good deploy before promoting. If a destructive migration
+`supabase/migrations/` for anything since the last good deploy before promoting. If a destructive migration
 is involved, you are doing a database restore, not a rollback — go to section 2.
 
 The practical rule for the future: never combine a destructive migration with an application change

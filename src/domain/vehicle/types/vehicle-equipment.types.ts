@@ -1,7 +1,7 @@
 /**
  * SURF FOR CARS — vehicle equipment model.
  *
- * The code expression of `db/migrations/20260731090000_pcp011a_equipment_architecture.sql`. Kept in step
+ * The code expression of `supabase/migrations/20260731090000_pcp011a_equipment_architecture.sql`. Kept in step
  * with it deliberately: the check constraints in that migration and the unions here are the same
  * vocabulary, and a value that is legal in one must be legal in the other.
  *

@@ -5,7 +5,7 @@
  * impossible to write again: there is no boolean to set, and the only value that earns a badge is
  * one an operator has to put in the database deliberately.
  *
- * See `db/migrations/20260806090000_pcp032_dealer_verification.sql` for why six states rather than
+ * See `supabase/migrations/20260806090000_pcp032_dealer_verification.sql` for why six states rather than
  * two, and why nothing is backfilled.
  */
 

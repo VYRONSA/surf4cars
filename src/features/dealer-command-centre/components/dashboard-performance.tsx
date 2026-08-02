@@ -33,9 +33,9 @@ export function DashboardPerformance({ charts }: DashboardPerformanceProps) {
             height={200}
             className={cn(dashboardPolish.glassCard, "border-0 shadow-[var(--shadow-sm)]")}
           >
-            {chart.series.availability === "coming-soon" ? (
+            {chart.series.availability === "unavailable" ? (
               <div className="flex size-full items-center justify-center p-4 text-center text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
-                {chart.series.message ?? "Coming Soon"}
+                {chart.series.message ?? "No data yet"}
               </div>
             ) : (
               <div className="flex size-full items-end p-3">
@@ -51,9 +51,9 @@ export function DashboardPerformance({ charts }: DashboardPerformanceProps) {
           height={200}
           className={cn(dashboardPolish.glassCard, "border-0 shadow-[var(--shadow-sm)] lg:col-span-2 xl:col-span-3")}
         >
-          {charts.leadSources.length === 0 || charts.leadSources.every((source) => source.availability === "coming-soon") ? (
+          {charts.leadSources.length === 0 || charts.leadSources.every((source) => source.availability === "unavailable") ? (
             <div className="flex size-full items-center justify-center p-4 text-center text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">
-              {charts.leadSources[0]?.message ?? "Coming Soon"}
+              {charts.leadSources[0]?.message ?? "No data yet"}
             </div>
           ) : (
             <div className="flex size-full flex-col justify-center gap-3 p-4">

@@ -20,7 +20,7 @@ export type VehiclePhotoCategory =
 
 /**
  * Where an image came from. Only `dealer` depicts the vehicle being sold, and only `dealer` may therefore be
- * presented without a label. See db/migrations/20260731160000_pcp015d_media_provenance.sql.
+ * presented without a label. See supabase/migrations/20260731160000_pcp015d_media_provenance.sql.
  */
 export type VehicleMediaProvenance = "dealer" | "library" | "manufacturer";
 

@@ -189,7 +189,7 @@ export function ApplicationsCentreWorkspace({ initialData }: ApplicationsCentreW
             </CardHeader>
             <CardContent>
               <p className="text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">{card.detail}</p>
-              {card.availability === "coming-soon" ? <Badge variant="outline" className="mt-2">Coming Soon</Badge> : null}
+              {card.availability === "unavailable" ? <Badge variant="outline" className="mt-2">No data yet</Badge> : null}
             </CardContent>
           </Card>
         ))}

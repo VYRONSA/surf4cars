@@ -120,7 +120,7 @@ export function PartnerCentreWorkspace({ data, sectionId, generatedLabel }: Part
             </CardHeader>
             <CardContent>
               <p className="text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">{card.detail}</p>
-              {card.availability === "coming-soon" ? <Badge className="mt-2" variant="outline">Coming Soon</Badge> : null}
+              {card.availability === "unavailable" ? <Badge className="mt-2" variant="outline">No data yet</Badge> : null}
             </CardContent>
           </Card>
         ))}
@@ -329,7 +329,7 @@ export function PartnerCentreWorkspace({ data, sectionId, generatedLabel }: Part
                 <TableRow key={metric.id}>
                   <TableCell>{metric.label}</TableCell>
                   <TableCell>{metric.value}</TableCell>
-                  <TableCell>{metric.availability === "live" ? <Badge variant="success">Live</Badge> : <Badge variant="outline">Coming Soon</Badge>}</TableCell>
+                  <TableCell>{metric.availability === "live" ? <Badge variant="success">Live</Badge> : <Badge variant="outline">No data yet</Badge>}</TableCell>
                   <TableCell>{metric.detail}</TableCell>
                 </TableRow>
               ))}

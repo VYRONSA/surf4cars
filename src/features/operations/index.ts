@@ -1,5 +1,5 @@
 export { OperationsDashboardPage } from "./operations-dashboard-page";
-export { OperationsComingSoonPage } from "./operations-coming-soon-page";
+export { OperationsUnavailablePage } from "./operations-unavailable-page";
 export { DealerManagementPage } from "./dealer-management-page";
 export { DealerIntelligencePage } from "./dealer-intelligence-page";
 export { ApplicationsCentrePage } from "./applications-centre-page";

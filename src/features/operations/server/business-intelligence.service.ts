@@ -53,11 +53,11 @@ function countInMonth(timestamps: readonly string[], monthOffset: number): numbe
   }).length;
 }
 
-function growthRate(current: number, previous: number): { readonly value: string; readonly availability: "live" | "coming-soon" } {
+function growthRate(current: number, previous: number): { readonly value: string; readonly availability: "live" | "unavailable" } {
   if (previous <= 0) {
     return {
-      value: "Coming Soon",
-      availability: "coming-soon",
+      value: "No data yet",
+      availability: "unavailable",
     };
   }
 
@@ -73,7 +73,7 @@ function avg(values: readonly number[]): number | null {
   return Math.round(values.reduce((sum, value) => sum + value, 0) / values.length);
 }
 
-function metric(id: string, label: string, value: string, detail: string, availability: "live" | "coming-soon"): ExecutiveKpi {
+function metric(id: string, label: string, value: string, detail: string, availability: "live" | "unavailable"): ExecutiveKpi {
   return {
     id,
     label,
@@ -89,16 +89,16 @@ function trendRow(id: string, metricLabel: string, timestamps: readonly string[]
   const monthly = countWithinDays(timestamps, 30);
   const quarterly = countWithinDays(timestamps, 90);
   const annual = countWithinDays(timestamps, 365);
-  const availability: "live" | "coming-soon" = timestamps.length > 0 ? "live" : "coming-soon";
+  const availability: "live" | "unavailable" = timestamps.length > 0 ? "live" : "unavailable";
 
   return {
     id,
     metric: metricLabel,
-    daily: availability === "live" ? daily.toLocaleString("en-ZA") : "Coming Soon",
-    weekly: availability === "live" ? weekly.toLocaleString("en-ZA") : "Coming Soon",
-    monthly: availability === "live" ? monthly.toLocaleString("en-ZA") : "Coming Soon",
-    quarterly: availability === "live" ? quarterly.toLocaleString("en-ZA") : "Coming Soon",
-    annual: availability === "live" ? annual.toLocaleString("en-ZA") : "Coming Soon",
+    daily: availability === "live" ? daily.toLocaleString("en-ZA") : "No data yet",
+    weekly: availability === "live" ? weekly.toLocaleString("en-ZA") : "No data yet",
+    monthly: availability === "live" ? monthly.toLocaleString("en-ZA") : "No data yet",
+    quarterly: availability === "live" ? quarterly.toLocaleString("en-ZA") : "No data yet",
+    annual: availability === "live" ? annual.toLocaleString("en-ZA") : "No data yet",
     availability,
     detail,
   };
@@ -165,36 +165,36 @@ export async function getBusinessIntelligenceWorkspaceData(
   const dealerHealthScore = dealerManagement ? avg(dealerManagement.health.map((item) => item.healthScore)) : null;
 
   const marketplaceHealthCard = marketplace?.summaryCards.find((item) => item.id === "marketplace-health-score");
-  const marketplaceHealthValue = marketplaceHealthCard?.value ?? "Coming Soon";
-  const marketplaceHealthAvailability = marketplaceHealthCard?.availability ?? "coming-soon";
+  const marketplaceHealthValue = marketplaceHealthCard?.value ?? "No data yet";
+  const marketplaceHealthAvailability = marketplaceHealthCard?.availability ?? "unavailable";
 
   const liveHealthInputs = [averageListingQuality, dealerHealthScore]
     .filter((item): item is number => typeof item === "number");
   const platformHealth = liveHealthInputs.length > 0
     ? `${Math.round(liveHealthInputs.reduce((sum, value) => sum + value, 0) / liveHealthInputs.length)}%`
-    : "Coming Soon";
+    : "No data yet";
 
   const revenueGrowthTrend = revenue?.trends.find((item) => item.id === "new-dealers-month");
   const revenueGrowthBaseline = revenue?.trends.find((item) => item.id === "new-dealers-prev");
   const revenueGrowth = revenueGrowthTrend && revenueGrowthBaseline
     ? growthRate(Number(revenueGrowthTrend.value.replace(/,/g, "")), Number(revenueGrowthBaseline.value.replace(/,/g, "")))
-    : { value: "Coming Soon", availability: "coming-soon" as const };
+    : { value: "No data yet", availability: "unavailable" as const };
 
   const executiveKpis: readonly ExecutiveKpi[] = [
     metric("dealer-growth", "Dealer Growth", dealerGrowth.value, "Month-over-month dealership growth from dealer onboarding records.", dealerGrowth.availability),
     metric("buyer-growth", "Buyer Growth", buyerGrowth.value, "Month-over-month unique buyer growth from lead and buyer signal records.", buyerGrowth.availability),
-    metric("published-vehicles", "Published Vehicles", typeof publishedVehicles === "number" ? publishedVehicles.toLocaleString("en-ZA") : "Coming Soon", "Live marketplace-visible inventory from Marketplace Control.", typeof publishedVehicles === "number" ? "live" : "coming-soon"),
-    metric("sold-vehicles", "Sold Vehicles", typeof soldVehicles === "number" ? soldVehicles.toLocaleString("en-ZA") : "Coming Soon", "Live sold lifecycle count from marketplace and inventory services.", typeof soldVehicles === "number" ? "live" : "coming-soon"),
+    metric("published-vehicles", "Published Vehicles", typeof publishedVehicles === "number" ? publishedVehicles.toLocaleString("en-ZA") : "No data yet", "Live marketplace-visible inventory from Marketplace Control.", typeof publishedVehicles === "number" ? "live" : "unavailable"),
+    metric("sold-vehicles", "Sold Vehicles", typeof soldVehicles === "number" ? soldVehicles.toLocaleString("en-ZA") : "No data yet", "Live sold lifecycle count from marketplace and inventory services.", typeof soldVehicles === "number" ? "live" : "unavailable"),
     metric("marketplace-growth", "Marketplace Growth", marketplaceGrowth.value, "Month-over-month growth from market analytics event volume.", marketplaceGrowth.availability),
     metric("revenue-growth", "Revenue Growth", revenueGrowth.value, "Revenue Centre growth signal from monthly onboarding movement used in existing revenue trends.", revenueGrowth.availability),
     metric("partner-growth", "Partner Growth", partnerGrowth.value, "Partner creation growth from Partner Centre timeline events.", partnerGrowth.availability),
     metric("lead-growth", "Lead Growth", leadGrowth.value, "Month-over-month lead creation growth from platform lead records.", leadGrowth.availability),
     metric("application-growth", "Application Growth", applicationGrowth.value, "Month-over-month operational application queue growth.", applicationGrowth.availability),
     metric("inventory-growth", "Inventory Growth", inventoryGrowth.value, "Month-over-month inventory listing growth from inventory lifecycle records.", inventoryGrowth.availability),
-    metric("average-listing-quality", "Average Listing Quality", typeof averageListingQuality === "number" ? `${averageListingQuality}%` : "Coming Soon", "Live average listing quality from Marketplace Control health snapshot.", typeof averageListingQuality === "number" ? "live" : "coming-soon"),
-    metric("dealer-health", "Dealer Health", typeof dealerHealthScore === "number" ? `${dealerHealthScore}%` : "Coming Soon", "Live average dealer health from Dealer Management health scoring.", typeof dealerHealthScore === "number" ? "live" : "coming-soon"),
+    metric("average-listing-quality", "Average Listing Quality", typeof averageListingQuality === "number" ? `${averageListingQuality}%` : "No data yet", "Live average listing quality from Marketplace Control health snapshot.", typeof averageListingQuality === "number" ? "live" : "unavailable"),
+    metric("dealer-health", "Dealer Health", typeof dealerHealthScore === "number" ? `${dealerHealthScore}%` : "No data yet", "Live average dealer health from Dealer Management health scoring.", typeof dealerHealthScore === "number" ? "live" : "unavailable"),
     metric("marketplace-health", "Marketplace Health", marketplaceHealthValue, "Marketplace health score reused from Marketplace Control summary card.", marketplaceHealthAvailability),
-    metric("platform-health", "Platform Health", platformHealth, "Composite executive platform health from available dealer and marketplace quality signals.", platformHealth === "Coming Soon" ? "coming-soon" : "live"),
+    metric("platform-health", "Platform Health", platformHealth, "Composite executive platform health from available dealer and marketplace quality signals.", platformHealth === "No data yet" ? "unavailable" : "live"),
   ];
 
   const growthTrends: readonly GrowthTrendRow[] = [
@@ -210,42 +210,42 @@ export async function getBusinessIntelligenceWorkspaceData(
     {
       id: "dealers",
       module: "Dealers",
-      health: typeof dealerHealthScore === "number" ? `${dealerHealthScore}%` : "Coming Soon",
+      health: typeof dealerHealthScore === "number" ? `${dealerHealthScore}%` : "No data yet",
       growthSignal: dealerGrowth.value,
-      operationalSignal: dealerManagement ? `${dealerManagement.applications.length.toLocaleString("en-ZA")} applications in dealer lifecycle` : "Coming Soon",
-      availability: dealerManagement ? "live" : "coming-soon",
+      operationalSignal: dealerManagement ? `${dealerManagement.applications.length.toLocaleString("en-ZA")} applications in dealer lifecycle` : "No data yet",
+      availability: dealerManagement ? "live" : "unavailable",
     },
     {
       id: "marketplace",
       module: "Marketplace",
       health: marketplaceHealthValue,
       growthSignal: marketplaceGrowth.value,
-      operationalSignal: marketplace ? `${marketplace.approvalQueue.length.toLocaleString("en-ZA")} listings in control queue` : "Coming Soon",
-      availability: marketplace ? "live" : "coming-soon",
+      operationalSignal: marketplace ? `${marketplace.approvalQueue.length.toLocaleString("en-ZA")} listings in control queue` : "No data yet",
+      availability: marketplace ? "live" : "unavailable",
     },
     {
       id: "revenue",
       module: "Revenue",
-      health: revenue?.summaryCards.find((item) => item.id === "active-subscribers")?.value ?? "Coming Soon",
+      health: revenue?.summaryCards.find((item) => item.id === "active-subscribers")?.value ?? "No data yet",
       growthSignal: revenueGrowth.value,
-      operationalSignal: revenue?.summaryCards.find((item) => item.id === "growth")?.value ?? "Coming Soon",
-      availability: revenue ? "live" : "coming-soon",
+      operationalSignal: revenue?.summaryCards.find((item) => item.id === "growth")?.value ?? "No data yet",
+      availability: revenue ? "live" : "unavailable",
     },
     {
       id: "partners",
       module: "Partners",
-      health: partners ? `${partners.directory.filter((item) => item.status === "active").length.toLocaleString("en-ZA")} active` : "Coming Soon",
+      health: partners ? `${partners.directory.filter((item) => item.status === "active").length.toLocaleString("en-ZA")} active` : "No data yet",
       growthSignal: partnerGrowth.value,
-      operationalSignal: partners ? `${partners.directory.length.toLocaleString("en-ZA")} partner relationships tracked` : "Coming Soon",
-      availability: partners ? "live" : "coming-soon",
+      operationalSignal: partners ? `${partners.directory.length.toLocaleString("en-ZA")} partner relationships tracked` : "No data yet",
+      availability: partners ? "live" : "unavailable",
     },
     {
       id: "applications",
       module: "Applications",
-      health: applications?.queueStats.find((item) => item.id === "total-queue")?.value ?? "Coming Soon",
+      health: applications?.queueStats.find((item) => item.id === "total-queue")?.value ?? "No data yet",
       growthSignal: applicationGrowth.value,
-      operationalSignal: applications ? `${applications.queue.filter((item) => item.status === "new").length.toLocaleString("en-ZA")} new workflow items` : "Coming Soon",
-      availability: applications ? "live" : "coming-soon",
+      operationalSignal: applications ? `${applications.queue.filter((item) => item.status === "new").length.toLocaleString("en-ZA")} new workflow items` : "No data yet",
+      availability: applications ? "live" : "unavailable",
     },
   ];
 
@@ -257,30 +257,30 @@ export async function getBusinessIntelligenceWorkspaceData(
     {
       id: "dealer-ai-ready",
       label: "Dealer AI Ready Profiles",
-      value: dealerIntelligence ? aiReadyClassifications.toLocaleString("en-ZA") : "Coming Soon",
+      value: dealerIntelligence ? aiReadyClassifications.toLocaleString("en-ZA") : "No data yet",
       detail: "Reused from Dealer Intelligence AI classification results.",
-      availability: dealerIntelligence ? "live" : "coming-soon",
+      availability: dealerIntelligence ? "live" : "unavailable",
     },
     {
       id: "dealer-ai-needs-review",
       label: "Dealer AI Needs Review",
-      value: dealerIntelligence ? aiNeedsReview.toLocaleString("en-ZA") : "Coming Soon",
+      value: dealerIntelligence ? aiNeedsReview.toLocaleString("en-ZA") : "No data yet",
       detail: "Reused from Dealer Intelligence verification and enrichment classifications.",
-      availability: dealerIntelligence ? "live" : "coming-soon",
+      availability: dealerIntelligence ? "live" : "unavailable",
     },
     {
       id: "marketplace-ai-review",
       label: "Marketplace AI Review Queue",
-      value: marketplace ? aiPendingMarketplace.toLocaleString("en-ZA") : "Coming Soon",
+      value: marketplace ? aiPendingMarketplace.toLocaleString("en-ZA") : "No data yet",
       detail: "Reused from Marketplace Control moderation queue state.",
-      availability: marketplace ? "live" : "coming-soon",
+      availability: marketplace ? "live" : "unavailable",
     },
     {
       id: "buyer-ai-intelligence",
       label: "Buyer AI Intelligence",
-      value: "Coming Soon",
+      value: "No data yet",
       detail: "Buyer AI insight rollups will surface when executive aggregation contracts are enabled.",
-      availability: "coming-soon",
+      availability: "unavailable",
     },
   ];
 
@@ -333,14 +333,14 @@ export async function getBusinessIntelligenceWorkspaceData(
     {
       id: "revenue-centre-report",
       name: "Revenue Intelligence Report",
-      status: revenue ? "ready" : "coming-soon",
+      status: revenue ? "ready" : "unavailable",
       source: "Revenue Centre",
       detail: "Reused revenue stream and trend signals from Revenue Centre.",
     },
     {
       id: "partner-centre-report",
       name: "Partner Intelligence Report",
-      status: partners ? "ready" : "coming-soon",
+      status: partners ? "ready" : "unavailable",
       source: "Partner Centre",
       detail: "Reused partner directory, performance, and timeline signals from Partner Centre.",
     },
@@ -430,7 +430,7 @@ export async function getBusinessIntelligenceWorkspaceData(
       {
         id: "forecast-models",
         label: "Forecast Models",
-        mode: "coming-soon",
+        mode: "unavailable",
         detail: "Forecast framework is in place; predictive model integrations remain extension points only.",
       },
     ],

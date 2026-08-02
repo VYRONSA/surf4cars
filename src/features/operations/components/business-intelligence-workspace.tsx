@@ -42,11 +42,11 @@ function rel(isoTimestamp: string): string {
   return `${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
 }
 
-function availabilityVariant(mode: "live" | "coming-soon"): "success" | "outline" {
+function availabilityVariant(mode: "live" | "unavailable"): "success" | "outline" {
   return mode === "live" ? "success" : "outline";
 }
 
-function reportVariant(mode: "ready" | "coming-soon"): "success" | "outline" {
+function reportVariant(mode: "ready" | "unavailable"): "success" | "outline" {
   return mode === "ready" ? "success" : "outline";
 }
 
@@ -151,7 +151,7 @@ export function BusinessIntelligenceWorkspace({ data, sectionId, generatedLabel 
             <CardContent>
               <p className="text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">{kpi.detail}</p>
               <Badge className="mt-2" variant={availabilityVariant(kpi.availability)}>
-                {kpi.availability === "live" ? "Live" : "Coming Soon"}
+                {kpi.availability === "live" ? "Live" : "No data yet"}
               </Badge>
             </CardContent>
           </Card>
@@ -208,7 +208,7 @@ export function BusinessIntelligenceWorkspace({ data, sectionId, generatedLabel 
                 <div key={row.id} className="rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/45 px-3 py-3">
                   <div className="flex items-center justify-between gap-2">
                     <p className="text-[length:var(--text-body-sm)] font-medium">{row.label}</p>
-                    <Badge variant={availabilityVariant(row.availability)}>{row.availability === "live" ? "Live" : "Coming Soon"}</Badge>
+                    <Badge variant={availabilityVariant(row.availability)}>{row.availability === "live" ? "Live" : "No data yet"}</Badge>
                   </div>
                   <p className="mt-1 text-[length:var(--text-body-md)] font-semibold">{row.value}</p>
                   <p className="mt-1 text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">{row.detail}</p>
@@ -272,7 +272,7 @@ export function BusinessIntelligenceWorkspace({ data, sectionId, generatedLabel 
                         <p className="text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">{row.detail}</p>
                       </div>
                     </TableCell>
-                    <TableCell><Badge variant={reportVariant(row.status)}>{row.status === "ready" ? "Ready" : "Coming Soon"}</Badge></TableCell>
+                    <TableCell><Badge variant={reportVariant(row.status)}>{row.status === "ready" ? "Ready" : "No data yet"}</Badge></TableCell>
                     <TableCell>{row.source}</TableCell>
                   </TableRow>
                 ))}
@@ -328,7 +328,7 @@ export function BusinessIntelligenceWorkspace({ data, sectionId, generatedLabel 
                 <div key={row.id} className="rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/45 px-3 py-3">
                   <div className="flex items-center justify-between gap-2">
                     <p className="text-[length:var(--text-body-sm)] font-medium">{row.label}</p>
-                    <Badge variant="outline">{row.status === "framework" ? "Framework" : "Coming Soon"}</Badge>
+                    <Badge variant="outline">{row.status === "framework" ? "Framework" : "No data yet"}</Badge>
                   </div>
                   <p className="mt-1 text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">{row.detail}</p>
                   <p className="mt-1 text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">{row.extensionPoint}</p>
@@ -372,7 +372,7 @@ export function BusinessIntelligenceWorkspace({ data, sectionId, generatedLabel 
         <Card variant="glass" padding="md" className="border-[var(--color-border-subtle)]">
           <CardHeader>
             <CardTitle>Source Readiness</CardTitle>
-            <CardDescription>Live vs coming-soon signal coverage used by this executive intelligence layer.</CardDescription>
+            <CardDescription>Live vs unavailable signal coverage used by this executive intelligence layer.</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">

@@ -20,9 +20,9 @@ export interface DashboardHeaderProps {
 export function DashboardHeader({ dealer, onRefresh, isRefreshing }: DashboardHeaderProps) {
   const { showToast } = useNotifications();
 
-  const showComingSoon = (label: string) => {
+  const showUnavailable = (label: string) => {
     showToast({
-      title: `${label} Coming Soon`,
+      title: `${label} No data yet`,
       description: `${label} will connect to the shared SURF shell when the live service is ready.`,
       variant: "info",
     });
@@ -39,7 +39,7 @@ export function DashboardHeader({ dealer, onRefresh, isRefreshing }: DashboardHe
             {dealer.name}
           </h1>
           {/*
-            "Subscription: Coming Soon · Last login: Coming Soon" used to render here.
+            "Subscription: No data yet · Last login: No data yet" used to render here.
             ========================================================================
             A product roadmap phrase in the position of a data value, on the first line a dealer reads
             every morning. Nothing tracks last sign-in, and a dealership without a subscription package
@@ -72,7 +72,7 @@ export function DashboardHeader({ dealer, onRefresh, isRefreshing }: DashboardHe
               variant="outline"
               size="sm"
               className="hidden h-10 gap-2 md:inline-flex"
-              onClick={() => showComingSoon("Dashboard Search")}
+              onClick={() => showUnavailable("Dashboard Search")}
             >
               <Icon icon={Search} size="sm" tone="muted" aria-hidden />
               Search
@@ -87,7 +87,7 @@ export function DashboardHeader({ dealer, onRefresh, isRefreshing }: DashboardHe
               {!isRefreshing && <Icon icon={RotateCcw} size="sm" tone="muted" aria-hidden />}
               Refresh
             </Button>
-            <Button variant="ghost" size="icon-sm" onClick={() => showComingSoon("Notifications")} aria-label="Notifications coming soon">
+            <Button variant="ghost" size="icon-sm" onClick={() => showUnavailable("Notifications")} aria-label="Notifications are not connected yet">
               <Icon icon={Bell} size="sm" tone="muted" />
             </Button>
             <Link href="/dealer/profile" className="inline-flex">

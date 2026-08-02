@@ -253,7 +253,7 @@ export async function getMarketplaceControlWorkspaceData(sectionId: MarketplaceC
     {
       id: "dup-ai-future",
       type: "vehicle-fingerprint" as const,
-      key: "Coming Soon",
+      key: "No data yet",
       vehicleIds: [] as string[],
     },
   ].map((group) => ({
@@ -261,7 +261,7 @@ export async function getMarketplaceControlWorkspaceData(sectionId: MarketplaceC
     dealershipIds: [...new Set(group.vehicleIds
       .map((vehicleId) => queue.find((item) => item.vehicleId === vehicleId)?.dealershipId)
       .filter((value): value is string => Boolean(value)))],
-    availability: group.id === "dup-ai-future" ? "coming-soon" as const : "live" as const,
+    availability: group.id === "dup-ai-future" ? "unavailable" as const : "live" as const,
   }));
 
   const duplicateVehicleCount = new Set(
@@ -330,7 +330,7 @@ export async function getMarketplaceControlWorkspaceData(sectionId: MarketplaceC
   const imageReview: ImageReviewItem[] = queue.map((item) => {
     const media = mediaByVehicle.get(item.vehicleId) ?? [];
     const qualityFromMedia: ImageReviewItem["quality"] = media.length === 0
-      ? "coming-soon"
+      ? "unavailable"
       : media.some((entry) => entry.qualityStatus === "poor")
         ? "poor"
         : media.some((entry) => entry.qualityStatus === "review")
@@ -343,9 +343,9 @@ export async function getMarketplaceControlWorkspaceData(sectionId: MarketplaceC
       imageCount: item.photoCount,
       hasPrimaryImage: item.hasPrimaryPhoto,
       quality: qualityFromMedia,
-      duplicateImages: "coming-soon" as const,
+      duplicateImages: "unavailable" as const,
       missingImages: item.photoCount < 6,
-      moderationAvailability: "coming-soon" as const,
+      moderationAvailability: "unavailable" as const,
     };
   });
 
@@ -354,7 +354,7 @@ export async function getMarketplaceControlWorkspaceData(sectionId: MarketplaceC
     title: item.title,
     contentReview: item.hasDescription ? "ready" as const : "needs-review" as const,
     descriptionReview: item.qualityScore >= 70 ? "ready" as const : "needs-review" as const,
-    pricingReview: "coming-soon" as const,
+    pricingReview: "unavailable" as const,
     listingQualityScore: item.qualityScore,
     moderationStatus: item.approvalStatus === "needs-review" || item.approvalStatus === "pending"
       ? "needs-review" as const
@@ -387,8 +387,8 @@ export async function getMarketplaceControlWorkspaceData(sectionId: MarketplaceC
       id: "alert-fraud-framework",
       severity: "critical" as const,
       title: "Fraud Detection Signals",
-      detail: "Coming Soon. Fraud signal integrations are not connected yet.",
-      availability: "coming-soon" as const,
+      detail: "No data yet. Fraud signal integrations are not connected yet.",
+      availability: "unavailable" as const,
     },
   ];
 
@@ -466,9 +466,9 @@ export async function getMarketplaceControlWorkspaceData(sectionId: MarketplaceC
       {
         id: "fraud-alerts",
         label: "Fraud Alerts",
-        value: "Coming Soon",
+        value: "No data yet",
         detail: "Fraud signal integrations are framework-ready but not connected.",
-        availability: "coming-soon",
+        availability: "unavailable",
       },
       {
         id: "ai-review-queue",
@@ -482,14 +482,14 @@ export async function getMarketplaceControlWorkspaceData(sectionId: MarketplaceC
         label: "Dealer Quality Issues",
         value: dealerQualityIssues.toLocaleString("en-ZA"),
         detail: "Live from dealer management health/compliance indicators.",
-        availability: dealerQuality.length > 0 ? "live" : "coming-soon",
+        availability: dealerQuality.length > 0 ? "live" : "unavailable",
       },
       {
         id: "marketplace-health-score",
         label: "Marketplace Health Score",
-        value: marketplaceHealthScore === null ? "Coming Soon" : `${marketplaceHealthScore}%`,
+        value: marketplaceHealthScore === null ? "No data yet" : `${marketplaceHealthScore}%`,
         detail: "Composite score from publish readiness, quality, and attention ratio.",
-        availability: marketplaceHealthScore === null ? "coming-soon" : "live",
+        availability: marketplaceHealthScore === null ? "unavailable" : "live",
       },
       {
         id: "recent-marketplace-activity",
@@ -501,9 +501,9 @@ export async function getMarketplaceControlWorkspaceData(sectionId: MarketplaceC
       {
         id: "system-alerts",
         label: "System Alerts",
-        value: "Coming Soon",
+        value: "No data yet",
         detail: "Dedicated marketplace control alert orchestration is not connected yet.",
-        availability: "coming-soon",
+        availability: "unavailable",
       },
     ],
     approvalQueue: queue,
@@ -517,7 +517,7 @@ export async function getMarketplaceControlWorkspaceData(sectionId: MarketplaceC
       listingsRequiringAttention: flaggedListings,
       dealerHealth: dealerQuality.length > 0
         ? `${dealerQuality.filter((item) => item.dealerQualityScore !== null && item.dealerQualityScore >= 70).length}/${dealerQuality.length} dealers at acceptable quality`
-        : "Coming Soon",
+        : "No data yet",
       marketplaceAlerts: alerts.filter((alert) => alert.availability === "live").length,
     },
     listingQuality,
@@ -557,7 +557,7 @@ export async function getMarketplaceControlWorkspaceData(sectionId: MarketplaceC
       {
         id: "fraud-ai-dedicated",
         label: "Fraud Detection and Dedicated AI Moderation Engines",
-        mode: "coming-soon",
+        mode: "unavailable",
         detail: "Framework-ready extension points. No standalone fraud/image AI moderation engines are implemented.",
       },
     ],

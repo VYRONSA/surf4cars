@@ -2,9 +2,9 @@
  * Ordered manifest of database migrations shipped with this build.
  *
  * Held as a constant rather than read from disk so migration version reporting works in serverless
- * deployments, where db/migrations is not part of the function bundle.
+ * deployments, where supabase/migrations is not part of the function bundle.
  *
- * When a migration file is added to db/migrations, add its id here in the same order.
+ * When a migration file is added to supabase/migrations, add its id here in the same order.
  */
 
 export interface MigrationDescriptor {

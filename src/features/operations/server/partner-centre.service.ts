@@ -192,7 +192,7 @@ function rel(isoTimestamp: string): string {
   return `${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
 }
 
-function asMetric(id: string, label: string, value: string, detail: string, availability: "live" | "coming-soon"): PartnerMetric {
+function asMetric(id: string, label: string, value: string, detail: string, availability: "live" | "unavailable"): PartnerMetric {
   return { id, label, value, detail, availability };
 }
 
@@ -250,7 +250,7 @@ export async function getPartnerCentreWorkspaceData(sectionId: PartnerCentreSect
   const financeOpen = Math.max(0, financeApps.length - financeCompleted - financeRejected);
   const financeAcceptanceRate = financeApps.length > 0
     ? `${Math.round((financeAccepted / financeApps.length) * 100)}%`
-    : "Coming Soon";
+    : "No data yet";
 
   const inspectionDocuments = store.inventoryDocuments.filter((item) => item.documentType.includes("inspection")).length;
   const warrantyDocuments = store.inventoryDocuments.filter((item) => item.documentType.includes("warranty")).length;
@@ -284,14 +284,14 @@ export async function getPartnerCentreWorkspaceData(sectionId: PartnerCentreSect
     const categoryLabel = CATEGORY_LABEL[blueprint.category];
 
     let status: PartnerStatus = blueprint.defaultStatus;
-    let applicationsReceived = "Coming Soon";
-    let applicationsCompleted = "Coming Soon";
-    let acceptanceRate = "Coming Soon";
-    const responseTime = "Coming Soon";
-    let revenueContribution = "Coming Soon";
-    const serviceQuality = "Coming Soon";
-    let outstandingWork = "Coming Soon";
-    let sourceAvailability: PartnerProfile["sourceAvailability"] = "coming-soon";
+    let applicationsReceived = "No data yet";
+    let applicationsCompleted = "No data yet";
+    let acceptanceRate = "No data yet";
+    const responseTime = "No data yet";
+    let revenueContribution = "No data yet";
+    const serviceQuality = "No data yet";
+    let outstandingWork = "No data yet";
+    let sourceAvailability: PartnerProfile["sourceAvailability"] = "unavailable";
 
     if (blueprint.category === "finance-companies") {
       status = financeApps.length > 0 ? "active" : "onboarding";
@@ -305,10 +305,10 @@ export async function getPartnerCentreWorkspaceData(sectionId: PartnerCentreSect
 
     if (blueprint.category === "inspection-companies") {
       status = inspectionDocuments > 0 ? "onboarding" : "prospect";
-      applicationsReceived = inspectionDocuments > 0 ? inspectionDocuments.toLocaleString("en-ZA") : "Coming Soon";
-      applicationsCompleted = "Coming Soon";
-      outstandingWork = "Coming Soon";
-      sourceAvailability = inspectionDocuments > 0 ? "manual" : "coming-soon";
+      applicationsReceived = inspectionDocuments > 0 ? inspectionDocuments.toLocaleString("en-ZA") : "No data yet";
+      applicationsCompleted = "No data yet";
+      outstandingWork = "No data yet";
+      sourceAvailability = inspectionDocuments > 0 ? "manual" : "unavailable";
     }
 
     if (blueprint.category === "warranty-providers" && warrantyDocuments > 0) {
@@ -318,13 +318,13 @@ export async function getPartnerCentreWorkspaceData(sectionId: PartnerCentreSect
     }
 
     if (blueprint.category === "advertising-partners") {
-      revenueContribution = advertisingStream?.value ?? "Coming Soon";
-      sourceAvailability = advertisingStream?.status === "live" ? "live" : "coming-soon";
+      revenueContribution = advertisingStream?.value ?? "No data yet";
+      sourceAvailability = advertisingStream?.status === "live" ? "live" : "unavailable";
     }
 
     if (blueprint.category === "vehicle-valuation-partners") {
-      applicationsReceived = valuationApps.length > 0 ? valuationApps.length.toLocaleString("en-ZA") : "Coming Soon";
-      sourceAvailability = valuationApps.length > 0 ? "manual" : "coming-soon";
+      applicationsReceived = valuationApps.length > 0 ? valuationApps.length.toLocaleString("en-ZA") : "No data yet";
+      sourceAvailability = valuationApps.length > 0 ? "manual" : "unavailable";
     }
 
     const partnerEvents: PartnerTimelineItem[] = [
@@ -371,21 +371,21 @@ export async function getPartnerCentreWorkspaceData(sectionId: PartnerCentreSect
           id: `${blueprint.id}-primary`,
           name: `${categoryLabel} Lead`,
           role: "Relationship Lead",
-          email: "Coming Soon",
-          telephone: "Coming Soon",
-          availability: "coming-soon",
+          email: "No data yet",
+          telephone: "No data yet",
+          availability: "unavailable",
         },
       ],
       relationshipOwner: defaultOwner,
-      healthScore: "Coming Soon",
+      healthScore: "No data yet",
       performance: [
-        asMetric("applications-received", "Applications Received", applicationsReceived, "Live where request pipelines are connected, otherwise framework placeholder.", applicationsReceived === "Coming Soon" ? "coming-soon" : "live"),
-        asMetric("applications-completed", "Applications Completed", applicationsCompleted, "Completion depends on dedicated partner workflow states.", applicationsCompleted === "Coming Soon" ? "coming-soon" : "live"),
-        asMetric("acceptance-rate", "Acceptance Rate", acceptanceRate, "Calculated where closed outcomes are available.", acceptanceRate === "Coming Soon" ? "coming-soon" : "live"),
-        asMetric("response-time", "Response Time", responseTime, "Partner response SLA telemetry is not connected yet.", "coming-soon"),
-        asMetric("revenue-contribution", "Revenue Contribution", revenueContribution, "Uses live demand/stream signals where available, monetary settlement remains Coming Soon.", revenueContribution === "Coming Soon" ? "coming-soon" : "live"),
-        asMetric("service-quality", "Service Quality", serviceQuality, "Service quality scoring model is framework-only at this stage.", "coming-soon"),
-        asMetric("outstanding-work", "Outstanding Work", outstandingWork, "Operational backlog requiring partner follow-up.", outstandingWork === "Coming Soon" ? "coming-soon" : "live"),
+        asMetric("applications-received", "Applications Received", applicationsReceived, "Live where request pipelines are connected, otherwise framework placeholder.", applicationsReceived === "No data yet" ? "unavailable" : "live"),
+        asMetric("applications-completed", "Applications Completed", applicationsCompleted, "Completion depends on dedicated partner workflow states.", applicationsCompleted === "No data yet" ? "unavailable" : "live"),
+        asMetric("acceptance-rate", "Acceptance Rate", acceptanceRate, "Calculated where closed outcomes are available.", acceptanceRate === "No data yet" ? "unavailable" : "live"),
+        asMetric("response-time", "Response Time", responseTime, "Partner response SLA telemetry is not connected yet.", "unavailable"),
+        asMetric("revenue-contribution", "Revenue Contribution", revenueContribution, "Uses live demand/stream signals where available, monetary settlement remains No data yet.", revenueContribution === "No data yet" ? "unavailable" : "live"),
+        asMetric("service-quality", "Service Quality", serviceQuality, "Service quality scoring model is framework-only at this stage.", "unavailable"),
+        asMetric("outstanding-work", "Outstanding Work", outstandingWork, "Operational backlog requiring partner follow-up.", outstandingWork === "No data yet" ? "unavailable" : "live"),
       ],
       leadDistribution: {
         leadRouting: "Framework Ready",
@@ -403,13 +403,13 @@ export async function getPartnerCentreWorkspaceData(sectionId: PartnerCentreSect
         status: "framework",
       },
       integration: {
-        apiStatus: "Coming Soon",
-        webhookReadiness: "Coming Soon",
-        integrationHealth: "Coming Soon",
-        lastSync: "Coming Soon",
-        version: "Coming Soon",
-        authenticationMethod: "Coming Soon",
-        status: "coming-soon",
+        apiStatus: "No data yet",
+        webhookReadiness: "No data yet",
+        integrationHealth: "No data yet",
+        lastSync: "No data yet",
+        version: "No data yet",
+        authenticationMethod: "No data yet",
+        status: "unavailable",
       },
       internalNotes: "Relationship workspace established. Detailed operational notes can be logged through Partner Centre actions.",
       timeline: partnerEvents,
@@ -418,8 +418,8 @@ export async function getPartnerCentreWorkspaceData(sectionId: PartnerCentreSect
   });
 
   const directory: PartnerDirectoryRow[] = profiles.map((profile) => {
-    const appsReceivedMetric = profile.performance.find((metric) => metric.id === "applications-received")?.value ?? "Coming Soon";
-    const revenueContributionMetric = profile.performance.find((metric) => metric.id === "revenue-contribution")?.value ?? "Coming Soon";
+    const appsReceivedMetric = profile.performance.find((metric) => metric.id === "applications-received")?.value ?? "No data yet";
+    const revenueContributionMetric = profile.performance.find((metric) => metric.id === "revenue-contribution")?.value ?? "No data yet";
 
     return {
       id: profile.id,
@@ -438,7 +438,7 @@ export async function getPartnerCentreWorkspaceData(sectionId: PartnerCentreSect
 
   const activeRelationships = directory.filter((item) => item.status === "active").length;
   const onboardingRelationships = directory.filter((item) => item.status === "onboarding" || item.status === "prospect" || item.status === "contacted" || item.status === "negotiating").length;
-  const integrationReady = directory.filter((item) => item.integrationStatus !== "Coming Soon").length;
+  const integrationReady = directory.filter((item) => item.integrationStatus !== "No data yet").length;
   const streamCoverage = revenueStreams.filter((item) => item.status === "live").length;
 
   const timeline: PartnerTimelineItem[] = [
@@ -503,28 +503,28 @@ export async function getPartnerCentreWorkspaceData(sectionId: PartnerCentreSect
         label: "Finance Requests",
         value: financeApps.length.toLocaleString("en-ZA"),
         detail: "Live finance request demand reused from Applications Centre.",
-        availability: financeApps.length > 0 ? "live" : "coming-soon",
+        availability: financeApps.length > 0 ? "live" : "unavailable",
       },
       {
         id: "integrations-connected",
         label: "Integrations Connected",
         value: integrationReady.toLocaleString("en-ZA"),
         detail: "Current partner integrations are framework-only and prepared for future API/webhook connections.",
-        availability: integrationReady > 0 ? "live" : "coming-soon",
+        availability: integrationReady > 0 ? "live" : "unavailable",
       },
       {
         id: "lead-routing",
         label: "Lead Routing Engine",
-        value: "Coming Soon",
+        value: "No data yet",
         detail: "Lead distribution architecture is scaffolded with extension points only.",
-        availability: "coming-soon",
+        availability: "unavailable",
       },
       {
         id: "stream-coverage",
         label: "Revenue Stream Coverage",
         value: `${streamCoverage}/${Math.max(1, revenueStreams.length)}`,
         detail: "Live coverage reused from Revenue Centre stream readiness.",
-        availability: streamCoverage > 0 ? "live" : "coming-soon",
+        availability: streamCoverage > 0 ? "live" : "unavailable",
       },
     ],
     directory,
@@ -553,13 +553,13 @@ export async function getPartnerCentreWorkspaceData(sectionId: PartnerCentreSect
       {
         id: "insurance-warranty-tradein-valuation-roadside",
         label: "Insurance, Warranty, Trade-In, Valuation, Roadside, Logistics, Tracking Integrations",
-        mode: "coming-soon",
+        mode: "unavailable",
         detail: "Framework ready. No dedicated live partner integration APIs or ledgers are connected yet.",
       },
       {
         id: "partner-api",
         label: "Partner API and Webhook Runtime",
-        mode: "coming-soon",
+        mode: "unavailable",
         detail: "Architecture exists in platform strategy docs, runtime endpoints are not implemented yet.",
       },
       {

@@ -122,7 +122,7 @@ export function MarketplaceControlWorkspace({ data, sectionId }: MarketplaceCont
               </CardHeader>
               <CardContent>
                 <p className="text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]">{card.detail}</p>
-                {card.availability === "coming-soon" ? <Badge className="mt-2" variant="outline">Coming Soon</Badge> : null}
+                {card.availability === "unavailable" ? <Badge className="mt-2" variant="outline">No data yet</Badge> : null}
               </CardContent>
             </Card>
           ))}
@@ -161,7 +161,7 @@ export function MarketplaceControlWorkspace({ data, sectionId }: MarketplaceCont
                   <li key={alert.id} className="rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/45 px-3 py-2">
                     <p className="text-[length:var(--text-body-sm)] font-medium">{alert.title}</p>
                     <p className="mt-1 text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">{alert.detail}</p>
-                    {alert.availability === "coming-soon" ? <Badge className="mt-2" variant="outline">Coming Soon</Badge> : null}
+                    {alert.availability === "unavailable" ? <Badge className="mt-2" variant="outline">No data yet</Badge> : null}
                   </li>
                 ))}
               </ul>
@@ -292,7 +292,7 @@ export function MarketplaceControlWorkspace({ data, sectionId }: MarketplaceCont
         </CardHeader>
         <CardContent>
           {rows.length === 0 ? (
-            <EmptyState title={empty} description="Coming Soon where live integrations are not available." />
+            <EmptyState title={empty} description="No data yet where live integrations are not available." />
           ) : (
             <Table>
               <TableHeader sticky>
@@ -324,7 +324,7 @@ export function MarketplaceControlWorkspace({ data, sectionId }: MarketplaceCont
             <TableCell>{data.health.reserved}</TableCell>
             <TableCell>{data.health.sold}</TableCell>
             <TableCell>{data.health.archived}</TableCell>
-            <TableCell>{data.health.averageListingQuality ?? "Coming Soon"}</TableCell>
+            <TableCell>{data.health.averageListingQuality ?? "No data yet"}</TableCell>
             <TableCell>{data.health.listingsRequiringAttention}</TableCell>
             <TableCell>{data.health.dealerHealth}</TableCell>
             <TableCell>{data.health.marketplaceAlerts}</TableCell>
@@ -365,7 +365,7 @@ export function MarketplaceControlWorkspace({ data, sectionId }: MarketplaceCont
             <TableCell>{row.key}</TableCell>
             <TableCell>{row.vehicleIds.length}</TableCell>
             <TableCell>{row.dealershipIds.length}</TableCell>
-            <TableCell>{row.availability === "coming-soon" ? <Badge variant="outline">Coming Soon</Badge> : <Badge variant="success">Live</Badge>}</TableCell>
+            <TableCell>{row.availability === "unavailable" ? <Badge variant="outline">No data yet</Badge> : <Badge variant="success">Live</Badge>}</TableCell>
           </TableRow>
         )),
         "No duplicate groups",
@@ -385,7 +385,7 @@ export function MarketplaceControlWorkspace({ data, sectionId }: MarketplaceCont
             <TableCell>{relative(row.createdAt)}</TableCell>
           </TableRow>
         )),
-        "Fraud review data is Coming Soon",
+        "Fraud review data is No data yet",
       );
     }
 
@@ -421,7 +421,7 @@ export function MarketplaceControlWorkspace({ data, sectionId }: MarketplaceCont
             <TableCell>{row.quality}</TableCell>
             <TableCell>{row.duplicateImages}</TableCell>
             <TableCell>{row.missingImages ? "Yes" : "No"}</TableCell>
-            <TableCell><Badge variant="outline">Coming Soon</Badge></TableCell>
+            <TableCell><Badge variant="outline">No data yet</Badge></TableCell>
           </TableRow>
         )),
         "No image review rows",
@@ -436,7 +436,7 @@ export function MarketplaceControlWorkspace({ data, sectionId }: MarketplaceCont
         data.dealerQuality.map((row) => (
           <TableRow key={row.dealershipId}>
             <TableCell>{row.dealershipName}</TableCell>
-            <TableCell>{row.dealerQualityScore ?? "Coming Soon"}</TableCell>
+            <TableCell>{row.dealerQualityScore ?? "No data yet"}</TableCell>
             <TableCell>{row.listingCompliance}</TableCell>
             <TableCell>{row.outstandingIssues.join(", ") || "None"}</TableCell>
             <TableCell>{row.warnings.join(", ") || "None"}</TableCell>
@@ -457,7 +457,7 @@ export function MarketplaceControlWorkspace({ data, sectionId }: MarketplaceCont
             <TableCell>{row.severity}</TableCell>
             <TableCell>{row.title}</TableCell>
             <TableCell>{row.detail}</TableCell>
-            <TableCell>{row.availability === "coming-soon" ? <Badge variant="outline">Coming Soon</Badge> : <Badge variant="success">Live</Badge>}</TableCell>
+            <TableCell>{row.availability === "unavailable" ? <Badge variant="outline">No data yet</Badge> : <Badge variant="success">Live</Badge>}</TableCell>
           </TableRow>
         )),
         "No alerts",

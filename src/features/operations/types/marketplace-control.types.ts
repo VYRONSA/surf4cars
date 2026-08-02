@@ -15,7 +15,7 @@ export interface MarketplaceControlSummaryCard {
   readonly label: string;
   readonly value: string;
   readonly detail: string;
-  readonly availability: "live" | "coming-soon";
+  readonly availability: "live" | "unavailable";
 }
 
 export interface MarketplaceApprovalQueueItem {
@@ -62,7 +62,7 @@ export interface DuplicateListingGroup {
   readonly key: string;
   readonly vehicleIds: readonly string[];
   readonly dealershipIds: readonly string[];
-  readonly availability: "live" | "coming-soon";
+  readonly availability: "live" | "unavailable";
 }
 
 export interface FraudReviewItem {
@@ -76,11 +76,11 @@ export interface FraudReviewItem {
 export interface AiModerationItem {
   readonly vehicleId: string;
   readonly title: string;
-  readonly contentReview: "ready" | "needs-review" | "coming-soon";
-  readonly descriptionReview: "ready" | "needs-review" | "coming-soon";
-  readonly pricingReview: "ready" | "coming-soon";
+  readonly contentReview: "ready" | "needs-review" | "unavailable";
+  readonly descriptionReview: "ready" | "needs-review" | "unavailable";
+  readonly pricingReview: "ready" | "unavailable";
   readonly listingQualityScore: number;
-  readonly moderationStatus: "ready" | "needs-review" | "coming-soon";
+  readonly moderationStatus: "ready" | "needs-review" | "unavailable";
 }
 
 export interface ImageReviewItem {
@@ -88,10 +88,10 @@ export interface ImageReviewItem {
   readonly title: string;
   readonly imageCount: number;
   readonly hasPrimaryImage: boolean;
-  readonly quality: "good" | "review" | "poor" | "coming-soon";
-  readonly duplicateImages: "none" | "possible" | "coming-soon";
+  readonly quality: "good" | "review" | "poor" | "unavailable";
+  readonly duplicateImages: "none" | "possible" | "unavailable";
   readonly missingImages: boolean;
-  readonly moderationAvailability: "coming-soon";
+  readonly moderationAvailability: "unavailable";
 }
 
 export interface DealerQualityItem {
@@ -139,7 +139,7 @@ export interface MarketplaceAlertItem {
   readonly severity: "info" | "warning" | "critical";
   readonly title: string;
   readonly detail: string;
-  readonly availability: "live" | "coming-soon";
+  readonly availability: "live" | "unavailable";
 }
 
 export interface MarketplaceControlWorkspaceData {
@@ -160,7 +160,7 @@ export interface MarketplaceControlWorkspaceData {
   readonly sourceReadiness: readonly {
     readonly id: string;
     readonly label: string;
-    readonly mode: "live" | "manual" | "coming-soon";
+    readonly mode: "live" | "manual" | "unavailable";
     readonly detail: string;
   }[];
 }

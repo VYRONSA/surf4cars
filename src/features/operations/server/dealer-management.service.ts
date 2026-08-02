@@ -31,7 +31,7 @@ function parseLifecycleStatus(raw: string): DealerApplicationItem["status"] {
   if (raw === "under-review") return "under-review";
   if (raw === "rejected") return "rejected";
   if (raw === "verification-required") return "verification-required";
-  return "coming-soon";
+  return "unavailable";
 }
 
 function toLifecycleLabel(raw: string): string {
@@ -40,7 +40,7 @@ function toLifecycleLabel(raw: string): string {
   if (raw === "under-review") return "under-review";
   if (raw === "rejected") return "rejected";
   if (raw === "verification-required") return "verification-required";
-  return "coming-soon";
+  return "unavailable";
 }
 
 function profileCompleteness(dealer: {
@@ -104,7 +104,7 @@ export async function getDealerManagementData(): Promise<DealerManagementData> {
         : "Detailed application workflow states will activate when review queues are connected.",
       timelineHint: status === "approved"
         ? "Approval event available through existing onboarding completion trail."
-        : "Extended approval history is coming soon.",
+        : "Extended approval history has no data yet.",
     };
   }).sort((a, b) => Date.parse(b.submittedAt) - Date.parse(a.submittedAt));
 
@@ -188,9 +188,9 @@ export async function getDealerManagementData(): Promise<DealerManagementData> {
     {
       id: "monthly-revenue",
       label: "Monthly Revenue",
-      value: "Coming Soon",
+      value: "No data yet",
       detail: "Billing and revenue ledger integration is not connected yet.",
-      availability: "coming-soon",
+      availability: "unavailable",
     },
     {
       id: "health-distribution",
@@ -212,7 +212,7 @@ export async function getDealerManagementData(): Promise<DealerManagementData> {
       province: dealer.province,
       status: dealer.onboardingStatus,
       lifecycle: toLifecycleLabel(dealer.onboardingStatus),
-      subscription: dealer.subscriptionPackage ?? "Coming Soon",
+      subscription: dealer.subscriptionPackage ?? "No data yet",
       branchCount: branchesByDealer.get(dealer.id) ?? 0,
       userCount: usersByDealer.get(dealer.id) ?? 0,
       healthScore: health,
@@ -259,12 +259,12 @@ export async function getDealerManagementData(): Promise<DealerManagementData> {
     const published = dealershipInventory.filter((vehicle) => vehicle.lifecycleStatus === "published").length;
 
     const conversion = dealershipLeads.length === 0
-      ? "Coming Soon"
+      ? "No data yet"
       : `${Math.round((sold / dealershipLeads.length) * 100)}%`;
 
     const qualityReady = dealershipInventory.filter((vehicle) => vehicle.description && vehicle.seoTitle && vehicle.seoDescription).length;
     const inventoryQuality = dealershipInventory.length === 0
-      ? "Coming Soon"
+      ? "No data yet"
       : `${Math.round((qualityReady / dealershipInventory.length) * 100)}%`;
 
     return {
@@ -276,9 +276,9 @@ export async function getDealerManagementData(): Promise<DealerManagementData> {
       reserved,
       leads: dealershipLeads.length,
       conversion,
-      responseTime: "Coming Soon",
+      responseTime: "No data yet",
       inventoryQuality,
-      aiScore: "Coming Soon",
+      aiScore: "No data yet",
     };
   });
 
@@ -323,7 +323,7 @@ export async function getDealerManagementData(): Promise<DealerManagementData> {
   }
 
   if (aiRecommendations.length === 0) {
-    aiRecommendations.push("Health and subscription recommendations are stable. Advanced AI recommendations are coming soon.");
+    aiRecommendations.push("Health and subscription recommendations are stable. Advanced AI recommendations are not connected yet.");
   }
 
   return {
@@ -343,10 +343,10 @@ export async function getDealerManagementData(): Promise<DealerManagementData> {
     performance,
     health: dealerHealthRows,
     timeline: timelineEvents,
-    notesAvailability: "coming-soon",
-    documentsAvailability: "coming-soon",
-    contractsAvailability: "coming-soon",
+    notesAvailability: "unavailable",
+    documentsAvailability: "unavailable",
+    contractsAvailability: "unavailable",
     subscriptionsAvailability: "partial",
-    billingAvailability: "coming-soon",
+    billingAvailability: "unavailable",
   };
 }

@@ -290,15 +290,15 @@ export function StepMedia() {
       <div className="mt-6 grid gap-4 md:grid-cols-3">
         <article className="rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-surface)] p-4">
           <p className="text-[length:var(--text-body-sm)] font-semibold">Video Walkthroughs</p>
-          <p className="mt-2 text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">Coming Soon</p>
+          <p className="mt-2 text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">No data yet</p>
         </article>
         <article className="rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-surface)] p-4">
           <p className="text-[length:var(--text-body-sm)] font-semibold">360 Spin Sets</p>
-          <p className="mt-2 text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">Coming Soon</p>
+          <p className="mt-2 text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">No data yet</p>
         </article>
         <article className="rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-surface)] p-4">
           <p className="text-[length:var(--text-body-sm)] font-semibold">Bulk Media Quality Review</p>
-          <p className="mt-2 text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">Coming Soon</p>
+          <p className="mt-2 text-[length:var(--text-caption)] text-[var(--color-muted-foreground)]">No data yet</p>
         </article>
       </div>
 

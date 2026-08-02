@@ -12,14 +12,14 @@ export interface DealerManagementSummaryCard {
   readonly label: string;
   readonly value: string;
   readonly detail: string;
-  readonly availability: "live" | "coming-soon";
+  readonly availability: "live" | "unavailable";
 }
 
 export interface DealerApplicationItem {
   readonly dealershipId: string;
   readonly dealershipName: string;
   readonly ownerUserId: string;
-  readonly status: "pending" | "approved" | "rejected" | "under-review" | "verification-required" | "coming-soon";
+  readonly status: "pending" | "approved" | "rejected" | "under-review" | "verification-required" | "unavailable";
   readonly submittedAt: string;
   readonly branchCount: number;
   readonly note: string;
@@ -110,11 +110,11 @@ export interface DealerManagementData {
   readonly performance: readonly DealerPerformanceRow[];
   readonly health: readonly DealerHealthRow[];
   readonly timeline: readonly DealerTimelineEvent[];
-  readonly notesAvailability: "coming-soon";
-  readonly documentsAvailability: "coming-soon";
-  readonly contractsAvailability: "coming-soon";
+  readonly notesAvailability: "unavailable";
+  readonly documentsAvailability: "unavailable";
+  readonly contractsAvailability: "unavailable";
   readonly subscriptionsAvailability: "partial";
-  readonly billingAvailability: "coming-soon";
+  readonly billingAvailability: "unavailable";
 }
 
 export interface DealerManagementPageProps {

@@ -445,7 +445,7 @@ function auditVehicles(
           "completeness",
           "critical",
           photos.length === 0
-            ? "No photograph of this vehicle exists. The listing shows an honest \"Photographs coming soon\" placeholder, so nobody is misled — but a buyer cannot assess a car they cannot see."
+            ? "No photograph of this vehicle exists. The listing shows an honest \"Photographs to follow\" panel, so nobody is misled — but a buyer cannot assess a car they cannot see."
             : "Every photograph is generic library stock for the make and model, not the vehicle being sold. The gallery labels it \"Illustrative image\", so the listing is honest — but the buyer still cannot judge this car's colour, trim or condition.",
           "Capture photographs of the actual vehicle and store them with provenance 'dealer'. The label is a disclosure, not a substitute.",
           stock[0] ?? "(render-time library fallback)",

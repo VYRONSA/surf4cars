@@ -5,7 +5,7 @@ export interface RevenueSummaryCard {
   readonly label: string;
   readonly value: string;
   readonly detail: string;
-  readonly availability: "live" | "coming-soon";
+  readonly availability: "live" | "unavailable";
 }
 
 export interface SubscriptionRow {
@@ -19,13 +19,13 @@ export interface SubscriptionRow {
   readonly cancelled: string;
   readonly trials: number;
   readonly revenueByPackage: string;
-  readonly availability: "live" | "coming-soon";
+  readonly availability: "live" | "unavailable";
 }
 
 export interface RevenueStreamRow {
   readonly id: string;
   readonly stream: string;
-  readonly status: "live" | "coming-soon";
+  readonly status: "live" | "unavailable";
   readonly value: string;
   readonly detail: string;
 }
@@ -72,26 +72,26 @@ export interface RevenueCentreWorkspaceData {
     readonly pendingPayments: string;
     readonly collections: string;
     readonly paymentStatus: string;
-    readonly availability: "coming-soon";
+    readonly availability: "unavailable";
   };
   readonly forecasting: readonly {
     readonly id: string;
     readonly label: string;
     readonly value: string;
     readonly detail: string;
-    readonly availability: "live" | "coming-soon";
+    readonly availability: "live" | "unavailable";
   }[];
   readonly trends: readonly {
     readonly id: string;
     readonly label: string;
     readonly value: string;
     readonly detail: string;
-    readonly availability: "live" | "coming-soon";
+    readonly availability: "live" | "unavailable";
   }[];
   readonly reports: readonly {
     readonly id: string;
     readonly name: string;
-    readonly status: "ready" | "coming-soon";
+    readonly status: "ready" | "unavailable";
     readonly detail: string;
   }[];
   readonly timeline: readonly RevenueTimelineItem[];
@@ -99,7 +99,7 @@ export interface RevenueCentreWorkspaceData {
   readonly sourceReadiness: readonly {
     readonly id: string;
     readonly label: string;
-    readonly mode: "live" | "manual" | "coming-soon";
+    readonly mode: "live" | "manual" | "unavailable";
     readonly detail: string;
   }[];
 }

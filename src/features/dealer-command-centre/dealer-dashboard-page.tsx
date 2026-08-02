@@ -25,9 +25,9 @@ import { getActiveDealershipId } from "@/features/inventory/utils/active-dealers
 const EMPTY_DATA: DealerDashboardData = {
   dealer: {
     name: "Dealer Dashboard",
-    subscription: "Coming Soon",
+    subscription: "No data yet",
     profileCompletion: 0,
-    lastLogin: "Coming Soon",
+    lastLogin: "No data yet",
   },
   kpis: [],
   aiInsights: [],
@@ -38,7 +38,7 @@ const EMPTY_DATA: DealerDashboardData = {
     { id: "low-views", label: "Low Quality Listings", availability: "live", items: [] },
     { id: "above-market", label: "Needs Price Review", availability: "live", items: [] },
     { id: "below-market", label: "Ready to Publish", availability: "live", items: [] },
-    { id: "expiring", label: "Expiring Listings", availability: "coming-soon", message: "Featured listing expiry telemetry is not available yet.", items: [] },
+    { id: "expiring", label: "Expiring Listings", availability: "unavailable", message: "Featured listing expiry telemetry is not available yet.", items: [] },
   ],
   tasks: [],
   quickActions: [],
@@ -46,12 +46,12 @@ const EMPTY_DATA: DealerDashboardData = {
   recommendations: [],
   activities: [],
   charts: {
-    views: { id: "views", label: "Views", values: [], availability: "coming-soon", message: "Live listing view telemetry is not connected yet." },
+    views: { id: "views", label: "Views", values: [], availability: "unavailable", message: "Live listing view telemetry is not connected yet." },
     enquiries: { id: "enquiries", label: "Enquiries", values: [] },
     conversions: { id: "conversions", label: "Conversions", values: [] },
     inventoryGrowth: { id: "inventory-growth", label: "Inventory", values: [] },
-    leadSources: [{ label: "Coming Soon", value: 0, availability: "coming-soon", message: "Live lead-source attribution is not connected yet." }],
-    dailyTraffic: { id: "daily-traffic", label: "Daily Traffic", values: [], availability: "coming-soon", message: "Live traffic telemetry is not connected yet." },
+    leadSources: [{ label: "No data yet", value: 0, availability: "unavailable", message: "Live lead-source attribution is not connected yet." }],
+    dailyTraffic: { id: "daily-traffic", label: "Daily Traffic", values: [], availability: "unavailable", message: "Live traffic telemetry is not connected yet." },
     monthlySales: { id: "monthly-sales", label: "Monthly Sales", values: [] },
   },
 };

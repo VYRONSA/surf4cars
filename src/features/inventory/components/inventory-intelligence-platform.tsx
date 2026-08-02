@@ -609,7 +609,7 @@ export function InventoryIntelligencePlatform() {
                             className="block w-full rounded-[var(--radius-md)] px-2 py-1.5 text-left text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)]"
                             disabled
                           >
-                            Duplicate (Coming Soon)
+                            Duplicate (No data yet)
                           </button>
                         </div>
                       </details>
@@ -675,7 +675,7 @@ export function InventoryIntelligencePlatform() {
                     Delete
                   </Button>
                   <Button type="button" size="sm" variant="outline" disabled>
-                    Duplicate (Coming Soon)
+                    Duplicate (No data yet)
                   </Button>
                 </div>
 

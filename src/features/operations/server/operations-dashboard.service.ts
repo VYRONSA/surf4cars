@@ -27,8 +27,8 @@ function asComingSoon(id: OperationsWidget["id"], label: string, detail: string)
   return {
     id,
     label,
-    value: "Coming Soon",
-    availability: "coming-soon",
+    value: "No data yet",
+    availability: "unavailable",
     detail,
   };
 }
@@ -57,7 +57,7 @@ export async function getOperationsDashboardData(accessToken?: string): Promise<
   const activeDealers = dealerships.filter((dealer) => dealer.onboardingStatus === "completed").length;
   const dealerApplications = Math.max(0, dealerships.length - activeDealers);
   const marketplaceHealth = allVehicles.length === 0
-    ? "Coming Soon"
+    ? "No data yet"
     : `${Math.round((publishedVehicles.length / allVehicles.length) * 100)}%`;
 
   const marketplaceHealthDetail = marketDashboard
@@ -108,7 +108,7 @@ export async function getOperationsDashboardData(accessToken?: string): Promise<
       id: "marketplace-health",
       label: "Marketplace Health",
       value: marketplaceHealth,
-      availability: marketplaceHealth === "Coming Soon" ? "coming-soon" : "live",
+      availability: marketplaceHealth === "No data yet" ? "unavailable" : "live",
       detail: marketplaceHealthDetail,
     },
     asComingSoon("todays-revenue", "Today's Revenue", "Revenue Centre financial feeds are not connected yet."),
@@ -119,7 +119,7 @@ export async function getOperationsDashboardData(accessToken?: string): Promise<
       id: "support-tickets",
       label: "Support Tickets",
       value: firstDealershipEnquiries.length.toLocaleString("en-ZA"),
-      availability: firstDealershipId ? "live" : "coming-soon",
+      availability: firstDealershipId ? "live" : "unavailable",
       detail: firstDealershipId
         ? "Current lead and support workload from the lead service for active dealer context."
         : "No active dealership context yet.",
@@ -128,8 +128,8 @@ export async function getOperationsDashboardData(accessToken?: string): Promise<
     {
       id: "ai-insights",
       label: "AI Insights",
-      value: aiInsights.length > 0 ? aiInsights.length.toLocaleString("en-ZA") : "Coming Soon",
-      availability: aiInsights.length > 0 ? "live" : "coming-soon",
+      value: aiInsights.length > 0 ? aiInsights.length.toLocaleString("en-ZA") : "No data yet",
+      availability: aiInsights.length > 0 ? "live" : "unavailable",
       detail: aiInsights.length > 0
         ? aiInsights.join(" ")
         : "AI monitoring pipeline for operations staff is not connected yet.",

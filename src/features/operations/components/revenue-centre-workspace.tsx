@@ -8,7 +8,7 @@ interface RevenueCentreWorkspaceProps {
   readonly generatedLabel: string;
 }
 
-function cardTone(mode: "live" | "coming-soon"): string {
+function cardTone(mode: "live" | "unavailable"): string {
   return mode === "live"
     ? "border-emerald-300/40 bg-emerald-500/10 text-emerald-100"
     : "border-amber-300/40 bg-amber-500/10 text-amber-100";
@@ -23,7 +23,7 @@ export function RevenueCentreWorkspace({ data, generatedLabel }: RevenueCentreWo
             <p className="text-xs uppercase tracking-[0.2em] text-white/60">Revenue Centre</p>
             <h1 className="text-2xl font-semibold text-white">Executive Revenue Intelligence Layer</h1>
             <p className="mt-1 text-sm text-white/70">
-              Subscription and marketplace revenue intelligence now, with billing and commission ledgers surfaced as Coming Soon until live integration.
+              Subscription and marketplace revenue intelligence now, with billing and commission ledgers surfaced as No data yet until live integration.
             </p>
           </div>
           <p className="rounded-full border border-white/20 bg-white/5 px-3 py-1 text-xs text-white/70">Updated {generatedLabel}</p>
@@ -85,7 +85,7 @@ export function RevenueCentreWorkspace({ data, generatedLabel }: RevenueCentreWo
                             : "border-amber-300/50 bg-amber-500/20 text-amber-100"
                         }`}
                       >
-                        {row.status === "live" ? "Live" : "Coming Soon"}
+                        {row.status === "live" ? "Live" : "No data yet"}
                       </span>
                     </td>
                     <td className="px-2 py-2">{row.value}</td>

@@ -1,4 +1,4 @@
-export type OperationsWidgetAvailability = "live" | "coming-soon";
+export type OperationsWidgetAvailability = "live" | "unavailable";
 
 export interface OperationsWidget {
   readonly id:
