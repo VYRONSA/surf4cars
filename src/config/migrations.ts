@@ -32,6 +32,8 @@ export const MIGRATION_MANIFEST: readonly MigrationDescriptor[] = [
   { id: "20260805090000_prp006_rate_limit_windows", description: "Durable rate limit windows for unauthenticated endpoints" },
   { id: "20260806090000_pcp032_dealer_verification", description: "Real dealership verification state, replacing a hardcoded verified flag" },
   { id: "20260807090000_pcp036_dealer_migration", description: "Dealer import batches and rows — reversible migration with retained source" },
+  { id: "20260808090000_pcp037_dealership_ownership", description: "Ownership claims, staff invitation tokens and the append-only ownership audit" },
+  { id: "20260808091000_pcp037_vehicle_identifiers_nullable", description: "VIN, registration and stock number may be NULL — not supplied is not an empty string" },
 ] as const;
 
 /** The migration this build expects to be the most recent one applied. */
@@ -67,6 +69,8 @@ export const REQUIRED_TABLES: readonly string[] = [
   "rate_limit_windows",
   "vehicle_import_batches",
   "vehicle_import_rows",
+  "dealership_ownership_claims",
+  "dealership_ownership_events",
 ] as const;
 
 /** Storage buckets the media pipeline expects to exist. */

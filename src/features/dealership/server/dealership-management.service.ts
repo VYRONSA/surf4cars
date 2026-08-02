@@ -537,6 +537,159 @@ export async function updateDealershipBranch(
   return branch;
 }
 
+/**
+ * Opening a branch.
+ *
+ * Contact details are optional and stay NULL when not supplied. A branch a dealer has just created
+ * genuinely has no telephone number recorded yet, and inventing one — or storing "" so the field
+ * looks answered — is how 128 dealerships ended up with contact details nobody had ever given us.
+ */
+export async function createDealershipBranch(
+  dealershipId: string,
+  payload: UpdateBranchRequest,
+  accessToken?: string,
+): Promise<DealershipBranchRecord> {
+  const supabase = createDomainServerClient(accessToken);
+  const nowIso = new Date().toISOString();
+  const id = `branch-${crypto.randomUUID()}`;
+
+  if (!payload.name?.trim()) {
+    throw new Error("Give the branch a name.");
+  }
+
+  if (!supabase) {
+    const next = await updatePlatformStore((current) => ({
+      ...current,
+      branches: [
+        ...current.branches,
+        {
+          id,
+          dealershipId,
+          name: payload.name,
+          address: payload.address,
+          province: payload.province,
+          city: payload.city,
+          postalCode: payload.postalCode,
+          telephone: blankToNull(payload.telephone),
+          whatsapp: blankToNull(payload.whatsapp),
+          email: blankToNull(payload.email),
+          businessHours: payload.businessHours,
+          branchManager: payload.branchManager,
+          createdAt: nowIso,
+          updatedAt: nowIso,
+        },
+      ],
+    }));
+
+    const record = next.branches.find((item) => item.id === id);
+    if (!record) throw new Error("Failed to create the branch.");
+    return toBranchFromLocal(record);
+  }
+
+  const { error } = await supabase.from("dealership_branches").insert({
+    id,
+    dealership_id: dealershipId,
+    name: payload.name,
+    address: payload.address,
+    province: payload.province,
+    city: payload.city,
+    postal_code: payload.postalCode,
+    telephone: blankToNull(payload.telephone),
+    whatsapp: blankToNull(payload.whatsapp),
+    email: blankToNull(payload.email),
+    business_hours: payload.businessHours,
+    branch_manager: payload.branchManager,
+    created_at: nowIso,
+    updated_at: nowIso,
+  });
+
+  if (error) throw new Error(error.message);
+
+  const branches = await getDealershipBranches(dealershipId, accessToken);
+  const branch = branches.find((item) => item.id === id);
+  if (!branch) throw new Error("Failed to create the branch.");
+  return branch;
+}
+
+/**
+ * Closing a branch — and the reason this refuses more often than it succeeds.
+ *
+ * THE CASCADE THIS EXISTS TO PREVENT
+ * ==================================
+ * `inventory_vehicles.branch_id` is `not null references dealership_branches(id) on delete cascade`.
+ * A plain delete would therefore take every vehicle at that branch with it, silently, along with
+ * their photographs and equipment — a dealer tidying up a branch they no longer trade from would
+ * destroy the stock they had just spent a morning importing, and nothing would tell them until a
+ * buyer asked where the cars went.
+ *
+ * The same cascade reaches `dealership_staff_memberships`, so the team assigned there would go too.
+ *
+ * So the branch is only removed when nothing points at it, and the refusal names the count and the
+ * fix. A dealership that genuinely wants the stock gone deletes or moves the vehicles first, which
+ * is a decision they take deliberately rather than one this function takes for them.
+ */
+export async function deleteDealershipBranch(
+  dealershipId: string,
+  branchId: string,
+  accessToken?: string,
+): Promise<void> {
+  const supabase = createDomainServerClient(accessToken);
+
+  if (!supabase) {
+    await updatePlatformStore((current) => ({
+      ...current,
+      branches: current.branches.filter(
+        (item) => !(item.id === branchId && item.dealershipId === dealershipId),
+      ),
+    }));
+    return;
+  }
+
+  const branches = await getDealershipBranches(dealershipId, accessToken);
+  if (branches.length <= 1) {
+    throw new Error(
+      "This is your only branch. A dealership needs at least one, so add the new one before closing this.",
+    );
+  }
+
+  const { count: vehicleCount, error: vehicleError } = await supabase
+    .from("inventory_vehicles")
+    .select("id", { count: "exact", head: true })
+    .eq("branch_id", branchId)
+    .eq("dealership_id", dealershipId);
+
+  if (vehicleError) throw new Error(vehicleError.message);
+
+  if ((vehicleCount ?? 0) > 0) {
+    throw new Error(
+      `${vehicleCount} ${vehicleCount === 1 ? "vehicle is" : "vehicles are"} still listed at this branch. Move them to another branch first — closing it now would delete them.`,
+    );
+  }
+
+  const { count: staffCount, error: staffError } = await supabase
+    .from("dealership_staff_memberships")
+    .select("id", { count: "exact", head: true })
+    .eq("branch_id", branchId)
+    .eq("dealership_id", dealershipId)
+    .neq("status", "removed");
+
+  if (staffError) throw new Error(staffError.message);
+
+  if ((staffCount ?? 0) > 0) {
+    throw new Error(
+      `${staffCount} ${staffCount === 1 ? "person is" : "people are"} assigned to this branch. Move them to another branch first.`,
+    );
+  }
+
+  const { error } = await supabase
+    .from("dealership_branches")
+    .delete()
+    .eq("id", branchId)
+    .eq("dealership_id", dealershipId);
+
+  if (error) throw new Error(error.message);
+}
+
 export async function getDealershipTeam(
   dealershipId: string,
   accessToken?: string,

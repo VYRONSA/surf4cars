@@ -28,6 +28,32 @@ function requireEmail(value: unknown, field: string): string {
   return next;
 }
 
+/**
+ * An email address, or nothing at all.
+ *
+ * WHY THE CONTACT FIELDS BECAME OPTIONAL
+ * ======================================
+ * They were `requireText` and `requireEmail`. The columns are nullable, the service layer runs every
+ * one of them through `blankToNull`, and the platform's stated preference is that "NULL is preferred
+ * in development *and* in production; 'Not provided' is a finished state, not a gap to be filled".
+ *
+ * The validator contradicted all three. A dealership with no WhatsApp number could not save its
+ * profile at all without typing something into the WhatsApp box — so the form did not merely permit
+ * a fabricated contact detail, it required one before it would let the dealer proceed. The same held
+ * for VAT and company registration numbers, which many small dealerships do not have to hand.
+ *
+ * This is the seed's mistake with a user interface attached, and it would have produced exactly the
+ * same result: plausible contact details that reach somebody, entered because the form insisted.
+ */
+function optionalEmail(value: unknown, field: string): string | null {
+  const next = optionalText(value);
+  if (next === null) return null;
+  if (!emailRegex.test(next)) {
+    throw new Error(`${field} is invalid.`);
+  }
+  return next;
+}
+
 function requireHexColor(value: unknown, field: string): string {
   const next = requireText(value, field);
   if (!/^#[0-9a-fA-F]{6}$/.test(next)) {
@@ -65,8 +91,11 @@ export async function parseDealershipProfileUpdateRequest(
   return {
     businessName: requireText(body.businessName, "businessName"),
     tradingName: requireText(body.tradingName, "tradingName"),
-    registrationNumber: requireText(body.registrationNumber, "registrationNumber"),
-    vatNumber: requireText(body.vatNumber, "vatNumber"),
+    /* Legal identifiers are optional. A dealership below the VAT threshold has no VAT number, and a
+       form that insists on one gets `4200000273` — a value that looks exactly like a real VAT number
+       and that nobody ever checks. */
+    registrationNumber: optionalText(body.registrationNumber),
+    vatNumber: optionalText(body.vatNumber),
     dealerLicenceNumber: optionalText(body.dealerLicenceNumber),
     businessType: requireText(body.businessType, "businessType"),
     physicalAddress: requireText(body.physicalAddress, "physicalAddress"),
@@ -75,9 +104,9 @@ export async function parseDealershipProfileUpdateRequest(
     postalCode: requireText(body.postalCode, "postalCode"),
     gpsLatitude: requireText(body.gpsLatitude, "gpsLatitude"),
     gpsLongitude: requireText(body.gpsLongitude, "gpsLongitude"),
-    telephone: requireText(body.telephone, "telephone"),
-    whatsapp: requireText(body.whatsapp, "whatsapp"),
-    email: requireEmail(body.email, "email"),
+    telephone: optionalText(body.telephone),
+    whatsapp: optionalText(body.whatsapp),
+    email: optionalEmail(body.email, "email"),
     website,
     primaryColor: requireHexColor(body.primaryColor, "primaryColor"),
     secondaryColor: requireHexColor(body.secondaryColor, "secondaryColor"),
@@ -88,16 +117,19 @@ export async function parseBranchUpdateRequest(request: Request): Promise<Update
   const body = asObject(await request.json());
 
   return {
+    /* Structural fields stay required — a branch without a name or a town is not a branch anybody
+       can be sent to. Contact details and the manager's name are things a dealership supplies when
+       it has them. */
     name: requireText(body.name, "name"),
     address: requireText(body.address, "address"),
     province: requireText(body.province, "province"),
     city: requireText(body.city, "city"),
     postalCode: requireText(body.postalCode, "postalCode"),
-    telephone: requireText(body.telephone, "telephone"),
-    whatsapp: requireText(body.whatsapp, "whatsapp"),
-    email: requireEmail(body.email, "email"),
-    businessHours: requireText(body.businessHours, "businessHours"),
-    branchManager: requireText(body.branchManager, "branchManager"),
+    telephone: optionalText(body.telephone),
+    whatsapp: optionalText(body.whatsapp),
+    email: optionalEmail(body.email, "email"),
+    businessHours: optionalText(body.businessHours) ?? "",
+    branchManager: optionalText(body.branchManager) ?? "",
   };
 }
 

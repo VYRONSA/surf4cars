@@ -49,6 +49,9 @@ const inventoryGroup: ShellNavGroup = {
     { id: "stock", label: "Stock", href: "/dealer/inventory", icon: "Car" },
     { id: "market-intelligence", label: "Market Intelligence", href: "/dealer/market", icon: "LineChart" },
     { id: "new-vehicle", label: "Create Vehicle", href: "/dealer/inventory/new", icon: "Upload" },
+    /* The dealer's words, not ours. A dealership moving 250 cars off AutoTrader is looking for
+       somewhere to put their stock, not for an "import wizard". */
+    { id: "add-stock", label: "Add Your Stock", href: "/dealer/inventory/import", icon: "Upload" },
   ],
 };
 
