@@ -187,6 +187,7 @@ export function selectFeatured<T extends PresentableListing>(
     limit,
     editorial = false,
     mixed = false,
+    approvedPhotographs,
   }: {
     columns: number;
     leadSpan?: number;
@@ -195,22 +196,36 @@ export function selectFeatured<T extends PresentableListing>(
     editorial?: boolean;
     /** One vehicle per body style and per marque. */
     mixed?: boolean;
+    /**
+     * The photographs a person has approved for this surface.
+     *
+     * When supplied this *is* the gate, and `editorial` is not consulted. The difference is the whole
+     * of PCP-043: `isEditorialGrade` answers "has anybody objected to this frame yet", which approves
+     * by default and therefore lets new inventory change the shop window on its own. A set of
+     * approvals answers "has somebody chosen this", which cannot.
+     *
+     * An empty set is a real answer — nothing approved, nothing shown — and never a reason to fall
+     * back to the technical standard.
+     */
+    approvedPhotographs?: ReadonlySet<string>;
   },
   exclude: ReadonlySet<string> = new Set(),
 ): FeaturedSelection<T> {
   const curated = curateForDisplay(ranked);
 
   /*
-    The editorial standard is opt-in per surface, not global.
+    Three levels of gate, and the caller picks one.
 
     Search must keep showing a car photographed on a forecourt — it is the right car, genuinely for
-    sale, and a buyer searching that model should find it. The homepage must not, because the
-    homepage is a claim about the marketplace rather than a list of it. Same listing, two surfaces,
-    two different questions.
+    sale, and a buyer searching that model should find it. The homepage's broader rail applies the
+    editorial standard. The premium rails apply the Founder's approvals, which is stricter than both
+    and is the only one that cannot drift.
   */
-  const eligible = editorial
-    ? curated.filter((listing) => isEditorialGrade(listing.imageSrc))
-    : curated;
+  const eligible = approvedPhotographs
+    ? curated.filter((listing) => approvedPhotographs.has(listing.imageSrc))
+    : editorial
+      ? curated.filter((listing) => isEditorialGrade(listing.imageSrc))
+      : curated;
 
   const pool = dedupeByPhotograph(eligible, exclude);
 

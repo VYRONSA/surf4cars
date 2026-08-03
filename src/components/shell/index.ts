@@ -26,4 +26,5 @@ export {
   EmptyVehicles,
 } from "./empty-states/empty-state-presets";
 export { ErrorView, ERROR_CONFIG, type ErrorType } from "./errors/error-view";
+export { MarketplaceNotFound } from "./errors/not-found-view";
 export * from "./navigation";

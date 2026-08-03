@@ -16,9 +16,20 @@ export interface ShowcaseVehicleListing {
   readonly aiMatchScore: number;
   readonly imageSrc: string;
   readonly imagePosition: string;
-  /** Body style and marque, carried for editorial curation rather than for display. */
+  /**
+   * Body style, marque, model, designation and numeric price — carried for editorial curation rather
+   * than for display.
+   *
+   * `price` above is a formatted string for the card; `priceCents` is the same figure as a number,
+   * because merchandising compares vehicles against the marketplace's own price distribution and
+   * cannot do arithmetic on "R 1 480 000". Parsing the display string back into a number was the
+   * alternative, and a formatting change would have silently broken the ranking.
+   */
   readonly bodyType?: string;
   readonly make?: string;
+  readonly model?: string;
+  readonly variant?: string | null;
+  readonly priceCents?: number;
   readonly featured?: boolean;
   readonly reducedPrice?: boolean;
   readonly verified?: boolean;

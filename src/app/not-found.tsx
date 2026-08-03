@@ -1,34 +1,21 @@
-import Link from "next/link";
-
-import { ErrorView } from "@/components/shell";
+import { PublicShellLayout } from "@/components/layout";
+import { MarketplaceNotFound } from "@/components/shell";
 
 /**
- * A 404 here is usually a sold vehicle or an old link, so it offers two ways onward rather than none.
+ * The 404 for a URL that matched no route at all — an old link from Google, a mistyped address, a
+ * shared listing whose slug changed.
  *
- * `ErrorView` used to supply a *disabled* "Return home" whenever a caller passed no action — and this
- * route passed none. So the most likely error page on the marketplace showed a greyed-out button and
- * no way out of it. The fallback is gone; the action belongs to the page that knows the context.
+ * It carries the public shell explicitly. This file sits above every route group, so nothing else
+ * wraps it: without the shell it rendered with no header, no footer, no search and no Back control —
+ * two links on an otherwise empty page, on the one screen where the visitor is by definition lost.
+ *
+ * Route groups that call `notFound()` themselves have their own boundary, so their shell is not
+ * duplicated by this one.
  */
 export default function NotFound() {
   return (
-    <ErrorView
-      type="404"
-      action={
-        <div className="flex flex-wrap gap-2">
-          <Link
-            href="/search"
-            className="motion-button inline-flex min-h-11 items-center rounded-[var(--radius-pill)] border border-[var(--color-border)] px-5 text-[length:var(--text-body-sm)] font-medium hover:border-[var(--color-border-strong)] hover:bg-[var(--color-hover)]"
-          >
-            Browse the marketplace
-          </Link>
-          <Link
-            href="/"
-            className="motion-button inline-flex min-h-11 items-center rounded-[var(--radius-pill)] px-5 text-[length:var(--text-body-sm)] text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
-          >
-            Home
-          </Link>
-        </div>
-      }
-    />
+    <PublicShellLayout>
+      <MarketplaceNotFound />
+    </PublicShellLayout>
   );
 }

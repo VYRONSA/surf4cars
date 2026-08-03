@@ -1,6 +1,6 @@
 import { isVerifiedDealer } from "@/domain/vehicle";
 import { VEHICLE_STATUS, PUBLISHABLE_VEHICLE_STATUSES } from "@/domain/vehicle/constants/vehicle-status.constants";
-import { isPresentablePhotograph } from "@/config/media";
+import { isEditorialGrade, isPresentablePhotograph } from "@/config/media";
 import { MARKETING_CHANNELS } from "@/domain/vehicle/types/vehicle-marketing.types";
 import type { UnifiedVehicleRecord, VehicleSearchDocument } from "@/domain/vehicle";
 import type { InventoryListingStatus, InventoryVehicle } from "@/features/inventory/types/inventory.types";
@@ -80,7 +80,27 @@ function resolvePrimaryImageUrl(record: UnifiedVehicleRecord): string {
    * is one nobody has said is a picture of the car, which is not the same as one that is.
    */
   const exteriors = usable.filter((photo) => photo.category === "exterior");
-  const chosen = exteriors.find((photo) => photo.isPrimary) ?? exteriors[0];
+
+  /*
+    Among acceptable exteriors, lead with the best one.
+    ==================================================
+    This is a *preference*, not a fourth filter, and the distinction matters: nothing is hidden and no
+    vehicle is dropped. Where a car has several usable exteriors and one of them clears the editorial
+    standard, that is the frame the card leads with; where none does, the behaviour is exactly as
+    before.
+
+    It was found by asking why the homepage's luxury rails were empty. They were empty because this
+    function chose `rear.webp` for the XC90 — the first exterior in the record — and the homepage then
+    rejected the *listing* because that particular frame is a car park. The car also had `side.webp`,
+    which nobody had objected to, sitting unused. So the platform was withholding its premium stock
+    from its shop window over a photograph it did not have to use.
+
+    Ordering within each group still prefers the dealer's own primary, so a dealership that has chosen
+    its lead photograph keeps it whenever that choice is editorial-grade.
+  */
+  const editorialGrade = exteriors.filter((photo) => isEditorialGrade(photo.url));
+  const preferred = editorialGrade.length > 0 ? editorialGrade : exteriors;
+  const chosen = preferred.find((photo) => photo.isPrimary) ?? preferred[0];
 
   return (chosen?.url ?? "").trim() || NO_PHOTOGRAPH;
 }
@@ -220,6 +240,12 @@ export function toShowcaseVehicleListing(record: UnifiedVehicleRecord): Showcase
        is a filtered query wearing an editor's byline — see `selectFeatured`. */
     bodyType: record.core.bodyType || undefined,
     make: record.core.make || undefined,
+    /* Carried so merchandising can tell a genuine performance model from a styling package, and
+       weigh a price against the marketplace rather than against a fixed figure. See
+       `vehicle-merchandising.service.ts`. */
+    model: record.core.model || undefined,
+    variant: record.core.variant || null,
+    priceCents: record.pricing.sellingPriceCents,
     featured: record.marketing.featured || undefined,
     reducedPrice: record.pricing.reducedPrice || undefined,
     verified: isVerifiedDealer(record.dealer.verificationStatus) || undefined,

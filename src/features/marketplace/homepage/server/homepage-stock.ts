@@ -1,6 +1,16 @@
 import { isApprovedForHomepage } from "@/config/editorial/editorial-curation";
 import { loadEditorial, placementsForSlot } from "@/services/editorial/editorial.service";
-import { selectFeatured } from "@/services/presentation";
+import {
+  buildPriceContext,
+  classifySegment,
+  railCopy,
+  rankByAspiration,
+  selectFeatured,
+  HOMEPAGE_SEGMENTS,
+  type MarketSegment,
+  type MerchandisingTier,
+} from "@/services/presentation";
+import { loadMediaReviews } from "@/services/media-review";
 import { getVehicleEngine } from "@/services/vehicle-engine/vehicle-engine.service";
 import { toShowcaseVehicleListing } from "@/services/vehicle-engine/vehicle-projection.service";
 import type { ShowcaseVehicleListing } from "@/features/search/config/search-showcase-listings";
@@ -13,8 +23,15 @@ import { buildSearchFacets, EMPTY_FACETS, type SearchFacets } from "./homepage-f
 const log = createLogger("homepage-stock");
 
 export interface HomepageStock {
-  /** Best-presented stock — complete listings with real photography. */
-  readonly featured: readonly ShowcaseVehicleListing[];
+  /**
+   * The merchandised vehicle rails, in the order they appear — aspiration first, then premium, then
+   * the broader marketplace.
+   *
+   * An array rather than three named fields because how many rails a marketplace can fill is a fact
+   * about its stock, not a layout decision. On thin inventory this is one rail; the page renders one
+   * rail rather than three headings over two cars and a gap.
+   */
+  readonly rails: readonly MerchandisedRail[];
   /**
    * Every published editorial collection, in the order the Founder arranged them.
    *
@@ -29,6 +46,8 @@ export interface HomepageStock {
   readonly countsByBodyType: Readonly<Record<string, number>>;
   /** Live stock count per manufacturer, so the brand rail never offers a dead end. */
   readonly countsByMake: Readonly<Record<string, number>>;
+  /** Live stock count per fuel, so a lifestyle tile never promises a category we do not sell. */
+  readonly countsByFuel: Readonly<Record<string, number>>;
   /**
    * The option lists the hero search offers, derived from this same stock.
    *
@@ -47,6 +66,16 @@ export interface HomepageStock {
   readonly curated: boolean;
 }
 
+/** One merchandised rail of live stock, with copy earned by what is actually in it. */
+export interface MerchandisedRail {
+  readonly key: string;
+  readonly tier: MerchandisingTier;
+  readonly eyebrow: string;
+  readonly headline: string;
+  readonly description: string | null;
+  readonly listings: readonly ShowcaseVehicleListing[];
+}
+
 /** A curated rail on the homepage — a collection, a campaign, the Founder's own picks. */
 export interface EditorialSection {
   readonly key: string;
@@ -61,11 +90,22 @@ export interface DealerSpotlight {
   readonly location: string;
   readonly stockCount: number;
   readonly verified: boolean;
-  readonly inventory: readonly ShowcaseVehicleListing[];
   /** Route to the dealership's own page. Null when the slug cannot be resolved. */
   readonly href: string | null;
   /** The dealership's own mark. Null when they have not supplied one — never a generated stand-in. */
   readonly logoUrl: string | null;
+  /**
+   * The dealership's own cover photograph, and who says so.
+   *
+   * Null is the honest and common answer. The section used to fall back to a SURF4CARS library
+   * photograph of a Cape Town showroom behind a named dealership's name — nobody claimed it was their
+   * premises and the layout said so anyway. A cover is now something a dealership supplies; when they
+   * have not, the section shows a graphic panel rather than somebody else's building.
+   */
+  readonly coverImageUrl: string | null;
+  readonly coverProvenance: "dealer" | "surf4cars-verified" | "demonstration" | null;
+  /** One line, written by the dealership. Null when unwritten — never generated from their stock. */
+  readonly promotionalHeadline: string | null;
   /**
    * What this dealership is known for, written by the Founder in the placement's story field.
    * Null when unwritten; nothing is inferred from their stock, because "mostly sells bakkies" is a
@@ -75,11 +115,12 @@ export interface DealerSpotlight {
 }
 
 const EMPTY: HomepageStock = {
-  featured: [],
+  rails: [],
   collections: [],
   total: 0,
   countsByBodyType: {},
   countsByMake: {},
+  countsByFuel: {},
   facets: EMPTY_FACETS,
   spotlight: null,
   curated: false,
@@ -93,16 +134,36 @@ const EMPTY: HomepageStock = {
  * arithmetic was got wrong by hand twice before it moved into the presentation layer.
  */
 const FEATURED_GRID = { columns: 3, leadSpan: 2, limit: 5, editorial: true, mixed: true } as const;
-const COLLECTION_GRID = { columns: 3, limit: 3, editorial: true, mixed: true } as const;
-const SPOTLIGHT_GRID = { columns: 4, limit: 4 } as const;
+/* Segment rails are uniform rows of equals — the band is the story, not any one car in it. `mixed`
+   stays on so a rail of six SUVs is not six of the same marque. */
+const SEGMENT_GRID = { columns: 3, limit: 6, editorial: true, mixed: true } as const;
+/*
+  Every vehicle on this page is approved, including the tail rail.
+
+  The first attempt exempted this one. The reasoning was that "Cars you can buy today" claims nothing
+  beyond availability, so holding it to the editorial standard would keep a route into the inventory
+  open while the premium bands waited for curation. The launch walk answered that in one screenshot:
+  with the premium rails dark, this rail became the first thing under the hero, and it opened with a
+  Hyundai Motorsport WRC car captioned "2019 Hyundai i20 1.0T Fluid — R95 000" and a Group 5 320i
+  race car three cards later.
+
+  Both were technically eligible — nobody had objected to either frame — which is the whole argument
+  for this sprint, restated by the page itself. There is no rail on the homepage where
+  approve-by-default is safe.
+*/
+const MARKETPLACE_GRID = { columns: 3, limit: 6, editorial: true, mixed: true } as const;
 
 /**
  * Loads the vehicles shown on the homepage from live marketplace stock.
  *
- * Featured stock is ranked by listing quality rather than recency: a buyer's first impression of the
- * marketplace should be its best-presented vehicles, and completeness is the honest proxy for that.
+ * Stock is merchandised rather than merely listed: the first rail takes the most aspirational
+ * vehicles the marketplace can honestly show, the second takes premium marques, and the third opens
+ * out into everything else. See `vehicle-merchandising.service.ts` for how standing is judged.
+ *
  * Vehicles without photography are excluded outright — on a page whose premise is "photography is
- * the product", an image-less card is worse than one fewer card.
+ * the product", an image-less card is worse than one fewer card. Aspiration never overrides that:
+ * the ranking runs first and the photography standard is applied afterwards, so an expensive car
+ * with a forecourt photograph sorts to the top and is then dropped.
  *
  * A read failure degrades to empty. The homepage renders its non-vehicle sections and omits the
  * vehicle ones; it never falls back to invented listings.
@@ -114,28 +175,48 @@ export async function loadHomepageStock(): Promise<HomepageStock> {
 
     const countsByBodyType: Record<string, number> = {};
     const countsByMake: Record<string, number> = {};
+    const countsByFuel: Record<string, number> = {};
     for (const record of visible) {
       const bodyType = record.core.bodyType;
       if (bodyType) countsByBodyType[bodyType] = (countsByBodyType[bodyType] ?? 0) + 1;
       const make = record.core.make?.trim();
       if (make) countsByMake[make] = (countsByMake[make] ?? 0) + 1;
+      const fuel = record.core.fuel?.trim();
+      if (fuel) countsByFuel[fuel] = (countsByFuel[fuel] ?? 0) + 1;
     }
+
+    /*
+      The Founder's approvals, read once per render.
+      =============================================
+      This read fails closed — an unreadable table yields no approvals and the premium rails render
+      empty — which is the opposite of every other read path here and is deliberate. A fallback that
+      let everything through on error would restore approve-by-default at exactly the moment nobody
+      was watching. See `media-review.service.ts`.
+    */
+    const reviews = await loadMediaReviews();
 
     const listings = visible
       .map(toShowcaseVehicleListing)
-      .filter((listing) => Boolean(listing.imageSrc));
+      /* A rejection is absolute: the frame is wrong, unsafe or not the car, so it leaves the page
+         entirely rather than falling back to a lower tier. */
+      .filter((listing) => Boolean(listing.imageSrc) && !reviews.rejected.has(listing.imageSrc));
 
     if (listings.length === 0) {
-      return { ...EMPTY, total: visible.length, countsByBodyType, countsByMake, facets: buildSearchFacets(visible) };
+      return { ...EMPTY, total: visible.length, countsByBodyType, countsByMake, countsByFuel, facets: buildSearchFacets(visible) };
     }
 
     /**
-     * Ranked by listing completeness, then presented by the shared layer.
+     * Two orders, for two different questions.
      *
-     * Curation, one-card-per-photograph and the grid arithmetic all belong to `selectFeatured` — this
-     * loader's only remaining opinion is the *order*, which is genuinely the homepage's to hold: a shop
-     * window leads with its best-presented stock.
+     * `byScore` is listing completeness — the right order for "what else is available", where no
+     * vehicle is claiming to be special. `ranked` is aspiration, which is the order the shop window
+     * needs: a visitor should meet the marketplace's best cars before its best-filled-in forms.
+     *
+     * The price context is built from *every* publishable vehicle rather than from the photogenic
+     * subset, because "expensive for this marketplace" is a fact about the marketplace. Computing it
+     * from the survivors would let the standard drift every time a photograph was denied.
      */
+    const prices = buildPriceContext(visible.map((record) => record.pricing.sellingPriceCents));
     const byScore = [...listings].sort((a, b) => b.aiMatchScore - a.aiMatchScore);
 
     /* The Founder's allowlist, when there is one. Empty means "not curated yet", and the shop window
@@ -199,23 +280,143 @@ export async function loadHomepageStock(): Promise<HomepageStock> {
       });
     }
 
-    /* The algorithm now fills what curation left, never the other way round. */
-    const featuredSelection = selectFeatured(curatable, FEATURED_GRID, reserved);
-    const featured = curatedFeatured.length > 0 ? curatedFeatured : featuredSelection.listings;
+    /*
+      The merchandised rails — the algorithm filling what curation left, never the other way round.
+      ==============================================================================================
+      Two ledgers, not one. `takenImages` is the long-standing duplicate-photograph guard; `takenIds`
+      is new, and the brief asks for it in as many words: never repeat the same vehicle across
+      multiple homepage rails.
 
-    /* Nothing curated yet — the marketplace still needs a second rail, so the algorithm supplies one
-       and says what it is. It disappears the moment a real collection is published. */
-    const collections: EditorialSection[] = curatedSections.length > 0
-      ? curatedSections
-      : [
-          {
-            key: "weekend-escapes",
-            headline: "Weekend escapes",
-            description:
-              "Cars for the drive you take because you want to, not because you have to.",
-            listings: selectFeatured(curatable, COLLECTION_GRID, featuredSelection.usedImages).listings,
-          },
-        ].filter((section) => section.listings.length > 0);
+      Those are not the same rule, and the difference only shows up when the platform gets better. On
+      the shared demonstration library one photograph serves eleven XC90s, so photograph-dedupe hides
+      the vehicle-level problem entirely. The day a dealership uploads its own photographs of two
+      identical cars, image-dedupe stops catching it — and the day one vehicle qualifies for two
+      rails, nothing but an id check keeps it out of both.
+    */
+    const takenIds = new Set<string>();
+    const takenImages = new Set(reserved);
+
+    const claim = (chosen: readonly ShowcaseVehicleListing[]): void => {
+      for (const listing of chosen) {
+        takenIds.add(listing.id);
+        takenImages.add(listing.imageSrc);
+      }
+    };
+
+    for (const listing of curatedFeatured) takenIds.add(listing.id);
+    for (const section of curatedSections) claim(section.listings);
+
+    const ranked = rankByAspiration(curatable, prices);
+    const stillFree = (pool: readonly ShowcaseVehicleListing[]): readonly ShowcaseVehicleListing[] =>
+      pool.filter((listing) => !takenIds.has(listing.id) && !takenImages.has(listing.imageSrc));
+
+    const rails: MerchandisedRail[] = [];
+
+    const addRail = (
+      rail: Omit<MerchandisedRail, "listings">,
+      pool: readonly ShowcaseVehicleListing[],
+      grid: Parameters<typeof selectFeatured>[1],
+      /*
+        The lead rail may stand on a single card — one extraordinary photograph beats six average
+        ones, and `selectFeatured` allows that shape deliberately. A rail further down the page may
+        not: a lone card under a plural heading reads as a section that failed to load rather than
+        as an edit.
+      */
+      minimum = 1,
+    ): void => {
+      const selection = selectFeatured(stillFree(pool), grid, takenImages);
+      if (selection.listings.length < minimum) return;
+      claim(selection.listings);
+      rails.push({ ...rail, listings: selection.listings });
+    };
+
+    if (curatedFeatured.length > 0) {
+      /* The Founder's own words, not computed copy. A person who chose these vehicles has also said
+         what they are, and a generated headline would overwrite it. */
+      const slot = editorial.value.find((entry) => entry.slot.key === "homepage-featured")?.slot;
+      rails.push({
+        key: "homepage-featured",
+        tier: "exceptional",
+        eyebrow: "The collection",
+        headline: slot?.headline ?? slot?.title ?? "Chosen by SURF4CARS",
+        description: slot?.description ?? null,
+        listings: curatedFeatured,
+      });
+      claim(curatedFeatured);
+    }
+
+    /*
+      The six segments, in the Founder's order — which is also the assignment priority.
+      ===============================================================================
+      Each vehicle is offered to the segments in turn and kept by the first that claims it, so no car
+      appears in two rails and no rail is the previous one reshuffled. Within a segment the order is
+      aspiration, so the best example of each band leads it.
+
+      A segment with too little stock renders nothing. That is the graceful fallback the brief asks
+      for, and it is the reason these headings can be fixed strings: membership is defined by a rule,
+      so "Bakkies & commercial" is true of everything under it or the rail is not there at all.
+    */
+    const bySegment = new Map<MarketSegment, ShowcaseVehicleListing[]>();
+    for (const entry of ranked) {
+      const segment = classifySegment(entry.vehicle, entry.verdict);
+      if (!segment) continue;
+      const bucket = bySegment.get(segment) ?? [];
+      bucket.push(entry.vehicle);
+      bySegment.set(segment, bucket);
+    }
+
+    HOMEPAGE_SEGMENTS.forEach((definition, index) => {
+      const pool = bySegment.get(definition.segment) ?? [];
+      if (pool.length === 0) return;
+
+      addRail(
+        {
+          key: definition.segment,
+          tier: index === 0 ? "exceptional" : index < 4 ? "premium" : "everyday",
+          eyebrow: definition.eyebrow,
+          headline: definition.headline,
+          description: definition.description,
+        },
+        pool,
+        /*
+          The Founder's approvals are the gate on every premium band — not the editorial standard,
+          and not "nobody has objected". With nothing approved these rails render nothing at all,
+          which is the intended state rather than a fault: the showroom is dark until it is dressed.
+        */
+        {
+          ...(rails.length === 0 ? FEATURED_GRID : SEGMENT_GRID),
+          approvedPhotographs: reviews.approvedForHomepage,
+        },
+        /* The first rail that renders carries the page, and only it may stand on a single card. */
+        rails.length === 0 ? 1 : 2,
+      );
+    });
+
+    /*
+      Everything the segments did not claim — ordinary hatchbacks, and anything whose body type the
+      records do not carry. Ordered by listing quality rather than by standing, because this rail is
+      not claiming these cars are special, only that they are here and ready to buy.
+    */
+    addRail(
+      { key: "marketplace", tier: "everyday", ...railCopy("everyday", []) },
+      byScore,
+      { ...MARKETPLACE_GRID, approvedPhotographs: reviews.approvedForHomepage },
+      2,
+    );
+
+    /*
+      Editorial collections are the Founder's, or there are none.
+      =========================================================
+      There used to be an algorithmic fallback here — a rail headed "Weekend escapes" that the code
+      invented whenever the console had published nothing, so the page never looked bare. It was a
+      reasonable stopgap when the only alternative was a homepage with one rail on it.
+
+      It is not reasonable now. The page carries six merchandised bands of real stock above this
+      point, so the gap it filled no longer exists, and what it actually did was put a heading
+      nobody wrote above cars nobody chose — an editorial voice with no editor. The Founder Editorial
+      Console publishes collections; when it has published none, this renders none.
+    */
+    const collections: EditorialSection[] = curatedSections;
 
     /**
      * The spotlight dealership — an approved placement, or nothing.
@@ -253,7 +454,9 @@ export async function loadHomepageStock(): Promise<HomepageStock> {
       const { data: dealershipRow } = supabase
         ? await supabase
             .from("dealerships")
-            .select("id, business_name, trading_name, city, logo_data_url")
+            .select(
+              "id, business_name, trading_name, city, logo_data_url, cover_image_url, cover_image_provenance, promotional_headline",
+            )
             .eq("id", approvedPlacement.subjectId)
             .maybeSingle()
         : { data: null };
@@ -262,8 +465,14 @@ export async function loadHomepageStock(): Promise<HomepageStock> {
         const displayName = (dealershipRow.trading_name || dealershipRow.business_name || "") as string;
         const owned = listings.filter((listing) => listing.dealer === displayName);
 
-        /* An approved dealership with nothing publishable renders nothing rather than an empty frame
-           with a name in it. The approval is not in question; the stock is. */
+        /*
+          An approved dealership with nothing published renders nothing rather than a frame with a
+          name in it. The approval is not in question; the stock is.
+
+          The section no longer carries a grid of their vehicles — see the component for why — so it
+          no longer competes with the rails for stock or needs deduplicating against them. It states
+          a count and links to the two places that hold the cars.
+        */
         if (owned.length > 0) {
           spotlight = {
             dealer: displayName,
@@ -274,22 +483,25 @@ export async function loadHomepageStock(): Promise<HomepageStock> {
             href: displayName ? `/dealers/${slugify(displayName)}` : null,
             /* Null when the dealership has not supplied a mark. Nothing is generated to fill it. */
             logoUrl: (dealershipRow.logo_data_url as string | null) ?? null,
+            /* Their photograph or none. Provenance travels with it so the page can say where it came
+               from rather than leaving a reader to assume. */
+            coverImageUrl: (dealershipRow.cover_image_url as string | null) ?? null,
+            coverProvenance:
+              (dealershipRow.cover_image_provenance as DealerSpotlight["coverProvenance"]) ?? null,
+            promotionalHeadline: (dealershipRow.promotional_headline as string | null) ?? null,
             speciality: approvedPlacement.story,
-            inventory: selectFeatured(
-              [...owned].sort((a, b) => b.aiMatchScore - a.aiMatchScore),
-              SPOTLIGHT_GRID,
-            ).listings,
           };
         }
       }
     }
 
     return {
-      featured,
+      rails,
       collections,
       total: visible.length,
       countsByBodyType,
       countsByMake,
+      countsByFuel,
       facets: buildSearchFacets(visible),
       spotlight,
       curated: curatedFeatured.length > 0 || curatedSections.length > 0,

@@ -4,6 +4,29 @@ import { HomePage } from "@/features/marketplace/homepage";
 import { APP_DESCRIPTION, APP_METADATA, APP_NAME } from "@/constants";
 import { PREMIUM_IMAGES } from "@/config/images";
 
+/**
+ * The homepage is a shop window, so it may not be frozen at build time.
+ *
+ * WHAT WAS ACTUALLY HAPPENING
+ * ===========================
+ * This route prerendered as static (`○ /` in the build output) because nothing on it opted into
+ * dynamic rendering. Every number and every vehicle on the marketplace's front page was therefore
+ * whatever had been true at the moment of the last deploy: a dealership publishing stock did not
+ * appear until somebody shipped, and — the reason this was found — a Dealer Spotlight approved in
+ * the Editorial Console did nothing at all.
+ *
+ * That last one matters commercially rather than cosmetically. The rule for the spotlight is that
+ * only an approved dealership may appear there; if approving one has no effect until a rebuild, the
+ * approval is not a control, and the console is a form that appears to work.
+ *
+ * A minute, not `force-dynamic`. The homepage does real work — it reads every publishable vehicle,
+ * ranks it, segments it and builds the search facets — and rendering that per request would put a
+ * full marketplace read in front of the most-hit page on the site. Revalidation serves the cached
+ * copy and regenerates behind it, so the cost is at most one background render per minute however
+ * much traffic arrives, and a dealer who publishes a car sees it on the front page within one.
+ */
+export const revalidate = 60;
+
 const title = "SURF FOR CARS — Premium Automotive Discovery";
 const description =
   "Every vehicle, every verified dealer, and the intelligence to tell you which one is actually worth buying.";

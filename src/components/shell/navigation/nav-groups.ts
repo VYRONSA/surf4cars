@@ -73,6 +73,10 @@ const operationsGroup: ShellNavGroup = {
     /* Second, deliberately. It is the surface the marketplace is changed from, and burying it under
        eleven analytics screens is how a curation tool goes unused. */
     { id: "editorial", label: "Editorial Console", href: "/operations/editorial", icon: "Sparkles" },
+    /* Third, beside the console, for the same reason. The homepage's premium rails render only what
+       is approved here, so this screen is now the difference between a dressed shop window and an
+       empty one — not a settings page. */
+    { id: "photography-review", label: "Photography Review", href: "/operations/photography", icon: "Image" },
     { id: "onboarding-centre", label: "Onboarding Centre", href: "/operations/onboarding-centre", icon: "TrendingUp" },
     { id: "verification", label: "Verification", href: "/operations/verification", icon: "Shield" },
     { id: "quality-centre", label: "Quality Centre", href: "/operations/quality-centre", icon: "BadgeCheck" },

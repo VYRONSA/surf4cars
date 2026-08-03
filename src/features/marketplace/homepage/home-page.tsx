@@ -40,74 +40,139 @@ import { selectBrands } from "@/services/presentation";
  * than falling back to the invented listings the original homepage shipped.
  */
 export async function HomePage() {
-  const { featured, collections, total, countsByMake, facets, spotlight } = await loadHomepageStock();
+  const { rails, collections, total, countsByMake, countsByBodyType, countsByFuel, facets, spotlight } =
+    await loadHomepageStock();
 
   /* The rail is a wall of marks, so it takes only marques we hold artwork for — a brand name set in type
      between nine coloured logos reads as a missing image. Everything else is reached via the rail's "All"
      link and is unaffected in search. */
   const brands = selectBrands(countsByMake, { artworkOnly: true, limit: 10 });
 
+  /*
+    "Remaining marketplace content" is the last vehicle section on the page, so it is split out of
+    the rail list here rather than rendered with the segments it follows.
+  */
+  const segmentRails = rails.filter((rail) => rail.key !== "marketplace");
+  const marketplaceRail = rails.find((rail) => rail.key === "marketplace");
+  const hasVehicleRails = rails.length > 0;
+
   return (
     <>
       <HomeHeroV2 vehicleCount={total} facets={facets} />
 
       {/*
-        Stock first. Everything editorial waits.
-        =======================================
-        Two things used to sit between the hero and any browsable inventory: a curated "This week's
-        featured vehicles" spread, and the lifestyle collections. Both are good sections and both
-        answer a question the visitor has not asked yet.
+        Vehicles for sale, immediately, in bands — and editorial nowhere near the hero.
+        =============================================================================
+        Three arrangements preceded this one and each is worth a line, because the order of this page
+        has been the single most-revised decision in the product.
 
-        Somebody arriving on a car marketplace is asking one thing — *show me cars I can buy* — and a
-        magazine spread of five hand-picked vehicles answers "here is what we think you should want".
-        The order now answers the visitor first and the editor second: real stock, then the ways in,
-        then the curation for people still browsing rather than shopping.
+        V1 put a curated editorial spread and the lifestyle collections between the hero and any
+        browsable inventory: a magazine answering a question the visitor had not asked. V2 replaced
+        that with one rail of live stock ordered by listing completeness — honest, and flat, because
+        "best-filled-in form" is a fact about admin rather than about cars. V3 ranked that same stock
+        by how aspirational it genuinely is, which fixed *what* led the page but left one long rail
+        where a showroom has departments.
 
-        The section is unchanged in substance — it was already reading live published inventory — but
-        it now presents as stock rather than as a collection: a uniform grid, and a route to the full
-        marketplace rather than a curatorial rationale.
+        This is V4, and the change is structural rather than cosmetic: the marketplace is presented
+        the way a dealership floor is laid out. Sports and performance, luxury, premium SUVs,
+        executive saloons, family, then work vehicles — each a rule rather than a hand-picked list,
+        each vehicle in exactly one band, and every band omitted entirely when the stock cannot fill
+        it. See `HOMEPAGE_SEGMENTS`.
+
+        The visitor's first scroll is now stock, stock, stock. Editorial waits until after the
+        dealership, which is where inspiration belongs once shopping has been offered.
       */}
-      <HomeFeaturedEditorial
-        eyebrow="Available now"
-        title="Cars you can buy today"
-        description={
-          total > 0
-            ? `${total.toLocaleString("en-ZA")} vehicles listed by South African dealerships, every one with a full gallery and specification.`
-            : undefined
-        }
-        listings={featured}
-        viewAllHref="/search"
-        layout="uniform"
-        priority
-      />
-
-      <HomeBrandRail brands={brands} />
-
-      {/*
-        Every published collection, in the Founder's order.
-        =================================================
-        One rail used to be hardcoded here. Now the page maps whatever the editorial console has
-        published — Founder's Collection, Spring Collection, Performance Week — so launching a
-        campaign is publishing a slot, and this file does not change for any of them.
-
-        Ordering is the console's: `editorial_slots.position`.
-      */}
-      {collections.map((section) => (
+      {segmentRails.map((rail, index) => (
         <HomeFeaturedEditorial
-          key={section.key}
-          eyebrow="Collection"
-          title={section.headline}
-          description={section.description ?? undefined}
-          listings={section.listings}
+          key={rail.key}
+          railKey={rail.key}
+          eyebrow={rail.eyebrow}
+          title={rail.headline}
+          description={rail.description ?? undefined}
+          listings={rail.listings}
           viewAllHref="/search"
-          layout="uniform"
+          /* The first rail carries the page, so it gets the asymmetric grid and the preloaded
+             photograph. Every rail below it is a row of equals. */
+          layout={index === 0 ? "lead" : "uniform"}
+          priority={index === 0}
         />
       ))}
 
-      {/* Editorial lives here now — past the stock, for visitors still browsing rather than shopping. */}
-      <HomeLifestyleCollections />
+      {/*
+        The broader marketplace, and it sits *with* the vehicles rather than after the editorial.
+        ========================================================================================
+        PCP-042 placed this last, below the collections, which was right while the premium rails
+        above it were always populated. PCP-043 made those rails conditional on Founder approval, and
+        the first walk after that change showed what the old order really depended on: with nothing
+        approved, the vehicle rails vanished and "Find your next journey" arrived 118px below the
+        hero — the exact arrangement the previous brief was written to end.
 
+        The rule the Founder has stated three times is the one to encode: the first thing below the
+        hero is vehicles for sale. So the marketplace rail is part of the vehicle block, and editorial
+        cannot float up past it however curation is set.
+      */}
+      {marketplaceRail && (
+        <HomeFeaturedEditorial
+          railKey={marketplaceRail.key}
+          eyebrow={marketplaceRail.eyebrow}
+          title={marketplaceRail.headline}
+          description={
+            total > 0
+              ? `${total.toLocaleString("en-ZA")} vehicles listed by South African dealerships, every one with a full gallery and specification.`
+              : undefined
+          }
+          listings={marketplaceRail.listings}
+          viewAllHref="/search"
+          layout="uniform"
+        />
+      )}
+
+      {/* Navigation into the same inventory, so it stays with the shopping block rather than being
+          filed under editorial. */}
+      <HomeBrandRail brands={brands} />
+
+      {/* An approved editorial placement, or nothing at all. Never a substituted dealership. */}
       {spotlight && <HomeDealerSpotlight spotlight={spotlight} />}
+
+      {/*
+        Editorial, and only now.
+        =======================
+        Both editorial surfaces sit here, below the dealership and well below the stock: the
+        collections the Founder publishes from the console, and the lifestyle tiles. "Find your next
+        journey" used to sit far higher, where it competed with the inventory it was meant to
+        introduce.
+
+        Ordering within the console block is the console's: `editorial_slots.position`.
+      */}
+      {/*
+        Editorial only where there is stock for it to follow.
+        ====================================================
+        The rails are now gated on Founder approval, so a homepage with nothing approved has no
+        vehicles at all — and the first walk in that state put "Find your next journey" 118px below
+        the hero, which is a magazine with no cars in it. Inspiration is the second thing a
+        marketplace offers; when it cannot offer the first, it should not lead with the second.
+
+        This is not a fallback or a placeholder. It is the same rule every other section on this page
+        now follows: appear when you have earned it, and otherwise not at all.
+      */}
+      {hasVehicleRails && (
+        <>
+          {collections.map((section) => (
+            <HomeFeaturedEditorial
+              key={section.key}
+              railKey={section.key}
+              eyebrow="Collection"
+              title={section.headline}
+              description={section.description ?? undefined}
+              listings={section.listings}
+              viewAllHref="/search"
+              layout="uniform"
+            />
+          ))}
+
+          <HomeLifestyleCollections countsByBodyType={countsByBodyType} countsByFuel={countsByFuel} />
+        </>
+      )}
 
       <HomeWhyBuyers />
       <HomeCta />

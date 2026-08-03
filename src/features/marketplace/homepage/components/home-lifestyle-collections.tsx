@@ -32,8 +32,14 @@ export interface LifestyleCollection {
   readonly image: string;
   /** Premium library id, where one exists — so an approval can replace the frame with no code change. */
   readonly mediaId?: string;
-  readonly href: string;
-  readonly emphasis: "lead" | "standard";
+  /**
+   * What the tile resolves to, declared rather than encoded in a URL.
+   *
+   * The href used to be the only statement of what a tile meant, which made it impossible to ask
+   * "does this lead anywhere" without parsing it back out. Declaring the filter lets the section
+   * count the stock behind each tile and drop the ones with none — see below.
+   */
+  readonly filter: { readonly bodyType?: string; readonly fuel?: string };
 }
 
 export const LIFESTYLE_COLLECTIONS: readonly LifestyleCollection[] = [
@@ -42,57 +48,62 @@ export const LIFESTYLE_COLLECTIONS: readonly LifestyleCollection[] = [
     title: "Driven by adventure",
     line: "For the turn-off you did not plan to take.",
     image: "/images/categories/category-suv-hero.webp",
-    href: "/search?bodyType=SUV",
-    emphasis: "lead",
+    filter: { bodyType: "SUV" },
   },
   {
     id: "luxury",
     title: "Luxury without compromise",
     line: "Quiet, considered, and entirely yours.",
     image: "/images/dealers/dealer-profile-hero.webp",
-    href: "/search?bodyType=Sedan",
-    emphasis: "standard",
+    filter: { bodyType: "Sedan" },
   },
   {
     id: "performance",
     title: "Performance icons",
     line: "Built for the long way round.",
     image: "/images/sections/ai-intelligence-main.webp",
-    href: "/search?bodyType=Coupe",
-    emphasis: "standard",
+    filter: { bodyType: "Coupe" },
   },
   {
     id: "family",
     title: "Family first",
     line: "Everyone, and everything they bring.",
     image: "/images/search/advanced-search-hero.webp",
-    href: "/search?bodyType=MPV",
-    emphasis: "standard",
+    filter: { bodyType: "MPV" },
   },
   {
     id: "electric",
     title: "The electric future",
     line: "Silent, and already here.",
     image: "/images/ai/ai-vehicle-valuation-hero.webp",
-    href: "/search?fuel=Electric",
-    emphasis: "standard",
+    filter: { fuel: "Electric" },
   },
   {
     id: "business",
     title: "Built for business",
     line: "The vehicles that keep everything else running.",
     image: "/images/dashboard/inventory-management-hero.webp",
-    href: "/search?bodyType=Panel%20Van",
-    emphasis: "standard",
+    filter: { bodyType: "Panel Van" },
   },
 ];
 
-function CollectionTile({ collection }: { readonly collection: LifestyleCollection }) {
-  const lead = collection.emphasis === "lead";
+const hrefFor = (collection: LifestyleCollection): string => {
+  const params = new URLSearchParams();
+  if (collection.filter.bodyType) params.set("bodyType", collection.filter.bodyType);
+  if (collection.filter.fuel) params.set("fuel", collection.filter.fuel);
+  return `/search?${params.toString()}`;
+};
 
+function CollectionTile({
+  collection,
+  lead,
+}: {
+  readonly collection: LifestyleCollection;
+  readonly lead: boolean;
+}) {
   return (
     <Link
-      href={collection.href}
+      href={hrefFor(collection)}
       className={cn(
         "group relative isolate block overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--color-border)] motion-card",
         "hover:border-[var(--color-border-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]",
@@ -163,7 +174,43 @@ function CollectionTile({ collection }: { readonly collection: LifestyleCollecti
   );
 }
 
-export function HomeLifestyleCollections() {
+export interface HomeLifestyleCollectionsProps {
+  readonly countsByBodyType: Readonly<Record<string, number>>;
+  readonly countsByFuel: Readonly<Record<string, number>>;
+}
+
+/**
+ * A tile may only promise a life the marketplace can actually sell.
+ *
+ * WHAT THIS FIXED
+ * ===============
+ * Two of these tiles led nowhere. "The electric future — silent, and already here" resolved to
+ * `?fuel=Electric`, and the marketplace holds no electric vehicle at all: petrol, diesel and eight
+ * hybrids. "Built for business" resolved to `?bodyType=Panel Van`, of which there are none. Both
+ * rendered as full-bleed photographs with confident copy, and both delivered an empty results page.
+ *
+ * "Already here" is not a stylistic overreach, it is a false statement about the inventory — the
+ * same class of defect as a headline claiming performance cars the rails cannot show, and the
+ * marque rail has been counting its stock for exactly this reason since it was built.
+ *
+ * So the tiles are filtered against live counts and the section renders whatever survives. The
+ * entries stay in the list: the day a dealership publishes an EV, the tile returns on its own.
+ */
+export function HomeLifestyleCollections({
+  countsByBodyType,
+  countsByFuel,
+}: HomeLifestyleCollectionsProps) {
+  const available = LIFESTYLE_COLLECTIONS.filter((collection) => {
+    const { bodyType, fuel } = collection.filter;
+    if (bodyType && (countsByBodyType[bodyType] ?? 0) === 0) return false;
+    if (fuel && (countsByFuel[fuel] ?? 0) === 0) return false;
+    return true;
+  });
+
+  /* The grid is three columns with a double-width lead. Below three tiles it stops reading as a
+     considered spread and starts reading as a section that failed to load. */
+  if (available.length < 3) return null;
+
   return (
     <section
       aria-labelledby="collections-heading"
@@ -185,8 +232,10 @@ export function HomeLifestyleCollections() {
       </div>
 
       <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {LIFESTYLE_COLLECTIONS.map((collection) => (
-          <CollectionTile key={collection.id} collection={collection} />
+        {/* Whichever tile survives first takes the lead slot, so removing one never leaves the grid
+            without its anchor. */}
+        {available.map((collection, index) => (
+          <CollectionTile key={collection.id} collection={collection} lead={index === 0} />
         ))}
       </div>
     </section>

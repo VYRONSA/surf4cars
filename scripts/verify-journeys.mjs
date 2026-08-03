@@ -41,34 +41,154 @@ console.log("\nBack control — present everywhere except the homepage");
 await page.goto(`${APP}/`, { waitUntil: "domcontentloaded" });
 check("homepage has NO back button", (await page.locator("[data-testid=back-button]").count()) === 0);
 
-const guardedRedirects = ["/dealer/dashboard", "/operations", "/buyer"];
-const publicPaths = [
+/*
+  Every route the app declares, not a sample of them.
+  ==================================================
+  This list used to be twelve paths I had chosen, and it passed while two screens had no Back control
+  at all — `/design-system`, which belongs to no route group, and the 404 for an unmatched URL, which
+  is rendered by a file sitting above every route group. Both were invisible to a sample precisely
+  because they are the routes that no shell wraps.
+
+  So the list is now every page file under `src/app` plus the two boundary cases, and the rule is the
+  founder's rule verbatim: every screen except the homepage.
+
+  Visible count, not DOM count. Next renders more than one tree during a not-found and only one of
+  them is on screen; counting nodes reported two controls where a visitor sees one.
+*/
+const ROUTES = [
   "/search",
   "/pricing",
   "/contact",
   "/legal/terms",
   "/legal/privacy",
   "/legal/cookies",
+  "/unauthorized",
+  "/design-system",
+  /* The two boundaries. An unmatched URL, and a `notFound()` raised inside a route group. */
+  "/this-route-does-not-exist",
+  "/vehicle/definitely-not-a-real-slug",
+  "/dealers/definitely-not-a-real-dealer",
   "/auth/sign-in",
+  "/auth/sign-up",
+  "/auth/sign-up/dealer",
+  "/auth/sign-up/buyer",
   "/auth/forgot-password",
-  ...guardedRedirects,
+  "/auth/reset-password",
+  "/auth/verify-email",
+  "/auth/accept-invitation",
+  /* Guarded portals. These redirect while signed out, so the assertion is the honest one: wherever
+     you land, there is a way back. The interiors are covered by construction — the control is in the
+     shell every one of these groups composes — but that is a structural argument, not a measurement,
+     and it is recorded as such in the report. */
+  "/dealer",
+  "/dealer/dashboard",
+  "/dealer/inventory",
+  "/dealer/inventory/new",
+  "/dealer/inventory/import",
+  "/dealer/profile",
+  "/dealer/branches",
+  "/dealer/team",
+  "/dealer/settings",
+  "/dealer/market",
+  "/dealer/claim",
+  "/buyer",
+  "/buyer/intelligence",
+  "/operations",
+  "/operations/dashboard",
+  "/operations/quality-centre",
+  "/operations/verification",
+  "/operations/editorial",
+  "/operations/audit-logs",
+  "/operations/settings",
+  "/operations/workers",
+  "/operations/onboarding-centre",
+  "/operations/applications-centre",
+  "/operations/advertising-centre",
+  "/operations/revenue-centre",
+  "/operations/partner-centre",
+  "/operations/dealer-management",
+  "/operations/dealer-intelligence",
+  "/operations/marketplace-control",
+  "/operations/business-intelligence",
 ];
 
-for (const path of publicPaths) {
-  await page.goto(`${APP}${path}`, { waitUntil: "domcontentloaded" });
-  const count = await page.locator("[data-testid=back-button]").count();
-  /* Guarded paths redirect to sign-in, which must itself carry the control — so the assertion is the
-     same either way: wherever you end up, there is a way back. */
-  check(`back button on ${path}`, count >= 1, count === 0 ? `landed on ${pathOf()}` : `at ${pathOf()}`);
+/*
+  `/admin/creative/*` is deliberately absent from a deployed build — `proxy.ts` answers 404 with no
+  body, because those screens write to the working tree. So the correct assertion here is not "has a
+  Back control" but "is not there at all"; the control is present on them locally, where they exist.
+*/
+const LOCAL_ONLY_ROUTES = ["/admin/creative/media-review", "/admin/creative/moodboard"];
+
+const countVisible = (target, selector) =>
+  target.evaluate(
+    (sel) => [...document.querySelectorAll(sel)].filter((el) => el.getClientRects().length > 0).length,
+    selector,
+  );
+
+/*
+  `getClientRects` needs layout, and `domcontentloaded` does not guarantee it. Counting straight after
+  the navigation reported zero controls on six routes that plainly have one — a test failing for its
+  own impatience, which is worse than no test because the next person debugs the page. So wait for the
+  control to become visible, and only call it absent once that wait has actually expired.
+*/
+const visibleBackCount = async (target) => {
+  try {
+    await target.locator("[data-testid=back-button]").first().waitFor({ state: "visible", timeout: 10000 });
+  } catch {
+    /* Fall through and report what is really there. */
+  }
+  return countVisible(target, "[data-testid=back-button]");
+};
+
+const withoutBack = [];
+for (const path of ROUTES) {
+  await page.goto(`${APP}${path}`, { waitUntil: "load" });
+  const count = await visibleBackCount(page);
+  if (count !== 1) withoutBack.push(`${path} (${count}, landed ${pathOf()})`);
 }
+check(
+  `exactly one visible back control on all ${ROUTES.length} routes`,
+  withoutBack.length === 0,
+  withoutBack.slice(0, 6).join("; "),
+);
+
+for (const path of LOCAL_ONLY_ROUTES) {
+  const response = await page.request.get(`${APP}${path}`, { maxRedirects: 0 });
+  check(`${path} is absent from a production build`, response.status() === 404, `HTTP ${response.status()}`);
+}
+
+/*
+  The 404 for an unmatched URL is a customer-facing screen, so it carries the public shell. It
+  shipped with neither — no header, no footer, no search — because the file that renders it sits
+  above every route group and nothing wrapped it.
+*/
+await page.goto(`${APP}/this-route-does-not-exist`, { waitUntil: "load" });
+await page.locator("footer").first().waitFor({ state: "visible", timeout: 10000 }).catch(() => {});
+check("unmatched-URL 404 carries the site header", (await countVisible(page, "header")) >= 1);
+check("unmatched-URL 404 carries the site footer", (await countVisible(page, "footer")) >= 1);
+
+/* …and the in-group 404 must not therefore render the shell twice. */
+await page.goto(`${APP}/vehicle/definitely-not-a-real-slug`, { waitUntil: "load" });
+await page.locator("footer").first().waitFor({ state: "visible", timeout: 10000 }).catch(() => {});
+const footers = await countVisible(page, "footer");
+check("in-group 404 does not duplicate the shell", footers === 1, `${footers} footers`);
 
 /* ── The customer journey, and Back at each step ──────────────────────────────────────────────── */
 
 console.log("\nCustomer journey, pressing Back at each step");
 
+/*
+  The homepage routes to the marketplace; it does not always show cars.
+
+  This used to assert a vehicle card on the homepage, which was true until PCP-043 gated every rail
+  on Founder approval. With nothing approved the shop window is deliberately dark, and the honest
+  invariant is the one below: from the front page a visitor can always reach the inventory. Whether
+  cars are *on* the front page is a curation decision, and it is proved in both directions by
+  `verify-founder-curation.mjs`.
+*/
 await page.goto(`${APP}/`, { waitUntil: "domcontentloaded" });
-const firstVehicle = page.locator('a[href^="/vehicle/"]').first();
-check("homepage offers vehicles to click", (await firstVehicle.count()) > 0);
+const waysIntoStock = await page.locator('a[href^="/search"]').count();
+check("the homepage routes a visitor into the inventory", waysIntoStock > 0, `${waysIntoStock} links to search`);
 
 await page.goto(`${APP}/search`, { waitUntil: "domcontentloaded" });
 const searchVehicle = page.locator('a[href^="/vehicle/"]').first();

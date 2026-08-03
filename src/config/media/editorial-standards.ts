@@ -115,7 +115,137 @@ export const NOT_EDITORIAL_GRADE: ReadonlySet<string> = new Set([
      tripled its width. A photograph is not fit or unfit in the abstract — it is fit at a size, and
      the cover is the one place that has to be re-checked. */
   "/images/vehicles/library/peugeot-2008/front.webp",
+
+  /*
+    ── Caught by PCP-041A, when merchandising changed which cars lead ────────────────────────────
+    Ranking the homepage by aspiration rather than by listing completeness promoted the premium end
+    of the inventory to the front page for the first time — and the premium end is exactly where
+    this library is weakest, because expensive cars are photographed at motor shows and dealerships
+    rather than on driveways.
+
+    Every frame below was leading a homepage card within minutes of that change. That is the founder
+    rule firing as intended: *never feature poor-quality photography simply because a vehicle is
+    expensive*. The rail is shorter for it, which is the preferred outcome.
+  */
+
+  /* A dealership forecourt, and it advertises a *different* dealership: "Audi Zentrum Stuttgart"
+     decals on the subject car's door and across the black car parked behind it, German plate, block
+     paving, grey wall. Putting a live third-party business's branding on the SURF4CARS shop window
+     is the same fault as the "MILITARY AUTOSOURCE" and `autoloewen.de` frames already denied. */
+  "/images/vehicles/library/audi-q3/front.webp",
+
+  /* A red Q5 with a blue emergency light bar on the roof and an "FW" (Feuerwehr) plate, parked
+     outside a municipal building. A fire-service command vehicle, leading a R940 000 listing —
+     the same fault as the "SECURITY"-liveried bakkie and the government-fleet Hilux. */
+  "/images/vehicles/library/audi-q5/front.webp",
+
+  /* A street in China: blue Chinese plates, red signage propped inside the windscreen, moving
+     traffic, kerb markings and a harbour behind. `bmw-x1/front.webp` was already denied outright,
+     so this is the frame the projection falls through to — and it is no better. */
+  "/images/vehicles/library/bmw-x1/rear.webp",
+
+  /* A motor show stand: crowd, exhibition lighting, an "AMG" wall sign, another car on a plinth
+     behind, and a "Classe C" display board where the registration should be. It is also an estate,
+     leading saloon listings. `mercedes-benz-c-class/front.webp` is denied outright as a liveried
+     DTM car, so this is the fallback — a second reminder that skipping a bad frame only helps if
+     the next one is good. */
+  "/images/vehicles/library/mercedes-benz-c-class/rear.webp",
+
+  /* The worst of the set, and the least obvious: a silver crossover on a show stand under a NISSAN
+     sign, with "LF-NX" where the number plate goes. It is the Lexus LF-NX **concept car** — a
+     design study that was never sold — and it was leading a R1 170 000 listing for an NX 350h.
+     Nobody can buy this vehicle. Same fault as the denied hydrogen prototype on the X5. */
+  "/images/vehicles/library/lexus-nx/front.webp",
+
+  /*
+    ── Second pass, after the first shifted which cars lead ──────────────────────────────────────
+    Re-probed rather than assumed, which is the discipline this file has needed twice before: the
+    frames promoted by a denial are not necessarily better than the ones denied.
+  */
+
+  /* Moving traffic. Chinese plate, a bus filling the left third, cars crowding both sides, road
+     markings across the bottom. */
+  "/images/vehicles/library/bmw-x3/front.webp",
+
+  /* Also moving traffic, and worse: the driver, a passenger and a child are clearly identifiable
+     through the windscreen, in face masks. Photographing strangers is not something to put on the
+     front page of a marketplace, whatever the licence says. */
+  "/images/vehicles/library/mercedes-benz-v-class/front.webp",
+
+  /* Inside a dealership showroom — polished tiled floor, a Fortuner and a second Land Cruiser
+     either side, window stickers still on the glass, Arabic signage, and a "LAND CRUISER" display
+     board where the registration should be. It is also a 200-series V8 5.7 VXS leading "Land
+     Cruiser 300 3.3 ZX": wrong generation and wrong engine, the same fault that denied the J100
+     dune photograph. */
+  "/images/vehicles/library/toyota-land-cruiser/rear.webp",
+
+  /*
+    ── Third pass, and the last one taken frame-by-frame ─────────────────────────────────────────
+    These three were the next to reach the cover. All three fail plainly, and denying them is the
+    correct call — but the pattern is now conclusive rather than incremental, and it is recorded at
+    the foot of this file: ten frames were examined in this pass and eight failed, for the same
+    handful of reasons every time. The library is reference photography and no further subtraction
+    turns it into editorial photography.
+  */
+
+  /* A brand pop-up stand behind glass: a "Sportage GT-line" display board where the registration
+     should be, a second Kia on a placard behind, an information kiosk, a BOSCH sign, and passers-by
+     on the pavement outside. The same motor-show fault as the Magnite, the C-Class and the CX-5. */
+  "/images/vehicles/library/kia-sportage/front.webp",
+
+  /* A street outside a row of shops: "AVTO STOP" signage, a "LIQUI MOLY" advertising board, clothing
+     hung in a shop window, a bystander, parked cars and a graffitied wall. It is also the three-door
+     short-wheelbase Prado, leading five-door listings. */
+  "/images/vehicles/library/toyota-prado/front.webp",
+
+  /* A dealership forecourt — rows of unregistered stock either side, a delivery truck behind, and no
+     number plate fitted at all. A good photograph of a car that is not for sale by us. */
+  "/images/vehicles/library/volkswagen-amarok/front.webp",
+
+  /*
+    ── PCP-042, after the lead-image chooser began preferring editorial-grade frames ─────────────
+    That change let a vehicle lead with a *different* exterior than before, which put roughly thirty
+    previously-unused frames onto the homepage at once — including, at last, the premium stock the
+    rails had been unable to reach. These three were leading the top two rails within a minute of it.
+
+    They are the last frames denied by inspection. The reason is recorded in the note below: the
+    default is backwards for a cover, and the remedy is an allowlist rather than a longer denylist.
+  */
+
+  /* A motor show stand — people in suits, exhibition lighting, display flooring, and a "Macan S"
+     display board where the registration should be. It is also a Macan S leading a Macan GTS. The
+     front frame of this same car was already denied for the same show. */
+  "/images/vehicles/library/porsche-macan/rear.webp",
+
+  /* A wet car park outside a row of shops: a "T.K Seafood Centre" board with a crab logo, a "KLINIK"
+     sign, further shop signage, parked cars, disabled-bay markings and rain on the paint. Malaysian
+     plate. It was leading the Sports & Performance rail. */
+  "/images/vehicles/library/bmw-m340i/rear.webp",
+
+  /* Inside a dealership showroom again — tiled floor, glass office partitions, ceiling spots, a
+     windscreen sticker and another car behind the glass. */
+  "/images/vehicles/library/bmw-x5/side.webp",
 ]);
+
+/*
+  WHY THIS LIST SHOULD STOP GROWING, AND WHAT REPLACES IT
+  ======================================================
+  Across PCP-041A and PCP-042 roughly fourteen further frames were examined one at a time as
+  merchandising promoted them to the homepage. Twelve failed, for the same five reasons every time:
+  motor show stands, dealership forecourts and showrooms, foreign street furniture, third-party
+  advertising, and vehicles that are not the model in the listing.
+
+  That ratio is not a backlog to work through. `isEditorialGrade` answers "has anybody objected to
+  this frame yet", and on a library of several hundred reference photographs the honest answer for
+  almost all of them is "nobody has looked". A denylist therefore approves by default, which is the
+  wrong default for the one page that speaks for the marketplace: every improvement to merchandising
+  promotes another batch of unreviewed frames to the cover, and the list has to chase it.
+
+  The inversion already exists and is deliberately empty — `APPROVED_FOR_HOMEPAGE` in
+  `src/config/editorial/editorial-curation.ts`, or an `editorial_slots` placement from the Founder
+  Editorial Console. Adding one slug there flips the homepage from "everything not yet objected to"
+  to "only what a person chose". That is a curation decision and cannot be made from here.
+*/
 
 /*
   WHY THE LIST KEEPS GROWING, AND WHAT THAT ACTUALLY MEANS

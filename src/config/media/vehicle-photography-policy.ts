@@ -97,6 +97,26 @@ export const UNPRESENTABLE_VEHICLE_PHOTOGRAPHY: ReadonlySet<string> = new Set([
   /* A 1970s Corolla coupé on cobblestones. A handsome photograph of the wrong car by five decades,
      leading "2026 Toyota Corolla 2.0 XR". */
   "/images/vehicles/library/toyota-corolla/side.webp",
+
+  /*
+    ── Two competition cars, found on the launch walk ────────────────────────────────────────────
+    Both were leading cards on the homepage and both are still reachable from search, which is why
+    they are denied here rather than only marked rejected in `media_reviews`: this list is the gate
+    search applies, and a competition car captioned as a road car is a factual misrepresentation of
+    what is for sale, not a matter of taste.
+
+    They surfaced because PCP-042 taught the lead-image chooser to prefer editorial-grade frames,
+    which promoted the *third* photograph of several vehicles for the first time. The rally car's
+    front frame was already denied; nobody had ever looked at its side.
+  */
+
+  /* A Hyundai Motorsport WRC car: Shell Helix livery, competition number 7, the crew's names on the
+     glass, Michelin gravel tyres. It was leading "2019 Hyundai i20 1.0T Fluid" at R95 000. */
+  "/images/vehicles/library/hyundai-i20/side.webp",
+
+  /* A Group 5 BMW 320i turbo on a circuit — Castrol livery, race number 39, "EDDIE CHEEVER" on the
+     door, roll cage visible through the glass, rear wing. Leading "2019 BMW 320i M Sport". */
+  "/images/vehicles/library/bmw-320i/rear.webp",
 ]);
 
 /** True when a photograph is fit to be shown to a customer. */

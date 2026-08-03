@@ -32,6 +32,14 @@ export interface HomeFeaturedEditorialProps {
    * a stranded tile on a second row.
    */
   readonly layout?: "lead" | "uniform";
+  /**
+   * Which rail this is, stamped onto the section.
+   *
+   * The homepage renders several instances of this component and a verification pass has to be able
+   * to tell them apart — "no vehicle appears in two rails" is not checkable if the rails are
+   * indistinguishable in the markup.
+   */
+  readonly railKey?: string;
 }
 
 export function HomeFeaturedEditorial({
@@ -42,6 +50,7 @@ export function HomeFeaturedEditorial({
   viewAllHref = "/search",
   priority = false,
   layout = "lead",
+  railKey,
 }: HomeFeaturedEditorialProps) {
   if (listings.length === 0) return null;
 
@@ -56,7 +65,10 @@ export function HomeFeaturedEditorial({
   const rest = layout === "lead" ? others : listings;
 
   return (
-    <section className="mx-auto w-full max-w-[var(--container-2xl)] px-6 py-16 sm:px-8 lg:px-10 lg:py-20">
+    <section
+      data-rail={railKey}
+      className="mx-auto w-full max-w-[var(--container-2xl)] px-6 py-16 sm:px-8 lg:px-10 lg:py-20"
+    >
       <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
         <div className="max-w-2xl">
           {eyebrow && (

@@ -25,6 +25,23 @@ export {
 } from "./brand-presentation.service";
 
 export {
+  buildPriceContext,
+  classifyAspiration,
+  classifySegment,
+  railCopy,
+  rankByAspiration,
+  HOMEPAGE_SEGMENTS,
+  type AspirationVerdict,
+  type MarketPriceContext,
+  type MarketSegment,
+  type MerchandisableVehicle,
+  type MerchandisedVehicle,
+  type MerchandisingTier,
+  type RailCopy,
+  type SegmentDefinition,
+} from "./vehicle-merchandising.service";
+
+export {
   MARQUE_OPTICAL,
   resolveMarqueIdentity,
   type MarqueAssetKind,
