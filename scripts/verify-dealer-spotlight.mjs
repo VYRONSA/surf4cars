@@ -133,6 +133,17 @@ try {
   check("a dealership with published stock is available", Boolean(subject), subject?.business_name ?? "none");
   if (!subject) throw new Error("no dealership with published stock");
 
+  /*
+    Clear any residue from an interrupted run before starting.
+
+    The first version inserted and failed hard on a duplicate key, which turned one killed run into a
+    permanently poisoned suite — and left a *published* dealer-spotlight slot in the database until
+    somebody noticed. A verification suite the operations manual tells you to run weekly must be able
+    to recover from having been interrupted, because sooner or later it will be.
+  */
+  await db.from("editorial_placements").delete().eq("slot_key", SLOT_KEY);
+  await db.from("editorial_slots").delete().eq("key", SLOT_KEY);
+
   const { error: slotError } = await db.from("editorial_slots").insert({
     key: SLOT_KEY,
     title: "Dealer spotlight",
