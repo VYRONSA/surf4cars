@@ -8,11 +8,14 @@ export {
   dismissIntegrityFlag,
   loadIntegrityFlags,
   loadMediaReviews,
+  loadVehicleReviews,
   refreshIntegrityFlags,
   reviewStateOf,
+  saveVehicleReview,
   setMediaReviewState,
   type MediaReviewIndex,
   type SetReviewInput,
+  type VehicleReview,
 } from "./media-review.service";
 
 export {

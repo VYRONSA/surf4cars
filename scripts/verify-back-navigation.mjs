@@ -281,8 +281,13 @@ try {
     }
     if (route === "/vehicle/[slug]" && vehicleHref) resolved.set(route, vehicleHref);
     else if (route === "/dealers/[slug]" && dealerHref) resolved.set(route, dealerHref);
-    else if (route.endsWith("/[section]")) {
-      const concrete = await sectionFor(route.replace("/[section]", ""));
+    else if (/\/\[[^/]+\]$/.test(route)) {
+      /*
+        Any route whose last segment is dynamic: ask its parent page which children it offers, rather
+        than guessing an id and measuring a 404. Written generically after `/operations/photography/
+        [vehicle]` arrived and a rule keyed to `[section]` silently stopped covering it.
+      */
+      const concrete = await sectionFor(route.replace(/\/\[[^/]+\]$/, ""));
       if (concrete) resolved.set(route, concrete);
     }
   }

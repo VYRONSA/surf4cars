@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import {
   dismissIntegrityFlag,
   refreshIntegrityFlags,
+  saveVehicleReview,
   setMediaReviewState,
   type MediaReviewState,
 } from "@/services/media-review";
@@ -23,9 +24,38 @@ import { toShowcaseVehicleListing } from "@/services/vehicle-engine/vehicle-proj
  */
 
 function refresh() {
-  revalidatePath("/operations/photography");
+  revalidatePath("/operations/photography", "layout");
   revalidatePath("/operations/editorial");
   revalidatePath("/");
+}
+
+/**
+ * One sitting, saved at once.
+ *
+ * The workspace posts a `state:<photograph>` field per frame plus a single note. Saving them
+ * together is what makes the note mean something — it is the reason for *these* decisions, not for
+ * whichever button happened to be pressed last.
+ *
+ * A frame whose radio is unchanged still posts its current value, so this is idempotent: re-saving a
+ * review nobody edited writes the same states back and moves the vehicle's `reviewed_at` forward,
+ * which is exactly what "I have looked at this again" should do.
+ */
+export async function saveVehicleReviewAction(formData: FormData) {
+  const vehicleId = String(formData.get("vehicleId") ?? "").trim();
+  if (!vehicleId) return;
+
+  const note = String(formData.get("note") ?? "").trim();
+
+  for (const [field, value] of formData.entries()) {
+    if (!field.startsWith("state:")) continue;
+    const photograph = field.slice("state:".length);
+    const state = String(value) as MediaReviewState;
+    if (!photograph || !state) continue;
+    await setMediaReviewState({ photograph, state });
+  }
+
+  await saveVehicleReview({ vehicleId, note: note || null });
+  refresh();
 }
 
 export async function setReviewStateAction(formData: FormData) {

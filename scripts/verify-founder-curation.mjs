@@ -190,7 +190,20 @@ let approvedPhotograph = null;
 try {
   heading("The approval gate, closed");
 
-  const closed = await railsOnPage();
+  /*
+    Wait out the revalidation window before asserting the closed state.
+
+    The homepage is cached for a minute, so a suite that ran just before this one and approved a
+    photograph leaves a page that still shows rails. That produced a failure here once and it was
+    cross-suite cache interference rather than the gate — exactly the staleness trap the
+    merchandising suite already had to be taught about.
+  */
+  let closed = await railsOnPage();
+  const settleBy = Date.now() + 120_000;
+  while (closed.length > 0 && Date.now() < settleBy) {
+    await page.waitForTimeout(5_000);
+    closed = await railsOnPage();
+  }
   check(
     "no vehicle rail of any kind renders while nothing is approved",
     closed.length === 0,

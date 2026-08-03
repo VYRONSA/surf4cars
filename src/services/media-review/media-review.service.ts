@@ -169,6 +169,61 @@ export async function refreshIntegrityFlags(
   return { detected: detected.length, stored: count ?? 0 };
 }
 
+/* ── Vehicle-level review ─────────────────────────────────────────────────────────────────────── */
+
+export interface VehicleReview {
+  readonly vehicleId: string;
+  readonly note: string | null;
+  readonly reviewedAt: string;
+}
+
+/**
+ * Which vehicles have been through the workspace.
+ *
+ * Separate from the photograph states because they answer different questions, and the difference
+ * shows up in the case that matters: a vehicle whose every frame was rejected has four decisions
+ * recorded and nothing to distinguish "reviewed, nothing usable" from "abandoned half way".
+ */
+export async function loadVehicleReviews(): Promise<ReadonlyMap<string, VehicleReview>> {
+  const supabase = createDomainServerClient();
+  if (!supabase) return new Map();
+
+  const { data, error } = await supabase.from("vehicle_reviews").select("vehicle_id,note,reviewed_at");
+  if (error) {
+    log.error("vehicle review read failed", { message: error.message });
+    return new Map();
+  }
+
+  return new Map(
+    (data ?? []).map((row) => [
+      row.vehicle_id,
+      { vehicleId: row.vehicle_id, note: row.note ?? null, reviewedAt: row.reviewed_at },
+    ]),
+  );
+}
+
+export async function saveVehicleReview(input: {
+  readonly vehicleId: string;
+  readonly note?: string | null;
+  readonly reviewedBy?: string | null;
+}): Promise<{ ok: boolean; error?: string }> {
+  const supabase = createDomainServerClient();
+  if (!supabase) return { ok: false, error: "database unavailable" };
+
+  const { error } = await supabase.from("vehicle_reviews").upsert(
+    {
+      vehicle_id: input.vehicleId,
+      note: input.note?.trim() || null,
+      reviewed_by: input.reviewedBy ?? null,
+      reviewed_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "vehicle_id" },
+  );
+
+  return error ? { ok: false, error: error.message } : { ok: true };
+}
+
 export async function dismissIntegrityFlag(id: string): Promise<{ ok: boolean; error?: string }> {
   const supabase = createDomainServerClient();
   if (!supabase) return { ok: false, error: "database unavailable" };
