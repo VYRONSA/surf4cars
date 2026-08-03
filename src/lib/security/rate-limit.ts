@@ -9,6 +9,8 @@
  * limits are enforced across a multi-instance deployment.
  */
 
+import { RATE_LIMIT_POLICIES } from "@/config/protection/protection-policy";
+
 export interface RateLimitRule {
   /** Maximum requests permitted inside the window. */
   readonly limit: number;
@@ -31,13 +33,21 @@ export interface RateLimitStore {
   reset(key: string): Promise<void>;
 }
 
-/** Intended production limits, mirroring the documented API strategy. */
+/**
+ * Production limits — derived, never written here.
+ *
+ * PCP-048 moved every number to `src/config/protection/protection-policy.ts`, which is the single
+ * place the platform's limits are configured. These names stay because callers already reference
+ * them and a rename would be a change to request handling dressed up as a refactor; what changed is
+ * that the values now have exactly one home. A limit edited in the policy takes effect here, and a
+ * limit edited here does not exist.
+ */
 export const RATE_LIMIT_RULES = {
-  publicApi: { limit: 1000, windowMs: 60 * 60 * 1000 },
-  dealerApi: { limit: 10_000, windowMs: 60 * 60 * 1000 },
-  buyerApi: { limit: 5_000, windowMs: 60 * 60 * 1000 },
+  publicApi: RATE_LIMIT_POLICIES.publicApi,
+  dealerApi: RATE_LIMIT_POLICIES.dealerApi,
+  buyerApi: RATE_LIMIT_POLICIES.buyerApi,
   /** Deliberately tight: unauthenticated and writes to dealer CRMs. */
-  publicEnquiry: { limit: 10, windowMs: 10 * 60 * 1000 },
+  publicEnquiry: RATE_LIMIT_POLICIES.enquiry,
 } as const satisfies Record<string, RateLimitRule>;
 
 export type RateLimitRuleName = keyof typeof RATE_LIMIT_RULES;

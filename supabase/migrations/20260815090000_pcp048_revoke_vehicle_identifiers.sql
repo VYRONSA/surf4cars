@@ -1,0 +1,64 @@
+-- PCP-048 Phase 0 — take the vehicle's identity documents off the public counter.
+--
+-- WHAT THE AUDIT FOUND
+-- ====================
+-- The whole published inventory is retrievable by an anonymous caller in a single request, straight
+-- from PostgREST, with the anon key that necessarily ships in the client bundle:
+--
+--     GET /rest/v1/inventory_vehicles?select=id,vin,registration_number&limit=100000
+--     -> 200, content-range: 0-228/229
+--
+-- No pagination cap, no rate limit, and — the part that matters for PCP-048 — no contact with the
+-- Next.js application at all. Every control the rest of this sprint installs lives in `src/proxy.ts`
+-- and in the route handlers. None of them are on this path. A protection layer that throttles the
+-- front door while this stands is the failure AGENTS.md names: an obviously fake placeholder gets
+-- fixed, a convincing one gets trusted.
+--
+-- WHY A TARGETED COLUMN REVOKE WORKS NOW AND DID NOT BEFORE
+-- ========================================================
+-- 20260809090000 tried exactly this shape and it silently did nothing, because column privileges in
+-- Postgres are additive to table privileges: `anon` still held a table-wide SELECT, so removing one
+-- column left the table grant intact and the column readable.
+--
+-- 20260809094000 (PCP-038) fixed that by revoking the table grant and granting back an explicit
+-- allow-list. That is what makes this migration a two-line change rather than a re-statement of the
+-- whole list: there is no table-wide grant left to override a column revoke, so revoking these two
+-- columns removes the only privilege that permits them.
+--
+-- WHY THESE TWO AND NOT THE REST OF THE ALLOW-LIST
+-- ===============================================
+-- PCP-038 reasoned about them and left them public, on the grounds that they are "legally published
+-- business identifiers ... They are all NULL today." Both halves have since stopped being true.
+-- They are populated now, and the reasoning conflated two different columns that share a name:
+--
+--   dealerships.registration_number        the company registration number of a business. Public.
+--                                          Untouched here.
+--   inventory_vehicles.registration_number the number plate of a specific car. Not a business
+--                                          identifier at all.
+--
+-- A VIN and a number plate together identify one physical vehicle and follow it between owners.
+-- Published in bulk they are the highest-value harvest on this platform, and neither is needed to
+-- shop for a car: the marketplace does not render either one. Verified rather than assumed — the
+-- live vehicle page carries no `vin` and no `registrationNumber` anywhere in its payload.
+--
+-- WHAT THIS DOES NOT TOUCH, AND WHY NOTHING BREAKS
+-- ===============================================
+--   The public marketplace       reads through `createDomainServerClient()`, which is the service
+--                                role. Homepage, search, vehicle pages and dealer profiles are
+--                                unaffected by any grant made to `anon`.
+--   Dealers and buyers           `authenticated` is deliberately left alone, exactly as PCP-038 left
+--                                it. `getDailyIntelligenceBrief` reads both columns for a dealer's
+--                                own listing-quality analysis and continues to work, because that
+--                                path carries the caller's session token.
+--   Anonymous market endpoints   six of `/api/v1/market/*` take a `dealershipId` from the URL and no
+--                                token, and will now receive 401 for the selects that name these
+--                                columns. That is the intended outcome and not a regression: serving
+--                                one dealership's inventory to an unauthenticated caller who guessed
+--                                an id was itself the tenancy defect. PCP-048 Phase 8 requires auth
+--                                on those routes; this migration removes the sensitive half today.
+--
+-- ROLLBACK
+-- ========
+--   grant select (vin, registration_number) on public.inventory_vehicles to anon;
+
+revoke select (vin, registration_number) on public.inventory_vehicles from anon;
