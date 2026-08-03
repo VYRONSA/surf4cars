@@ -172,6 +172,26 @@ export async function FounderDashboardPage() {
           go and clear it.
         </p>
 
+        {/*
+          Which mode this deployment is in, stated before any number.
+          =========================================================
+          The two are visually identical and operationally opposite. Somebody reading a dressed
+          marketplace beside "0 photographs approved" has to be told why, and somebody about to
+          launch publicly has to be told that the shop window they are admiring is the demonstration
+          library rather than anything a person approved.
+        */}
+        {dashboard.mode === "founder-demonstration" && (
+          <p
+            data-testid="demo-mode-banner"
+            className="mt-5 rounded-[var(--radius-lg)] border border-[var(--color-warning)]/40 bg-[var(--color-warning)]/10 px-4 py-3 text-[length:var(--text-body-sm)] text-[var(--color-foreground)]"
+          >
+            <strong className="font-semibold">Founder Demonstration Mode is on.</strong> The
+            marketplace is dressed from the curated demonstration library, not from approved
+            photography. Set <code className="font-mono">FOUNDER_DEMO_MODE=false</code> and rebuild
+            before public launch.
+          </p>
+        )}
+
         {/* Named rather than silently zeroed: a source that could not be read is not a count of nought. */}
         {dashboard.unavailable.length > 0 && (
           <p className="mt-5 rounded-[var(--radius-lg)] border border-[var(--color-danger)]/40 bg-[var(--color-danger)]/10 px-4 py-3 text-[length:var(--text-body-sm)] text-[var(--color-foreground)]">

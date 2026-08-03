@@ -1,6 +1,12 @@
 import { UNPRESENTABLE_VEHICLE_PHOTOGRAPHY } from "@/config/media";
+import { platformMode, type PlatformMode } from "@/config/founder-demo";
 import { loadEditorial } from "@/services/editorial/editorial.service";
-import { loadIntegrityFlags, loadMediaReviews, loadVehicleReviews } from "@/services/media-review";
+import {
+  loadIntegrityFlags,
+  loadMediaReviews,
+  loadVehicleReviews,
+  resolveHomepageApprovals,
+} from "@/services/media-review";
 import { classifySegment, buildPriceContext, rankByAspiration, HOMEPAGE_SEGMENTS } from "@/services/presentation";
 import { getVehicleEngine } from "@/services/vehicle-engine";
 import { toShowcaseVehicleListing } from "@/services/vehicle-engine/vehicle-projection.service";
@@ -62,6 +68,15 @@ export interface DashboardScore {
 }
 
 export interface FounderDashboard {
+  /**
+   * Which mode this deployment is in.
+   *
+   * Surfaced because the two are visually identical and operationally opposite: in demonstration the
+   * homepage is dressed from the curated library, in production it shows only what has been approved.
+   * An operator reading "0 photographs approved" beside a fully populated marketplace needs to be
+   * told why rather than left to work it out.
+   */
+  readonly mode: PlatformMode;
   readonly marketplace: readonly DashboardMetric[];
   readonly photography: readonly DashboardMetric[];
   readonly dealerships: readonly DashboardMetric[];
@@ -103,8 +118,17 @@ export async function loadFounderDashboard(): Promise<FounderDashboard> {
     listings in this library, so a single approval can light up a dozen cars — and the Founder's
     question is how many *vehicles* are eligible to appear.
   */
+  /*
+    Eligibility as the homepage actually computes it, so this page and that one can never disagree
+    about whether the shop window is dressed. In production this is the Founder's approvals; in
+    Founder Demonstration Mode it is the curated library. Same resolver, one answer.
+  */
+  const eligible = resolveHomepageApprovals(
+    reviews,
+    listings.map((listing) => listing.imageSrc),
+  );
   const approvedVehicles = listings.filter(
-    (listing) => listing.imageSrc && reviews.approvedForHomepage.has(listing.imageSrc),
+    (listing) => listing.imageSrc && eligible.has(listing.imageSrc),
   ).length;
 
   const awaitingReview = published.filter((record) => !vehicleReviews.has(record.id)).length;
@@ -190,7 +214,7 @@ export async function loadFounderDashboard(): Promise<FounderDashboard> {
   */
   const prices = buildPriceContext(published.map((record) => record.pricing.sellingPriceCents));
   const approvedListings = listings.filter(
-    (listing) => listing.imageSrc && reviews.approvedForHomepage.has(listing.imageSrc),
+    (listing) => listing.imageSrc && eligible.has(listing.imageSrc),
   );
   const rankedApproved = rankByAspiration(approvedListings, prices);
   const fillableSegments = new Set(
@@ -320,6 +344,7 @@ export async function loadFounderDashboard(): Promise<FounderDashboard> {
   });
 
   return {
+    mode: platformMode(),
     marketplace: [
       { label: "Vehicles published", value: published.length },
       {

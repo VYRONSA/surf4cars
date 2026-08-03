@@ -10,6 +10,7 @@ export {
   loadMediaReviews,
   loadVehicleReviews,
   refreshIntegrityFlags,
+  resolveHomepageApprovals,
   reviewStateOf,
   saveVehicleReview,
   setMediaReviewState,

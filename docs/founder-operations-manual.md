@@ -666,3 +666,68 @@ resolved every hard call in this codebase is:
 > **If a customer knew how this number was produced, would they still trust it?**
 
 If the answer is no, show nothing. A shorter page is not a cost.
+
+---
+
+## 26. Founder Demonstration Mode
+
+Two modes, one environment variable, no code changes between them.
+
+| | **Founder Demonstration** | **Production Launch** |
+|---|---|---|
+| Setting | `FOUNDER_DEMO_MODE=true` | `FOUNDER_DEMO_MODE=false` *(also the default)* |
+| Homepage rails | All six bands, dressed from the curated demonstration library | Only Founder-approved photography |
+| Dealer Spotlight | Renders using the deepest-stocked dealership | Only an approved editorial placement |
+| Dealership covers | Demonstration covers render, attributed | Only dealer-supplied or SURF4CARS-verified |
+| Photography console | Unchanged | Unchanged |
+| Rejected photographs | Never shown | Never shown |
+
+**Unset behaves as `false`.** That default matters: a deployment that forgets to configure this gets
+the strict behaviour, never the permissive one.
+
+### Switching to Founder Demonstration Mode
+
+**[External]** Set the variable in the deployment target, then rebuild. It is read at build time
+because the homepage is statically revalidated:
+
+```bash
+FOUNDER_DEMO_MODE=true npm run build
+```
+
+**[Console]** Confirm on `/operations/founder` — an amber banner reads *"Founder Demonstration Mode
+is on."* `/api/health` also reports it as a configuration **warning**, not an error.
+
+### Switching to Production Launch Mode
+
+**[External]** Remove the variable, or set it to `false`, and rebuild.
+
+**[Console]** Confirm the banner is gone from `/operations/founder`, and that the homepage shows only
+what you have approved. If you have approved nothing, it will show no vehicles — which is correct,
+and is why §11 lists approving photography as a launch blocker.
+
+**[Terminal]** Verify both directions:
+
+```bash
+node scripts/verify-founder-demo-mode.mjs
+```
+
+It detects which mode the running server is in and asserts that mode's behaviour, plus the invariants
+that hold in both.
+
+### What the mode does not change
+
+Worth knowing, because it is the reason the mode is safe to leave on during the Founder Programme:
+
+- **A rejected photograph stays rejected.** Demonstration mode is permissive about *unreviewed*
+  frames and never about refused ones. A rally car captioned as a hatchback does not come back.
+- **A search-only photograph stays off the homepage.** A recorded decision is a recorded decision.
+- **The editorial photography standard still applies.** Demonstration mode uses the curated library,
+  which is the set that already clears that standard — not everything in the folder.
+- **Nothing is written.** The mode reads; it never approves. The review tables are identical in both
+  modes, so the queue you left is the queue you return to.
+- **The operations workflow is untouched.** Same console, same four states, same gating.
+
+There is exactly one branch in the codebase — `resolveHomepageApprovals` in
+`src/services/media-review/media-review.service.ts`. Everything below it, from merchandising to grid
+arithmetic, runs identically in both modes, so switching cannot change how anything is presented,
+only which photographs are eligible to be presented.

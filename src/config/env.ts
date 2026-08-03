@@ -99,6 +99,24 @@ export function validateEnvironment(): ConfigValidationResult {
 
   issues.push(...validateNotificationEnvironment(isProduction));
 
+  /*
+    Which mode this deployment is in, reported rather than left to be inferred.
+
+    A warning rather than an error, because Founder Demonstration Mode is a legitimate configuration
+    — but it must be *visible*. The difference between a marketplace showing curated demonstration
+    imagery and one showing approved production photography is invisible on the page and total in
+    meaning, and "which mode is this?" should be answerable from `/api/health` rather than by finding
+    somebody who remembers how it was deployed.
+  */
+  if ((process.env.FOUNDER_DEMO_MODE ?? "").trim().toLowerCase() === "true") {
+    issues.push({
+      severity: "warning",
+      variable: "FOUNDER_DEMO_MODE",
+      message:
+        "Founder Demonstration Mode is ON. The marketplace renders the curated demonstration library rather than Founder-approved photography. Set FOUNDER_DEMO_MODE=false and rebuild for public launch.",
+    });
+  }
+
   return {
     valid: issues.every((issue) => issue.severity !== "error"),
     issues,

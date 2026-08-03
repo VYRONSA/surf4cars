@@ -1,3 +1,5 @@
+import { isEditorialGrade } from "@/config/media";
+import { isFounderDemoMode } from "@/config/founder-demo";
 import { createDomainServerClient } from "@/lib/supabase/service-client";
 import { createLogger } from "@/lib/observability/logger";
 
@@ -73,6 +75,42 @@ export async function loadMediaReviews(): Promise<MediaReviewIndex> {
 /** The state of one photograph. Absence is `needs_review`, never approval. */
 export const reviewStateOf = (index: MediaReviewIndex, photograph: string): MediaReviewState =>
   index.all.get(photograph)?.state ?? "needs_review";
+
+/**
+ * The photographs eligible to lead the marketplace right now.
+ *
+ * THE ONE PLACE THE TWO MODES DIFFER
+ * ==================================
+ * Every surface that renders curated stock asks this question and nothing else. In production the
+ * answer is the Founder's approvals; in Founder Demonstration Mode it is the curated library that
+ * already clears the editorial photography standard — the set the marketplace rendered before the
+ * approval gate existed.
+ *
+ * Putting the branch here rather than at each call site is what keeps the two modes from becoming
+ * two products. The merchandising, segmentation, deduplication and rendering below this line are
+ * identical in both; switching modes cannot change how anything looks, only which photographs are
+ * eligible to be looked at.
+ *
+ * A rejection outranks the mode. `rejected` is a statement of fact about a photograph — it is not
+ * the car, it is a race car, somebody's face is in it — and a demonstration is not a reason to
+ * publish one. Demonstration mode is permissive about *unreviewed* frames, never about refused ones.
+ */
+export function resolveHomepageApprovals(
+  reviews: MediaReviewIndex,
+  candidates: Iterable<string>,
+): ReadonlySet<string> {
+  if (!isFounderDemoMode()) return reviews.approvedForHomepage;
+
+  const approved = new Set<string>();
+  for (const photograph of candidates) {
+    if (!photograph) continue;
+    if (reviews.rejected.has(photograph)) continue;
+    if (reviews.all.get(photograph)?.state === "approved_search") continue;
+    if (!isEditorialGrade(photograph)) continue;
+    approved.add(photograph);
+  }
+  return approved;
+}
 
 /* ── Writes ───────────────────────────────────────────────────────────────────────────────────── */
 

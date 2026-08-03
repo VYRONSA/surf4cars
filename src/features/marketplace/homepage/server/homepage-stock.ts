@@ -1,4 +1,5 @@
 import { isApprovedForHomepage } from "@/config/editorial/editorial-curation";
+import { isFounderDemoMode } from "@/config/founder-demo";
 import { loadEditorial, placementsForSlot } from "@/services/editorial/editorial.service";
 import {
   buildPriceContext,
@@ -10,7 +11,7 @@ import {
   type MarketSegment,
   type MerchandisingTier,
 } from "@/services/presentation";
-import { loadMediaReviews } from "@/services/media-review";
+import { loadMediaReviews, resolveHomepageApprovals } from "@/services/media-review";
 import { getVehicleEngine } from "@/services/vehicle-engine/vehicle-engine.service";
 import { toShowcaseVehicleListing } from "@/services/vehicle-engine/vehicle-projection.service";
 import type { ShowcaseVehicleListing } from "@/features/search/config/search-showcase-listings";
@@ -128,8 +129,18 @@ export interface DealerSpotlight {
 const publishableCover = (
   url: string | null,
   provenance: DealerSpotlight["coverProvenance"],
-): string | null =>
-  url && (provenance === "dealer" || provenance === "surf4cars-verified") ? url : null;
+): string | null => {
+  if (!url) return null;
+  if (provenance === "dealer" || provenance === "surf4cars-verified") return url;
+  /*
+    Demonstration covers are shown in Founder Demonstration Mode and never in production.
+
+    The section still declares where the photograph came from — `MediaAttribution` renders for any
+    cover whose provenance is not `dealer` — so a demonstration marketplace shows a dressed spotlight
+    without ever silently claiming the frame is that dealership's premises.
+  */
+  return provenance === "demonstration" && isFounderDemoMode() ? url : null;
+};
 
 const EMPTY: HomepageStock = {
   rails: [],
@@ -215,8 +226,19 @@ export async function loadHomepageStock(): Promise<HomepageStock> {
     const listings = visible
       .map(toShowcaseVehicleListing)
       /* A rejection is absolute: the frame is wrong, unsafe or not the car, so it leaves the page
-         entirely rather than falling back to a lower tier. */
+         entirely rather than falling back to a lower tier. True in both modes. */
       .filter((listing) => Boolean(listing.imageSrc) && !reviews.rejected.has(listing.imageSrc));
+
+    /*
+      The only line that differs between Founder Demonstration Mode and production.
+
+      Everything below — ranking, segmentation, deduplication, grid arithmetic, rail copy — runs
+      identically in both. See `resolveHomepageApprovals`.
+    */
+    const approvedPhotographs = resolveHomepageApprovals(
+      reviews,
+      listings.map((listing) => listing.imageSrc),
+    );
 
     if (listings.length === 0) {
       return { ...EMPTY, total: visible.length, countsByBodyType, countsByMake, countsByFuel, facets: buildSearchFacets(visible) };
@@ -402,7 +424,7 @@ export async function loadHomepageStock(): Promise<HomepageStock> {
         */
         {
           ...(rails.length === 0 ? FEATURED_GRID : SEGMENT_GRID),
-          approvedPhotographs: reviews.approvedForHomepage,
+          approvedPhotographs,
         },
         /* The first rail that renders carries the page, and only it may stand on a single card. */
         rails.length === 0 ? 1 : 2,
@@ -417,7 +439,7 @@ export async function loadHomepageStock(): Promise<HomepageStock> {
     addRail(
       { key: "marketplace", tier: "everyday", ...railCopy("everyday", []) },
       byScore,
-      { ...MARKETPLACE_GRID, approvedPhotographs: reviews.approvedForHomepage },
+      { ...MARKETPLACE_GRID, approvedPhotographs },
       2,
     );
 
@@ -463,19 +485,48 @@ export async function loadHomepageStock(): Promise<HomepageStock> {
 
     let spotlight: DealerSpotlight | null = null;
 
-    if (approvedPlacement) {
+    /*
+      In Founder Demonstration Mode the slot is filled by the deepest-stocked dealership.
+
+      This is the one place where the demonstration deliberately does something the production rule
+      forbids, so it is worth being exact about why that is safe. The production rule exists because
+      the slot is a commercial placement: an algorithm choosing its occupant either overrules a paid
+      placement or silently becomes one. During the Founder Programme nobody has bought it, so there
+      is no placement to overrule and no advertising being given away — and a demonstration of the
+      product that cannot show the product's flagship section is not a demonstration.
+
+      An approved placement still wins outright, in both modes. The demonstration only fills a slot
+      that would otherwise be empty, and everything it renders is read from real records.
+    */
+    const demonstrationSubject = !approvedPlacement && isFounderDemoMode()
+      ? (() => {
+          const byDealer = new Map<string, number>();
+          for (const listing of listings) {
+            if (listing.dealer) byDealer.set(listing.dealer, (byDealer.get(listing.dealer) ?? 0) + 1);
+          }
+          const [deepest] = [...byDealer.entries()].sort(
+            ([nameA, countA], [nameB, countB]) => countB - countA || nameA.localeCompare(nameB),
+          );
+          return deepest?.[0] ?? null;
+        })()
+      : null;
+
+    if (approvedPlacement || demonstrationSubject) {
       /* The placement names a dealership id; a listing carries only the dealership's name. Resolving
          the id here rather than matching on a name the placement never held keeps the approval
          authoritative — the Founder approved a business, not a string. */
       const supabase = createDomainServerClient();
+      const columns =
+        "id, business_name, trading_name, city, logo_data_url, cover_data_url, cover_image_provenance, promotional_headline";
       const { data: dealershipRow } = supabase
-        ? await supabase
-            .from("dealerships")
-            .select(
-              "id, business_name, trading_name, city, logo_data_url, cover_data_url, cover_image_provenance, promotional_headline",
-            )
-            .eq("id", approvedPlacement.subjectId)
-            .maybeSingle()
+        ? approvedPlacement
+          ? await supabase.from("dealerships").select(columns).eq("id", approvedPlacement.subjectId).maybeSingle()
+          : await supabase
+              .from("dealerships")
+              .select(columns)
+              .or(`trading_name.eq.${demonstrationSubject},business_name.eq.${demonstrationSubject}`)
+              .limit(1)
+              .maybeSingle()
         : { data: null };
 
       if (dealershipRow) {
@@ -509,7 +560,9 @@ export async function loadHomepageStock(): Promise<HomepageStock> {
             coverProvenance:
               (dealershipRow.cover_image_provenance as DealerSpotlight["coverProvenance"]) ?? null,
             promotionalHeadline: (dealershipRow.promotional_headline as string | null) ?? null,
-            speciality: approvedPlacement.story,
+            /* The Founder's words when there is a placement. A demonstration slot has no author, so
+               it has no speciality line — nothing is written on a dealership's behalf. */
+            speciality: approvedPlacement?.story ?? null,
           };
         }
       }
