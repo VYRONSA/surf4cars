@@ -331,8 +331,17 @@ try {
 
   heading("Dealer cover photography");
 
-  const { data: dealerCols } = await db.from("dealerships").select("cover_image_url,promotional_headline").limit(1);
-  check("dealerships carry a cover and a promotional headline", dealerCols !== null);
+  /* `cover_data_url`, not `cover_image_url`: PCP-043 added a second column beside the one that
+     already existed and PCP-045 dropped it again. One spelling. */
+  const { data: dealerCols, error: dealerColsError } = await db
+    .from("dealerships")
+    .select("cover_data_url,cover_image_provenance,promotional_headline")
+    .limit(1);
+  check(
+    "dealerships carry a cover, its provenance and a promotional headline",
+    !dealerColsError && dealerCols !== null,
+    dealerColsError?.message ?? "all three columns present",
+  );
 
   /*
     Scoped to the spotlight, not to the page. The same frame is also a lifestyle tile ("Luxury

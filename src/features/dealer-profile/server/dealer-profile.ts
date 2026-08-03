@@ -81,10 +81,13 @@ export interface DealerPublicProfile {
   /**
    * The dealership's own photograph of its premises, or null.
    *
-   * Null is the answer for all 128 rows today: every `cover_data_url` in the database points at the
-   * same shared file, `/images/dealers/dealer-profile-hero.webp`. Rendering that as a page hero told
-   * every visitor they were looking at *this* dealership's showroom, 128 times over, with one stock
-   * photograph — the same class of fabrication as the 4.8 rating, in the largest element on the page.
+   * Null is the answer for all 128 rows today, and for two different reasons that the previous
+   * implementation could only see one of: fifty carry the shared SURF4CARS hero file, and the other
+   * seventy-eight carry values nobody had checked — stub strings like `data:image/webp;base64,efgh`,
+   * the literal `ui-uploaded`, and generated images with C2PA content credentials. Every one of the
+   * seventy-eight was being published as a page hero.
+   *
+   * Publishing is now decided by `cover_image_provenance`, not by a filename. See `publishableCover`.
    */
   readonly coverImage: string | null;
   /**
@@ -220,23 +223,40 @@ interface DealershipRow {
   onboarding_status: string | null;
   verification_status: string | null;
   cover_data_url: string | null;
+  cover_image_provenance: string | null;
   created_at: string | null;
 }
 
 /*
-  A cover counts as the dealership's only if it is not one of the platform's shared placeholders.
-  Seeded rows all carry the same hero file and the SURF4CARS logo, so "the column is populated" is
-  not the same question as "they gave us a photograph".
-*/
-const SHARED_PLACEHOLDER_MEDIA = [
-  "/images/dealers/dealer-profile-hero.webp",
-  "/images/branding/logo.png",
-];
+  A cover is publishable when somebody has said where it came from.
 
-const genuineCover = (value: string | null): string | null => {
+  WHAT THE PREVIOUS VERSION LET THROUGH
+  =====================================
+  This used to compare against a two-item list of known placeholder paths and publish anything else.
+  The reasoning was right — "the column is populated" is not "they gave us a photograph" — and the
+  mechanism was the pattern AGENTS.md names: a rule written in an `if` statement rather than in the
+  data model, invisible to the Founder and uncountable by the Quality Centre.
+
+  It was also, in fact, wrong. Of the 128 rows, 50 carry the known hero file and were correctly
+  suppressed; the other 78 carry values the list had never heard of and were published as page heroes:
+  fifteen rows reading `data:image/webp;base64,efgh`, two reading the literal string `ui-uploaded`,
+  and fifty-nine base64 images carrying C2PA content credentials. The first two groups are not images
+  at all and rendered as broken heroes; the third are generated pictures being shown as a named
+  dealership's premises.
+
+  Found by building the Founder Dashboard, which had to ask "how many dealerships are missing a
+  cover" and got two different answers from two code paths.
+
+  So the question is now about provenance, which is a fact recorded on the row. NULL means nobody has
+  said, and nobody having said is not permission.
+*/
+const publishableCover = (
+  value: string | null,
+  provenance: string | null,
+): string | null => {
   const trimmed = value?.trim();
   if (!trimmed) return null;
-  return SHARED_PLACEHOLDER_MEDIA.includes(trimmed) ? null : trimmed;
+  return provenance === "dealer" || provenance === "surf4cars-verified" ? trimmed : null;
 };
 
 /** Below this, a median is one car's price with a statistical hat on. */
@@ -305,7 +325,7 @@ export async function loadDealerProfile(slug: string): Promise<DealerPublicProfi
     const { data, error } = await supabase
       .from("dealerships")
       .select(
-        "id,business_name,trading_name,business_type,physical_address,province,city,postal_code,gps_latitude,gps_longitude,telephone,whatsapp,email,website,onboarding_status,verification_status,cover_data_url,created_at,is_demonstration",
+        "id,business_name,trading_name,business_type,physical_address,province,city,postal_code,gps_latitude,gps_longitude,telephone,whatsapp,email,website,onboarding_status,verification_status,cover_data_url,cover_image_provenance,created_at,is_demonstration",
       )
       .limit(500);
 
@@ -375,7 +395,7 @@ export async function loadDealerProfile(slug: string): Promise<DealerPublicProfi
         made the platform vouch for 128 businesses it had never assessed.
       */
       verificationStatus: toDealerVerificationStatus(row.verification_status),
-      coverImage: genuineCover(row.cover_data_url),
+      coverImage: publishableCover(row.cover_data_url, row.cover_image_provenance),
       isDemonstration: row.is_demonstration === true,
       vehiclesInStock: theirs.length,
       stockProfile,

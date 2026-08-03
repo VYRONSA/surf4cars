@@ -114,6 +114,23 @@ export interface DealerSpotlight {
   readonly speciality: string | null;
 }
 
+/**
+ * A cover is publishable when somebody has said where it came from.
+ *
+ * Not when the string is non-empty: all 128 dealerships carry a `cover_data_url` and every one of
+ * them points at the same SURF4CARS library frame. The dealer profile handles that by comparing
+ * against a list of known placeholder paths — behaviourally right, and the pattern AGENTS.md names,
+ * because a hardcoded list is invisible to the Founder and would withhold a real dealer's genuine
+ * photograph the day they uploaded one to a listed path.
+ *
+ * So the question asked here is about provenance rather than about the filename.
+ */
+const publishableCover = (
+  url: string | null,
+  provenance: DealerSpotlight["coverProvenance"],
+): string | null =>
+  url && (provenance === "dealer" || provenance === "surf4cars-verified") ? url : null;
+
 const EMPTY: HomepageStock = {
   rails: [],
   collections: [],
@@ -455,7 +472,7 @@ export async function loadHomepageStock(): Promise<HomepageStock> {
         ? await supabase
             .from("dealerships")
             .select(
-              "id, business_name, trading_name, city, logo_data_url, cover_image_url, cover_image_provenance, promotional_headline",
+              "id, business_name, trading_name, city, logo_data_url, cover_data_url, cover_image_provenance, promotional_headline",
             )
             .eq("id", approvedPlacement.subjectId)
             .maybeSingle()
@@ -485,7 +502,10 @@ export async function loadHomepageStock(): Promise<HomepageStock> {
             logoUrl: (dealershipRow.logo_data_url as string | null) ?? null,
             /* Their photograph or none. Provenance travels with it so the page can say where it came
                from rather than leaving a reader to assume. */
-            coverImageUrl: (dealershipRow.cover_image_url as string | null) ?? null,
+            coverImageUrl: publishableCover(
+              dealershipRow.cover_data_url as string | null,
+              dealershipRow.cover_image_provenance as DealerSpotlight["coverProvenance"],
+            ),
             coverProvenance:
               (dealershipRow.cover_image_provenance as DealerSpotlight["coverProvenance"]) ?? null,
             promotionalHeadline: (dealershipRow.promotional_headline as string | null) ?? null,

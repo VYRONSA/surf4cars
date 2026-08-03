@@ -199,6 +199,35 @@ await Promise.all([page.waitForURL("**/vehicle/**", { timeout: 20000 }), searchV
 check("search → vehicle", pathOf().startsWith("/vehicle/"), pathOf());
 check("vehicle page is not a not-found page", !(await page.content()).includes("Vehicle Not Found"), vehicleHref ?? "");
 
+/*
+  The dealer link, followed rather than counted.
+  =============================================
+  The dead-link sweep further down checks HTTP status, and that is not enough here: a dealership
+  whose record cannot be read renders a *not-found body* with a 200, which is the exact trap this
+  project has already been caught by once when six drafts were reported as "served publicly".
+
+  It happened again in PCP-045. Two columns were added to `dealerships`, `anon` had no grant on them
+  because PCP-038 made the allow-list deny-by-default, PostgREST refused the whole query, and the
+  loader's fail-closed path rendered "dealership not found" — on every dealer profile, reached from
+  every vehicle page. Build clean, types clean, eleven suites green.
+*/
+const dealerLink = await page.locator('a[href^="/dealers/"]').first().getAttribute("href").catch(() => null);
+check("the vehicle page links to its dealership", Boolean(dealerLink), dealerLink ?? "none");
+
+if (dealerLink) {
+  const dealerPage = await context.newPage();
+  await dealerPage.goto(`${APP}${dealerLink}`, { waitUntil: "load" });
+  await dealerPage.waitForTimeout(800);
+  const dealerBody = await dealerPage.locator("body").innerText();
+  check(
+    "…and that dealership profile actually resolves",
+    !/not found/i.test(dealerBody),
+    dealerLink,
+  );
+  await dealerPage.close();
+}
+
+await page.goto(`${APP}${vehicleHref}`, { waitUntil: "load" });
 await Promise.all([
   page.waitForURL("**/search", { timeout: 20000 }),
   page.locator("[data-testid=back-button]").first().click(),

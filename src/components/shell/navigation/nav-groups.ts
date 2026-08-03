@@ -69,6 +69,9 @@ const operationsGroup: ShellNavGroup = {
   id: "operations-centre",
   label: "Operations Centre",
   items: [
+    /* First. It is the page that answers "what is stopping the marketplace from being good today",
+       and every other screen here is somewhere it sends you. */
+    { id: "founder-dashboard", label: "Founder Dashboard", href: "/operations/founder", icon: "Target" },
     { id: "operations-dashboard", label: "Dashboard", href: "/operations/dashboard", icon: "LayoutDashboard" },
     /* Second, deliberately. It is the surface the marketplace is changed from, and burying it under
        eleven analytics screens is how a curation tool goes unused. */

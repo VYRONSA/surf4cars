@@ -1,0 +1,39 @@
+-- PCP-045 — the two dealership columns added since the anon allow-list was written.
+--
+--
+-- HOW THIS WAS FOUND, WHICH IS THE POINT
+-- ======================================
+-- PCP-038 replaced `anon`'s table-wide SELECT on `dealerships` with an explicit column allow-list,
+-- and said so plainly: *a column added to either table in future is not public until somebody adds
+-- it here — which is the correct default.* It is the correct default, and it has a sharp edge that
+-- has now drawn blood.
+--
+-- PCP-043 added `cover_image_provenance` and `promotional_headline`. PCP-045 taught the public dealer
+-- profile to read provenance instead of guessing from a filename. The profile queries with the anon
+-- key, the query asked for a column `anon` cannot see, PostgREST refused the whole request, and the
+-- loader's fail-closed path rendered "dealership not found".
+--
+-- So every dealer profile on the marketplace 404'd, and every "view dealership" link from every
+-- vehicle page led nowhere. The build passed. The types passed. Eleven verification suites passed.
+-- One assertion in `verify-marketplace-trust.mjs` — "dealer profile names the real state" — went
+-- red, and it went red for a reason that had nothing to do with verification states.
+--
+-- That assertion is the only reason this is not in production. Worth recording, because the lesson
+-- is not "remember to grant columns": it is that a fail-closed read path plus a deny-by-default
+-- grant produces a *silent, total* outage of a public page, and the only thing standing between that
+-- and a customer is a test that happens to load the page.
+--
+--
+-- WHY THESE TWO ARE PUBLIC
+-- ========================
+--   cover_image_provenance   says who supplied the cover photograph. The profile publishes a cover
+--                            only where this reads 'dealer' or 'surf4cars-verified', so the page
+--                            cannot make the decision without it. It reveals nothing: the photograph
+--                            it describes is already public or already withheld.
+--   promotional_headline     one line written by the dealership for public display. It exists to be
+--                            read by customers.
+--
+-- Nothing else changes. The withheld set from PCP-038 — owner_user_id, verification_note,
+-- verification_checked_by, subscription_package — stays withheld.
+
+grant select (cover_image_provenance, promotional_headline) on public.dealerships to anon;
